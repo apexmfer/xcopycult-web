@@ -11,44 +11,14 @@ import Profile from './views/profile/Profile.vue'
 
 import ProfileOrderIndex from './views/profile/order/index.vue'
 
+ 
+import ThreadShow from './views/thread/show.vue'
+import ThreadNew from './views/thread/new.vue'
 
-import DashboardShopIndex from './views/dashboard/shop/index.vue'
-import DashboardShopNew from './views/dashboard/shop/new.vue'
+import CategoriesIndex from './views/categories/index.vue'
+import CategoriesShow from './views/categories/show.vue'
 
-
-import DashboardEndpointIndex from './views/dashboard/endpoint/index.vue'
-import DashboardEndpointNew from './views/dashboard/endpoint/new.vue'
-import DashboardEndpointShow from './views/dashboard/endpoint/show.vue'
-
-import DashboardSlugIndex from './views/dashboard/slug/index.vue'
-
-import SlugShow from './views/slug/show.vue'
-
-
-/*
-import ManagementShopShow from './views/management/shop/show.vue'
-
-import ManagementShopEdit from './views/management/shop/edit.vue'
-
-
-import ManagementProductShow from './views/management/product/show.vue'
-import ManagementProductNew from './views/management/product/new.vue'
-import ManagementProductEdit from './views/management/product/show.vue'
-
-
-
-import ManagementProductAttributeNew from './views/management/productattribute/new.vue'
-import ManagementProductAttributeEdit from './views/management/productattribute/edit.vue'
-
-import ManagementPurchaseableNew from './views/management/purchaseable/new.vue'
-import ManagementPurchaseableEdit from './views/management/purchaseable/edit.vue'
-
-import ManagementProductIndex from './views/management/product/index.vue'
-
-import ManagementOrderIndex from './views/management/order/index.vue'
-
-import ManagementImageIndex from './views/management/image/index.vue'
-*/
+ 
 
 
 /*
@@ -103,36 +73,25 @@ export default new Router({
     },
     
     {
-      path: '/dashboard/endpoints',
-      name: 'dashboardendpointindex',
-      component: DashboardEndpointIndex
-    },
-    {
-      path: '/dashboard/slugs',
-      name: 'dashboardslugindex',
-      component: DashboardSlugIndex
+      path: '/categories',
+      name: 'categoriesindex',
+      component:CategoriesIndex
     },
 
-
     {
-      path: '/dashboard/endpoint/new',
-      name: 'dashboardendpointnew',
-      component: DashboardEndpointNew
+      path: '/categories/:slug',
+      name: 'categoriesshow',
+      component:CategoriesShow
     },
 
 
     {
-      path: '/dashboard/endpoint/:endpointId',
-      name: 'dashboardendpointshow',
-      component: DashboardEndpointShow
+      path: '/thread/new',
+      name: 'threadnew',
+      component:ThreadNew
     },
-
-
-    {
-      path: '/slug/:slugId',
-      name: 'slugshow',
-      component: SlugShow
-    },
+    
+      
 
     {
       path: '/*',
