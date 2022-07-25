@@ -1,0 +1,46 @@
+{
+   
+    "production":{
+       
+        "externalRoutes": {
+         
+                        "api":"https://api.rqr.codes"
+                      }
+      
+        
+    },
+    "staging":{
+      "externalRoutes": {
+        
+        "api":"https://localhost:3000"
+      } 
+       
+      
+    },
+    
+    "development":{
+     
+      "externalRoutes": {
+ 
+        "api":"http://localhost:3000"
+      }
+
+ 
+           
+        
+        
+    } ,
+    "test":{
+     
+      "externalRoutes": {
+ 
+        "api":"http://localhost:6000"}
+
+ 
+           
+        
+        
+    }
+
+
+}

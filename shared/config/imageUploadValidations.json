@@ -1,0 +1,16 @@
+{
+    
+    
+    "shop":[
+        {"name":"minWidth", "value": "1000"},
+        {"name":"minHeight", "value": "700"}
+    ],
+
+
+
+    "product":[
+        {"name":"minWidth", "value": "1000"},
+        {"name":"minHeight", "value": "700"}
+
+    ]
+}

@@ -1,0 +1,8 @@
+[  
+   
+    {"type":"post","uri":"/endpoint/create","method":"createEndpoint","preHooks":[{"method":"requiresLogin","controller":"usersession"}],"controller":"endpoint"},
+    {"type":"post","uri":"/endpoints","method":"getEndpoints","preHooks":[{"method":"requiresLogin","controller":"usersession"}],"controller":"endpoint"}
+
+
+]
+
