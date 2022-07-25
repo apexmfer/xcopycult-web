@@ -8,12 +8,8 @@ import ServerSegmentManager from '../segmentmanagers/ServerSegmentManager'
 export interface Category {
     name:  string,
     urlSlug:  string,
-   
-    
   }
   
-   
-   
 
   export const CategorySchema = new Schema<Category>({    
     name:  { type: String, index: true, unique: true, required:true  },

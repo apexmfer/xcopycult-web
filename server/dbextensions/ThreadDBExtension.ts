@@ -5,13 +5,12 @@ import ExtensibleMongoDatabase , {TableDefinition,DatabaseExtension} from 'exten
 import {MongoRecord} from "./MongoDBExtension"
  
   export interface Thread extends MongoRecord{
-    name:  string,
+    title:  string,
+    urlSlug: string,
     
     parentUserId: string,
     parentCategoryId:string,
-    
-    title:string,
-
+     
     primaryPostId:string,
 
     createdAt:string,
@@ -23,7 +22,7 @@ import {MongoRecord} from "./MongoDBExtension"
  
   export interface Post extends MongoRecord{
     parentUserId: string,
-    parentThreadId: string,
+    parentThreadId: string|undefined,
 
     body:  string, 
 
@@ -37,13 +36,12 @@ import {MongoRecord} from "./MongoDBExtension"
     
 
   export const ThreadSchema = new Schema<Thread>({ 
-    name:  { type: String, index: true, unique: true },
+    title:  { type: String, index: true, unique: true },
+    urlSlug: { type: String, required:true},
 
     parentUserId: {type:String, required:true},
     parentCategoryId: {type:String, required:true},
     
-    title: {type: String, required:true} , ///not required
-
     primaryPostId: {type:String, required: true},
 
     createdAt: {type:String},
@@ -56,7 +54,7 @@ import {MongoRecord} from "./MongoDBExtension"
   export const PostSchema = new Schema<Post>({    
     parentUserId: {type:String, required:true},
 
-    parentThreadId: { type: String, index:true, required: true },  
+    parentThreadId: { type: String, index:true  },  
     
     body:  { type: String, required:true, index:true, unique:true  }, 
       

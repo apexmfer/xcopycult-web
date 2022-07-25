@@ -12,20 +12,17 @@ import APIController from "./APIController"
 import AttachedImageController, { FileValidation } from "./AttachedImageController";
 
 import ExtensibleDB from 'extensible-mongoose'
-import { Project, ProjectDefinition } from "../dbextensions/ProjectDBExtension";
+import { Category, CategoryDefinition } from "../dbextensions/CategoryDBExtension";
 import { createRecord, deleteRecord, findRecordById, findRecords } from "../lib/mongo-helper";
-import ProductController from "./ProductController";
-import { ProductDefinition } from "../dbextensions/ProductDBExtension";
+ 
 import { escapeString, mongoIdToString, unescapeString } from "../lib/parse-helper";
-import { EndpointDefinition } from "../dbextensions/EndpointDBExtension";
-import EndpointController from "./EndpointController";
-export default class ProjectController extends APIController {
+ export default class CategoryController extends APIController {
  
     getControllerName() : string {
-        return 'project'
+        return 'category'
     }
 
-    getProjects: ControllerMethod = async (req: any ) => {
+    getCategories: ControllerMethod = async (req: any ) => {
  
 
         /*  if(!req.fields || !req.fields.publicAddress){
@@ -35,25 +32,23 @@ export default class ProjectController extends APIController {
         */
 
         //can find by adminAddress 
-        const adminAddress = web3utils.toChecksumAddress(req.fields.adminAddress)
+         
+        let categoryArrayResponse = await findRecords({  }, CategoryDefinition , this.mongoDB ) 
 
-        let projectsArrayResponse = await findRecords({ adminAddress  }, ProjectDefinition , this.mongoDB ) 
 
-
-        let projectsArray = projectsArrayResponse.data 
-
-        console.log('shopsArray',projectsArray)
-
-        let outputArray = await Promise.all(projectsArray.map(item => ProjectController.getProjectRenderData(item, this.mongoDB)))
+        let outputArray = categoryArrayResponse.data 
  
 
-        return   {success:true, data:  outputArray } 
+        let data = await Promise.all(outputArray.map(item => CategoryController.getCategoryRenderData(item, this.mongoDB)))
+ 
+
+        return   {success:true, data } 
        
     }
 
-    getProject: ControllerMethod = async (req: any ) => {
+    getCategory: ControllerMethod = async (req: any ) => {
 
-        console.log('getProject',req.fields)
+        console.log('getCategory',req.fields)
 
 
         if(!req.fields || !req.fields.shopId){
@@ -61,71 +56,52 @@ export default class ProjectController extends APIController {
         }
 
  
-        let projectId = APIHelper.sanitizeInput(req.fields.projectId,'string') 
+        let categoryId = APIHelper.sanitizeInput(req.fields.categoryId,'string') 
         
  
-        let projectResponse = await findRecordById( projectId , ProjectDefinition, this.mongoDB)
+        let categoryResponse = await findRecordById( categoryId , CategoryDefinition, this.mongoDB)
  
 
-        if(!projectResponse.success){
-            return  projectResponse
+        if(!categoryResponse.success){
+            return  categoryResponse
         }
 
 
-        let project = projectResponse.data
+        let category = categoryResponse.data
  
       
-        let projectData = await ProjectController.getProjectRenderData(project,this.mongoDB) 
+        let data = await CategoryController.getCategoryRenderData(category,this.mongoDB) 
 
-        console.log('projectData', projectData)
-
-        return   {success:true, data: projectData}
+ 
+        return   {success:true, data }
 
     }
 
 
     //will require [degen] auth token to prove pub address (pre hook)
-    createProject: ControllerMethod = async (req:any )=> {
+    createCategory: ControllerMethod = async (req:any )=> {
  
-
         if(!req.fields.name){
             return {success:false, error: 'Missing name' }  
         }
 
-        if(!req.fields.publicAddress){
-            return {success:false, error: 'Missing publicAddress' }  
-        }
-
+        let categoryName = APIHelper.sanitizeInput( req.fields.name.toLowerCase(), 'string' ) 
        
-        let projectName = APIHelper.sanitizeInput( req.fields.name.toLowerCase(), 'string' ) 
-        let publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress, 'publicaddress')
-         
-        let attachedImageIds = APIHelper.sanitizeInput(req.fields.attachImages, 'json_string[]')
-         
+        let insertCategoryResponse = await CategoryController.insertNewCategory(  {name:categoryName} , this.mongoDB)
 
-        let insertProjectResponse = await ProjectController.insertNewProject( projectName , publicAddress, this.mongoDB)
- 
-  
-
-        if(!insertProjectResponse.success){
+        if(!insertCategoryResponse.success){
             console.log('could not insert')
-            return   insertProjectResponse
+            return insertCategoryResponse
         }
-
  
-       // let insertedProjectId = mongoIdToString( insertProjectResponse.data._id ) 
- 
-
        
-           
-
-        return insertProjectResponse 
+        return insertCategoryResponse 
        
 
     }
 
 
-    editProject: ControllerMethod = async (req:any ) => {
+    editCategory: ControllerMethod = async (req:any ) => {
 
         console.log('edit shop', req.fields )
 
@@ -134,69 +110,35 @@ export default class ProjectController extends APIController {
 
 
 
-    static async insertNewProject(name:string, adminAddress:string, mongoDB: ExtensibleDB):
+    static async insertNewCategory({name}:{name:string}, mongoDB: ExtensibleDB):
      Promise<AssertionResponse>{
          
-      
-        let projectData:Project  = {
+        let inputData:Category  = {
             name:  escapeString(name.toLowerCase()),
-            urlSlug: APIHelper.buildSlug(name),
-           
-            adminAddress 
+            urlSlug: APIHelper.buildSlug(name)
         }
  
 
-       return await createRecord( projectData, ProjectDefinition, mongoDB  )
-
- 
-
+       return await createRecord( inputData, CategoryDefinition, mongoDB  )
     }
  
 
   
-    static async getProjectRenderData(project:any,  mongoDB: ExtensibleDB ){
+    static async getCategoryRenderData(category:any,  mongoDB: ExtensibleDB ){
 
-        let projectId = mongoIdToString( project._id ) 
+        let categoryId = mongoIdToString( category._id ) 
 
         return {
-            name: unescapeString(project.name),
-            projectId, 
-            adminAddress: project.adminAddress,
-            products: await ProjectController.getChildEndpointsData(projectId, mongoDB)  
+            name: unescapeString(category.name),
+            slug: unescapeString(category.slug),
+            categoryId, 
+             
+           // threads: await ProjectController.getChildEndpointsData(projectId, mongoDB)  
         }
     }
   
 
-
-    static async getChildEndpointsData(parentProjectId:string, mongoDB: ExtensibleDB ){
-     
-        let itemsListResponse = await findRecords({parentProjectId},EndpointDefinition,mongoDB)
-
-        let itemsList = itemsListResponse.data 
-
-        return await Promise.all(itemsList.map(  x => {return EndpointController.getEndpointRenderData(x,mongoDB)}))
  
-    }
-
-
-
-    static async getOwnerOfProject(projectId: string, mongoDB: ExtensibleDB): Promise<AssertionResponse> {
-        
-        let recordResult = await findRecordById(projectId, ProjectDefinition, mongoDB)
-
-        if(!recordResult.success){
-            return recordResult            
-        }
-
-        let project = recordResult.data 
-
-        return {success: true, data: project.adminAddress}
-        
-         
-    }
-     
-
-
 
 
 

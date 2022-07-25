@@ -8,18 +8,17 @@ import AppHelper from '../server/lib/app-helper'
 import { findRecordById } from '../server/lib/mongo-helper'
 import ImageDBExtension, { AttachedImage, AttachedImageDefinition } from '../server/dbextensions/ImageDBExtension'
 import AttachedImageController from '../server/controllers/AttachedImageController' 
-import EndpointDBExtension from '../server/dbextensions/EndpointDBExtension'
+import  ThreadDBExtension from '../server/dbextensions/ThreadDBExtension'
 import { DegenAuthExtension } from 'degen-auth' 
 import { mongoIdToString } from '../server/lib/parse-helper'
-import EndpointController from '../server/controllers/EndpointController'
+import PostController from '../server/controllers/PostController'
 
  
 import {describe, it} from 'mocha'
-import SlugController from '../server/controllers/SlugController'
-
-describe('Slug Controller',    () => {
  
-        let slugController:SlugController
+describe('Post Controller',    () => {
+ 
+        let postController:PostController
         let mongoDB
 
         beforeEach(async () => {
@@ -27,14 +26,14 @@ describe('Slug Controller',    () => {
             mongoDB  = await getTestDatabase()
             await mongoDB.dropDatabase()
             
-            slugController = new SlugController(mongoDB)
+            postController = new PostController(mongoDB)
      
           
             let dbExtensions:Array<DatabaseExtension> = []
     
             dbExtensions.push(...[
-              new DegenAuthExtension(mongoDB),
-              new EndpointDBExtension(mongoDB),
+            
+              new ThreadDBExtension(mongoDB),
             
             ])
  
@@ -48,16 +47,16 @@ describe('Slug Controller',    () => {
             await mongoDB.disconnect()
         })
         
-        it('should create a slug', async () => {
+        it('should create a post', async () => {
 
 
-            let created = await slugController.createSlug( 
+            let created = await postController.createPost( 
                 { fields: { 
-                parentEndpointId:"testId"
+                parentThreadId:"testThreadId",
+                body:"testBody"
 
             } } )
-  
-            console.log({created})
+   
   
             expect(created.success).to.eql(true) 
             

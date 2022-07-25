@@ -26,7 +26,8 @@
           <CText color='gray.500'>
               
               
-              Un-biased and unopinionated scientific database for any and all reports of Unidentifiable Flying Objects (UFOs) and Unidentifiable Aerial Phenomena (UAPs).  All reports and encounters may or may not be trustworthy so any and all supportive evidence is encouraged.    
+              Un-biased and unopinionated science-oriented database for any and all reports of Unidentifiable Flying Objects (UFOs) and Unidentifiable Aerial Phenomena (UAPs).  
+              All reports and encounters may or may not be trustworthy so any and all supportive evidence is encouraged.    
          
           </CText>
           <CStack

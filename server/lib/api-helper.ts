@@ -8,9 +8,11 @@ import { priceToCents } from './parse-helper'
 
     export default class APIHelper  {
     
-        static buildSlug( token:string  ){
+        static buildSlug( input:string  ) : string {
 
-            return token 
+            let replaced:string = input.replace(' ','-')
+
+            return APIHelper.sanitizeInput(replaced, 'string')
         }
 
         static validateExists(props:string[], input:any) : AssertionResponse{

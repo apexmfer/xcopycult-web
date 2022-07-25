@@ -8,20 +8,20 @@ import AppHelper from '../server/lib/app-helper'
 import { findRecordById } from '../server/lib/mongo-helper'
 import ImageDBExtension, { AttachedImage, AttachedImageDefinition } from '../server/dbextensions/ImageDBExtension'
 import AttachedImageController from '../server/controllers/AttachedImageController' 
-import EndpointDBExtension from '../server/dbextensions/EndpointDBExtension'
+import ThreadDBExtension from '../server/dbextensions/ThreadDBExtension'
 import { DegenAuthExtension } from 'degen-auth' 
 import { mongoIdToString } from '../server/lib/parse-helper'
-import EndpointController from '../server/controllers/EndpointController'
+import ThreadController from '../server/controllers/ThreadController'
 
  
 import {describe, it} from 'mocha'
 import { mongo } from 'mongoose'
-import SlugController from '../server/controllers/SlugController'
+import PostController from '../server/controllers/PostController'
 
 describe('Endpoint Controller',    () => {
  
-        let endpointController:EndpointController
-        let slugController:SlugController
+        let threadController:ThreadController
+        let postController:PostController
         let mongoDB
 
         beforeEach(async () => {
@@ -29,15 +29,15 @@ describe('Endpoint Controller',    () => {
             mongoDB  = await getTestDatabase()
             await mongoDB.dropDatabase()
             
-            slugController = new SlugController(mongoDB)
-            endpointController = new EndpointController(slugController,mongoDB)
+            postController = new PostController(mongoDB)
+            threadController = new ThreadController(postController,mongoDB)
      
           
             let dbExtensions:Array<DatabaseExtension> = []
     
             dbExtensions.push(...[
-              new DegenAuthExtension(mongoDB),
-              new EndpointDBExtension(mongoDB),
+               
+              new ThreadDBExtension(mongoDB),
             
             ])
  
@@ -51,16 +51,14 @@ describe('Endpoint Controller',    () => {
             await mongoDB.disconnect()
         })
         
-        it('should create an endpoint ', async () => {
+        it('should create a thread ', async () => {
 
-
-            let created = await endpointController.createEndpoint( 
+            let created = await threadController.createThread( 
                 { fields: {
-                name:"testName",
-                parentProjectId:"testId",
-                actionType:'redirect',
-                actionData:"https://google.com"
-
+                title:"testTitle",
+                parentCategoryId:"testId",
+                body:'testBody',
+               
             } } )
   
             console.log({created})
@@ -70,32 +68,22 @@ describe('Endpoint Controller',    () => {
 
         })
 
+        
+        it('should get threads', async ()=> {
 
-        it('should get endpoints', async ()=> {
-
-            let created = await endpointController.createEndpoint( 
+            let created = await threadController.createThread( 
                 { fields: {
-                name:"testName",
-                parentProjectId:"testId",
-                actionType:'redirect',
-                actionData:"https://google.com"
-
+                title:"testTitle",
+                parentCategoryId:"testId",
+                body:'testBody',
+               
             } } )
 
+            let input = {}
 
-            const userData = {
-                email:"john@test.com",
-                _id:'test_session_id'
-            }
+           
 
-            // getEndpoints
-
-            let inputs = {
-                validatedSessionUser: userData
-            } 
-
-
-            let response = await endpointController.getEndpoints(inputs)
+            let response = await threadController.getThreads(input)
 
             expect(response.success).to.eql(true)
 

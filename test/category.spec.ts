@@ -8,18 +8,17 @@ import AppHelper from '../server/lib/app-helper'
 import { findRecordById } from '../server/lib/mongo-helper'
 import ImageDBExtension, { AttachedImage, AttachedImageDefinition } from '../server/dbextensions/ImageDBExtension'
 import AttachedImageController from '../server/controllers/AttachedImageController' 
-import EndpointDBExtension from '../server/dbextensions/EndpointDBExtension'
+import CategoryDBExtension from '../server/dbextensions/CategoryDBExtension'
 import { DegenAuthExtension } from 'degen-auth' 
 import { mongoIdToString } from '../server/lib/parse-helper'
-import EndpointController from '../server/controllers/EndpointController'
+import CategoryController from '../server/controllers/CategoryController'
 
  
 import {describe, it} from 'mocha'
-import SlugController from '../server/controllers/SlugController'
-
-describe('Project Controller',    () => {
  
-        let slugController:SlugController
+describe('Category Controller',    () => {
+ 
+        let categoryController:CategoryController
         let mongoDB
 
         beforeEach(async () => {
@@ -27,14 +26,13 @@ describe('Project Controller',    () => {
             mongoDB  = await getTestDatabase()
             await mongoDB.dropDatabase()
             
-            slugController = new SlugController(mongoDB)
+            categoryController = new CategoryController(mongoDB)
      
           
             let dbExtensions:Array<DatabaseExtension> = []
     
-            dbExtensions.push(...[
-              new DegenAuthExtension(mongoDB),
-              new EndpointDBExtension(mongoDB),
+            dbExtensions.push(...[ 
+              new CategoryDBExtension(mongoDB),
             
             ])
  
@@ -48,12 +46,13 @@ describe('Project Controller',    () => {
             await mongoDB.disconnect()
         })
         
-        it('should create a slug', async () => {
+        it('should create a category', async () => {
 
 
-            let created = await slugController.createSlug( 
+            let created = await categoryController.createCategory( 
                 { fields: { 
-                parentEndpointId:"testId"
+                name:"aliens",
+                parentCategoryId:"testId"
 
             } } )
   

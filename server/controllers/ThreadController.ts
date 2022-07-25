@@ -13,144 +13,137 @@ import ExtensibleDB from 'extensible-mongoose'
 import { createRecord, deleteRecord, findRecordById, findRecords } from "../lib/mongo-helper";
 import APIController from "./APIController"; 
   
-import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
-import { Endpoint, EndpointDefinition } from "../dbextensions/EndpointDBExtension";
-import SlugController from "./SlugController";
+import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper"; 
+import SlugController from "./PostController";
 import UserSessionController from "./UserSessionController";
+import PostController from "./PostController";
+import { Thread, ThreadDefinition } from "../dbextensions/ThreadDBExtension";
  
  
  
 
-export default class EndpointController extends APIController {
+export default class ThreadController extends APIController {
 
-    constructor(public slugController: SlugController, mongoDB:ExtensibleDB){
+    constructor(public postController: PostController, mongoDB:ExtensibleDB){
         super(mongoDB)
     }
 
     getControllerName() : string {
-        return 'endpoint'
+        return 'thread'
     }
 
     getRoutes() : Route[] {
        return  []        
     } 
 
-    createEndpoint: ControllerMethod = async (req:any )=> {
+    createThread: ControllerMethod = async (req:any )=> {
 
         let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
-      
        
         if(!validatedSession){
             return {success:false,error:"requires validated session"}
         }
+
         let parentUserId = mongoIdToString(validatedSession._id)
 
         let validation = APIHelper.validateExists(
-            ["name","actionType","actionData"],
+            ["title","parentCategoryId","body"],
              req.fields)
         if(!validation.success) return validation
 
        
-        let name = APIHelper.sanitizeInput( req.fields.name.toLowerCase(), 'string' ) 
-     //   let parentProjectId = APIHelper.sanitizeInput(req.fields.parentProjectId, 'string')
-
-        let parentProjectId = undefined 
-
-        let actionType = 'redirect'
-        let actionData = APIHelper.sanitizeInput(req.fields.actionData, 'string')
-         
-        //let actionData = APIHelper.sanitizeInput(req.fields.actionData, 'string')
-
-        let insertEndpointResponse = await this.insertNewEndpoint( 
-            {name , parentUserId, actionType, actionData } )
+        let title = APIHelper.sanitizeInput( req.fields.title.toLowerCase(), 'string' ) 
+        let body = APIHelper.sanitizeInput( req.fields.body.toLowerCase(), 'string' ) 
+      
+        let parentCategoryId = APIHelper.sanitizeInput( req.fields.parentCategoryId.toLowerCase(), 'string' ) 
  
 
-        if(!insertEndpointResponse.success){ 
-            return insertEndpointResponse
-        }
+
+        let insertInitialPostResponse = await this.postController.insertNewPost( 
+            {body,parentUserId})
         
-        let endpointData = insertEndpointResponse.data 
-        const parentEndpointId = mongoIdToString(endpointData._id )
-
-
-        let insertSlugResponse = await this.slugController.insertNewSlug( 
-            parentEndpointId)
-
-        if(!insertSlugResponse.success){
-
-            //delete the endpoint 
-            await deleteRecord(parentEndpointId,EndpointDefinition,this.mongoDB)
-
-            return insertSlugResponse
+        if(!insertInitialPostResponse.success){
+            return insertInitialPostResponse
         }
 
+        let initialPost = insertInitialPostResponse.data
+
+        const primaryPostId = mongoIdToString(initialPost._id)
+
+     
+        let insertThreadResponse = await this.insertNewThread( 
+            {title , parentUserId , parentCategoryId, primaryPostId } )
+ 
+
+        if(!insertThreadResponse.success){ 
+            return insertThreadResponse
+        }
+         
+ 
   
-        return insertEndpointResponse  
+        return insertThreadResponse  
     }
 
 
-    getEndpoints: ControllerMethod = async (req:any )=> {
+    getThreads: ControllerMethod = async (req:any )=> {
         let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
 
         let parentUserId = mongoIdToString(validatedSession._id)
  
-        console.log('get endpoints with ',parentUserId)
+      
+        let matchingThreadsResponse = await findRecords( {parentUserId}, ThreadDefinition, this.mongoDB )
 
-        let matchingEndpointsResponse = await findRecords( {parentUserId}, EndpointDefinition, this.mongoDB )
-
-        console.log('matchingEndpointsResponse',matchingEndpointsResponse)
-        if(!matchingEndpointsResponse.success) return matchingEndpointsResponse
+        console.log('matchingThreadsResponse',matchingThreadsResponse)
+        if(!matchingThreadsResponse.success) return matchingThreadsResponse
 
 
-        let endpointsArray = await Promise.all(matchingEndpointsResponse.data.map( x => EndpointController.getEndpointRenderData( x , this.mongoDB)))
+        let outputArray = await Promise.all(matchingThreadsResponse.data.map( x => ThreadController.getThreadRenderData( x , this.mongoDB)))
 
-        return {success:true, data: endpointsArray}
+        return {success:true, data: outputArray}
     }
 
-    async insertNewEndpoint(
-        {name, parentUserId, actionType, actionData }:
-        {name:string, parentUserId:string, actionType: string, actionData: string  } ): Promise<AssertionResponse>{
+    async insertNewThread(
+        {title, parentUserId, parentCategoryId , primaryPostId}:
+        {title:string, parentUserId:string, parentCategoryId: string  , primaryPostId:string} ): Promise<AssertionResponse>{
 
-        name = escapeString(name.toLowerCase())
+            title = escapeString(title.toLowerCase())
 
-        
+            const urlSlug = APIHelper.buildSlug(title)
 
-        let endpointData:Endpoint  = {
-            name,
+            const currentTime = Date.now().toString() 
+
+        let threadData:Thread  = {
+            title,
+            urlSlug,
              
             parentUserId, 
 
-            actionType,
-            actionData,
+            parentCategoryId,
+            primaryPostId, 
 
          //   priceUsdCents,
+            createdAt: currentTime,
             status: 'active'
         }
 
-       return await createRecord( endpointData, EndpointDefinition, this.mongoDB  )
+       return await createRecord( threadData, ThreadDefinition, this.mongoDB  )
  
     }
 
-
-    static async getRedirectURLForEndpoint(endpoint:Endpoint, mongoDB: ExtensibleDB){
-        
-        let redirectURL = APIHelper.unescapeString(endpoint.actionData)
-
-        return redirectURL
-    }
-
+ 
 
  
-    static async getEndpointRenderData(endpoint:any,  mongoDB: ExtensibleDB ){
+    static async getThreadRenderData(thread:any,  mongoDB: ExtensibleDB ){
 
-        let endpointId = mongoIdToString( endpoint._id ) 
+        let threadId = mongoIdToString( thread._id ) 
 
         return {
-            endpointId,
-            name: unescapeString(endpoint.name),
-           
-            actionType: unescapeString(endpoint.actionType),
-            actionData: unescapeString(endpoint.actionData)
+            threadId,
+            title: unescapeString(thread.title),
+            urlSlug: unescapeString(thread.urlSlug),
+            createdAt: thread.createdAt
+            
+            
         }
     }
   
