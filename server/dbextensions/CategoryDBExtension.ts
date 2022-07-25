@@ -16,8 +16,8 @@ export interface Category {
    
 
   export const CategorySchema = new Schema<Category>({    
-    name:  { type: String, index: true, unique: true },
-    urlSlug: { type: String, index: true, unique: true }, 
+    name:  { type: String, index: true, unique: true, required:true  },
+    urlSlug: { type: String, index: true, unique: true , required: true }, 
   })
  
 

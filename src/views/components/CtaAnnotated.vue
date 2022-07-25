@@ -44,13 +44,13 @@
               >
               Get Started
             </CButton>
-            <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,'categoriesindex')">
+            <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,{name:'categoriesindex'})">
              Browse All 
             </CButton>
-             <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,'recentactivity')" >
+             <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,{name:'recentactivity'})" >
               Recent Activity
             </CButton>
-             <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,'threadnew')" >
+             <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,{name:'threadnew'})" >
               Add a Report
             </CButton>
              
