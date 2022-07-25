@@ -46,7 +46,7 @@ export default class ThreadController extends APIController {
 
         let parentUserId = mongoIdToString(validatedSession._id)
 
-        let validation = APIHelper.validateExists(
+     /*   let validation = APIHelper.validateExists(
             ["title","parentCategoryId","body"],
              req.fields)
         if(!validation.success) return validation
@@ -56,8 +56,15 @@ export default class ThreadController extends APIController {
         let body = APIHelper.sanitizeInput( req.fields.body.toLowerCase(), 'string' ) 
       
         let parentCategoryId = APIHelper.sanitizeInput( req.fields.parentCategoryId.toLowerCase(), 'string' ) 
- 
+ */
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {title:'string',body:'string', parentCategoryId:'string'})
 
+        if(!sanitizeResponse.success) return sanitizeResponse
+
+        let sanitizedData = sanitizeResponse.data
+
+        
+        const {body,title,parentCategoryId} = sanitizedData
 
         let insertInitialPostResponse = await this.postController.insertNewPost( 
             {body,parentUserId})

@@ -15,6 +15,31 @@ import { priceToCents } from './parse-helper'
             return APIHelper.sanitizeInput(replaced, 'string')
         }
 
+
+        static sanitizeAndValidateInputs(fields:any, specification:any){
+
+            let validation = APIHelper.validateExists(
+                Object.keys(specification),
+                 fields)
+            if(!validation.success) return validation
+
+            let data = {}
+
+
+            for(let [key,value] of Object.entries(specification)){
+
+                let typeString:string = typeof value == 'string' ? value : 'string'
+
+                data[key] = APIHelper.sanitizeInput( fields[key], typeString ) 
+
+            }
+
+
+
+
+            return {success:true, data }
+        }
+
         static validateExists(props:string[], input:any) : AssertionResponse{
 
             for(let prop of props){
@@ -77,6 +102,11 @@ import { priceToCents } from './parse-helper'
           
 
             if(type == 'string'){
+                return APIHelper.escapeString(input.toLowerCase())
+            }
+
+
+            if(type == 'text'){
                 return APIHelper.escapeString(input)
             }
 

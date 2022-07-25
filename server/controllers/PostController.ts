@@ -49,13 +49,16 @@ export default class PostController extends APIController {
         let parentUserId = mongoIdToString(validatedSession._id)
 
         
+ 
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {parentThreadId:'string',body:'string' })
 
-        let validation = APIHelper.validateExists(["parentThreadId","body"], req.fields)
-        if(!validation.success) return validation
+        if(!sanitizeResponse.success) return sanitizeResponse
+
+        let sanitizedData = sanitizeResponse.data
 
         
-        let parentThreadId = APIHelper.sanitizeInput(req.fields.parentEndpointId, 'string')
-        let body = APIHelper.sanitizeInput(req.fields.body, 'string')
+        const {body,parentThreadId} = sanitizedData
+
 
         let insertResponse = await this.insertNewPost( {parentUserId,parentThreadId,body} )
  
