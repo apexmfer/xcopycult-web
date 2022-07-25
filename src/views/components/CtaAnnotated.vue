@@ -15,16 +15,18 @@
           :py= "{base: 20, md: 36 }">
           <CHeading
             fontWeight=600
-            :fontSize= "{base: '2xl', sm: '4xl', md: '6xl' }"
+            :fontSize= "{base: 'xl', sm: '2xl', md: '4xl' }"
             lineHeight='110%'
             color='black'>
-            Dynamic QR Codes <br />
-            <CText as='span' color='blue.200'>
-              made simple
-            </CText>
+            UFO Online Database <br />
+           
+            
+
           </CHeading>
           <CText color='gray.500'>
-              Supercharge marketing your brand with QR codes that link to your hottest content.  Print them physically on business cards, posters, or stickers.  If you ever need to update the URL, its made simple with our <b>endpoint routing technology</b>.
+              
+              
+              Un-biased and unopinionated scientific database for any and all reports of Unidentifiable Flying Objects (UFOs) and Unidentifiable Aerial Phenomena (UAPs).  All reports and encounters may or may not be trustworthy so any and all supportive evidence is encouraged.    
          
           </CText>
           <CStack
@@ -43,7 +45,13 @@
               Get Started
             </CButton>
             <CButton variant='link' colorScheme='blue' size='sm'>
-              Learn more
+             Browse All 
+            </CButton>
+             <CButton variant='link' colorScheme='blue' size='sm'>
+              Recent Activity
+            </CButton>
+             <CButton variant='link' colorScheme='blue' size='sm'>
+              Add a Report
             </CButton>
              
           </CStack>

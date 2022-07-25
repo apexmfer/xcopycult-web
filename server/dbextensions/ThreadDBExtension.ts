@@ -8,6 +8,7 @@ import {MongoRecord} from "./MongoDBExtension"
     name:  string,
     
     parentUserId: string,
+    parentCategoryId:string,
     
     title:string,
 
@@ -39,6 +40,7 @@ import {MongoRecord} from "./MongoDBExtension"
     name:  { type: String, index: true, unique: true },
 
     parentUserId: {type:String, required:true},
+    parentCategoryId: {type:String, required:true},
     
     title: {type: String, required:true} , ///not required
 

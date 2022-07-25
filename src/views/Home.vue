@@ -2,15 +2,20 @@
   <div>
    <PrimaryLayout> 
 
-    <div class="section text-white">
+  <div class="section w-container flex flex-row"> 
+    <div class=" w-1/2 text-white py-48 text-center">
 
-     <CtaAnnotated />
+       <img src="@/assets/images/gofast.png" style="width:80%;"  class="centered p-4 border-neutral-500 border-2" /> 
+
+      <a href="https://en.wikipedia.org/wiki/Pentagon_UFO_videos" class="p-4 my-4"> US Pentagon Video 'GoFast' </a>
 
     </div>
 
-     <div class="section text-white">
+     <div class=" w-1/2   text-white">
 
-     
+       <CtaAnnotated />
+
+     </div>
 
      </div>
 

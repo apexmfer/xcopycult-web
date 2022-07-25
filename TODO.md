@@ -1,6 +1,8 @@
 ### TODO
 
+-build specs for post, thread, and category 
 
+-build basic frontend 
 
 
 #### Tasks 

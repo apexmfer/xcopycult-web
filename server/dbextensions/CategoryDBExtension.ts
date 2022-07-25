@@ -5,38 +5,36 @@ import ExtensibleMongoDatabase , {TableDefinition,DatabaseExtension} from 'exten
 import ServerSegmentManager from '../segmentmanagers/ServerSegmentManager'
  
 
-export interface Project {
+export interface Category {
     name:  string,
     urlSlug:  string,
    
-    adminAddress: string,
+    
   }
   
    
    
 
-  export const ProjectSchema = new Schema<Project>({    
+  export const CategorySchema = new Schema<Category>({    
     name:  { type: String, index: true, unique: true },
-    urlSlug: { type: String, index: true, unique: true },
-   
-    adminAddress: { type: String, index: false, unique: false },
+    urlSlug: { type: String, index: true, unique: true }, 
   })
  
 
 
-  export const ProjectDefinition:TableDefinition={tableName:'projects',schema:ProjectSchema}
+  export const CategoryDefinition:TableDefinition={tableName:'categories',schema:CategorySchema}
 
  
  
 
-export default class ProjectDBExtension extends DatabaseExtension {
+export default class CategoryDBExtension extends DatabaseExtension {
  
 
   
     getBindableModels() : Array<TableDefinition>{
 
         return  [
-            ProjectDefinition 
+            CategoryDefinition 
         ]
     } 
     
