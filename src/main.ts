@@ -16,6 +16,8 @@ import router from './router'
 
 //import "tailwindcss/tailwind.css"
 
+import './css/github-markdown.css'
+
 import './css/tailwind.css'
 import './css/main.css'
 import './css/normalize.css'

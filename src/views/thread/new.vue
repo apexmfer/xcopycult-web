@@ -20,9 +20,9 @@
             
             fields: [
                 {modelname: 'title', label:'Thread Title', type: 'text'}, 
-                {modelname: 'categoryId', label:'Category', type: 'select'}, 
+                {modelname: 'categoryId', label:'Category', options:categoriesList, type: 'select'}, 
                 {modelname: 'body', label:'Post Body', type: 'markdown'}, 
-                {modelname: 'thumbnailImages', label:'Brand Image', type: 'images', quantity: 3},
+               
             ],
             submitRoute: 'createThread'
  
@@ -38,7 +38,14 @@
       ref="errorBanner"
      />
 
-     <ButtonDefault @clicked="$refs.autoform.submit()"> Submit </ButtonDefault>
+  <div class="flex flex-row">
+    <div class="flex-grow"></div>
+     <ButtonDefault
+      @clicked="$refs.autoform.submit()"
+      class="bg-blue-500 hover:bg-blue-400 inline-block text-white rounded"
+      > Submit </ButtonDefault>
+
+    </div>
       
    </div>
 
@@ -59,6 +66,8 @@
 
 
 <script>
+
+// {modelname: 'thumbnailImages', label:'Brand Image', type: 'images', quantity: 3},
 
 import AppHelper, {routeTo} from '@/js/app-helper'
  
@@ -95,14 +104,13 @@ export default {
         
  
   watch: {
-    '$store.state.web3Storage.account' (newAccount) {
-      this.activeAccount = newAccount
-    }
+    
   },
 
     data() {
         return {
             activeAccount: undefined,
+            categoriesList: [] 
             
         };
     },
@@ -117,6 +125,8 @@ export default {
   async mounted () {
 
       this.activeAccount = isSignedIn()
+
+      this.loadCategories()
       //this.activeAccount = this.$store.state.web3Storage.account 
   },
   methods: {
@@ -124,6 +134,23 @@ export default {
     routeTo,isSignedIn,
 
  
+    async loadCategories(){
+
+      let response = await resolveRoutedApiQuery('getCategories', {})
+
+      let categoriesArray = response.data
+        
+      
+      this.categoriesList = []
+
+      if(categoriesArray){
+         categoriesArray.map( x => this.categoriesList.push( 
+            {label: x.name, name: x.name, urlSlug: x.urlSlug }  ))
+      } 
+
+      console.log('categoriesList',this.categoriesList)
+    },
+
 
     renderError(msg){
       this.$refs.errorBanner.renderError(msg)

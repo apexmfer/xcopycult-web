@@ -34,6 +34,17 @@
       :disabled="fieldConfig.disabled" 
       v-model="fieldsData[fieldConfig.modelname]" 
       />
+
+
+
+     <MarkdownEditor
+      v-if="fieldConfig.type == 'markdown'"
+      class="p-2 rounded  border-2 border-neutral-300 m-2"
+      
+      :ref="'field_'+fieldConfig.modelname"
+      :disabled="fieldConfig.disabled" 
+      v-model="fieldsData[fieldConfig.modelname]" 
+      />
  
 
 
@@ -82,6 +93,7 @@
 
 <script>
 
+import MarkdownEditor from './markdowneditor_field.vue'
 import AttributeList from './attributelist_field.vue'
 import ImageUploadTile from './imageuploadtile.vue'
 
@@ -89,7 +101,9 @@ export default {
   name: 'AutoFormField',
   props: [ 'fieldConfig' , 'fieldsData', 'filesData'],
   components: {
-    ImageUploadTile,AttributeList
+    ImageUploadTile,
+    AttributeList,
+    MarkdownEditor
    },
   data() {
     return {
