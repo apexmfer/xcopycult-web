@@ -14,10 +14,8 @@ import { createRecord, deleteRecord, findRecord, findRecordById, findRecords } f
 import APIController, { InternalMethod } from "./APIController"; 
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
-import { Endpoint, EndpointDefinition, Slug, SlugDefinition } from "../dbextensions/EndpointDBExtension";
  
-import crypto from 'crypto'
-import EndpointController from "./ThreadController";
+import crypto from 'crypto' 
 import UserController from "./UserController";
 import { User, UserDefinition, UserSessionDefinition } from "../dbextensions/UserDBExtension";
 
@@ -125,8 +123,11 @@ export default class UserSessionController extends APIController {
             return {_id:'test_session_id', userId: 'test_session_id'} 
         }
 
-        return Object.apply( req.validatedSessionUser , 
-            {userId: mongoIdToString(req.validatedSessionUser._id)})
+        let output = Object.apply({}, req.validatedSessionUser)
+        output.userId = mongoIdToString(req.validatedSessionUser._id)
+
+        return output 
+ 
     }
  
     /*

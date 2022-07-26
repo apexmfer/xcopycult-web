@@ -16,24 +16,22 @@ import {DegenAuthExtension} from 'degen-auth'
  
 import Web3 from 'web3'
 
-
-
-import EndpointController from './controllers/EndpointController'
-
-
-import EndpointDBExtension from './dbextensions/EndpointDBExtension'
-
+ 
 
 import ServerSegmentManager from './segmentmanagers/ServerSegmentManager'
-import ProjectDBExtension from './dbextensions/ProjectDBExtension'
-import ProjectController from './controllers/ProjectController'
-import SlugController from './controllers/SlugController'
+ 
 import ServerModule from './servermods/ServerModule'
 import OAuthModule from './servermods/OAuthModule'
 import UserController from './controllers/UserController'
 import OAuthController from './controllers/OAuthController'
 import UserDBExtension from './dbextensions/UserDBExtension'
 import UserSessionController from './controllers/UserSessionController'
+import ThreadDBExtension from './dbextensions/ThreadDBExtension'
+import CategoryDBExtension from './dbextensions/CategoryDBExtension'
+import CategoryManager from './segmentmanagers/CategoryManager'
+import CategoryController from './controllers/CategoryController'
+import PostController from './controllers/PostController'
+import ThreadController from './controllers/ThreadController'
 
 
 require('dotenv').config()
@@ -62,8 +60,8 @@ let serverConfig = serverConfigFile[envmode]
     
     dbExtensions.push(...[
       new DegenAuthExtension(mongoDB),
-      new ProjectDBExtension(mongoDB),
-      new EndpointDBExtension(mongoDB),
+      new ThreadDBExtension(mongoDB),
+      new CategoryDBExtension(mongoDB),
       new UserDBExtension(mongoDB)
     ])
 
@@ -72,7 +70,7 @@ let serverConfig = serverConfigFile[envmode]
     //Initialize the server segment managers which are also db extensions
     let serverSegmentManagers:Array<ServerSegmentManager> = []
     serverSegmentManagers.push(...[     
-      
+      new CategoryManager(mongoDB)
     ])
     serverSegmentManagers.map(ext => ext.init())
 
@@ -82,21 +80,22 @@ let serverConfig = serverConfigFile[envmode]
     let web3 = new Web3( serverConfig.web3provider  )
 
     console.log('web3 ready with provider ',serverConfig.web3provider )
- 
-    let slugController = new SlugController(mongoDB)
-    let endpointController = new EndpointController(slugController,mongoDB)
+    
+    let categoryController = new CategoryController(mongoDB)
+    let postController = new PostController(mongoDB)
+    let threadController = new ThreadController(postController,mongoDB)
     let userController = new UserController(mongoDB)
     let userSessionController = new UserSessionController(mongoDB,userController)
     let oAuthController = new OAuthController(mongoDB,userSessionController)
     //init API Controllers 
 
     let apiControllers = [
-       new ProjectController(mongoDB), 
-       slugController,
-       endpointController,
-       oAuthController,
-       userController,
-       userSessionController
+      categoryController, 
+      postController,
+      threadController,
+      oAuthController,
+      userController,
+      userSessionController
     ]
 
 

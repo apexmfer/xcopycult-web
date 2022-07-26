@@ -14,7 +14,6 @@ import { createRecord, deleteRecord, findRecord, findRecordById, findRecords } f
 import APIController, { InternalMethod } from "./APIController"; 
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
-import { Endpoint, EndpointDefinition, Slug, SlugDefinition } from "../dbextensions/EndpointDBExtension";
  
 import crypto from 'crypto'
 import EndpointController from "./ThreadController";
@@ -72,10 +71,15 @@ export default class PostController extends APIController {
 
     insertNewPost:InternalMethod = async ( {parentUserId,parentThreadId,body}:{parentUserId:string,parentThreadId:string,body:string} ) => {
     
-        let insertionData:Slug  = {
+        const currentTime = Date.now().toString()
+
+        let insertionData:Post  = {
             parentUserId,
             parentThreadId, 
             body,
+
+            createdAt: currentTime,
+            updatedAt: currentTime,
 
             status: 'active'
         }

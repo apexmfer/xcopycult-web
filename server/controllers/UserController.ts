@@ -14,10 +14,9 @@ import { createRecord, deleteRecord, findRecord, findRecordById, findRecords } f
 import APIController, { InternalMethod } from "./APIController"; 
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
-import { Endpoint, EndpointDefinition, Slug, SlugDefinition } from "../dbextensions/EndpointDBExtension";
  
-import crypto from 'crypto'
-import EndpointController from "./EndpointController";
+ 
+import crypto from 'crypto' 
 import { User, UserDefinition } from "../dbextensions/UserDBExtension";
 import UserSessionController from "./UserSessionController";
 
