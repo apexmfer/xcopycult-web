@@ -1,5 +1,5 @@
 <template>
-   <div class="text-neutral-100 text-md">
+   <div class="  text-md">
     <div class="my-2 p-2 inline-block rounded select-none cursor-pointer" v-bind:class="customClass" @click="onClicked()">
            
                   <slot></slot>

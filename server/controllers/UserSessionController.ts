@@ -17,7 +17,7 @@ import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "
 import { Endpoint, EndpointDefinition, Slug, SlugDefinition } from "../dbextensions/EndpointDBExtension";
  
 import crypto from 'crypto'
-import EndpointController from "./EndpointController";
+import EndpointController from "./ThreadController";
 import UserController from "./UserController";
 import { User, UserDefinition, UserSessionDefinition } from "../dbextensions/UserDBExtension";
 
@@ -117,15 +117,16 @@ export default class UserSessionController extends APIController {
     static getValidatedSessionUserFromHeader(req:any){
 
         if(AppHelper.getEnvironmentName() == 'development'){
-            return {_id:'dev_session_id'} 
+            return {_id:'dev_session_id', userId: 'dev_session_id'} 
         }
 
 
         if(AppHelper.getEnvironmentName() == 'test'){
-            return {_id:'test_session_id'} 
+            return {_id:'test_session_id', userId: 'test_session_id'} 
         }
 
-        return req.validatedSessionUser
+        return Object.apply( req.validatedSessionUser , 
+            {userId: mongoIdToString(req.validatedSessionUser._id)})
     }
  
     /*

@@ -1,27 +1,20 @@
 <template>
    
-  <DashboardPage 
-    mainTitle="My Shops" 
-   > 
-  
-
+  <ForumLayout 
    
-    <div>
-        
-        <GenericTable
+   > 
 
-        :topologyArray="[{label:'',value:'name'}]"
-        :dataArray="endpointsList"
-        @clicked="onClickedEndpoint"
-        
-        > </GenericTable> 
 
+     <ButtonDefault class="mt-4" @clicked="routeTo($router,{name:'dashboardendpointnew'})"> New Thread </ButtonDefault>
+    <div class="w-container">
+        
+      forum 
 
     </div> 
 
 
     <InfoPane
-     class="my-16"
+     class="my-16 hidden "
      >
          
          <div> Define a new endpoint to start attaching QR codes.   </div> 
@@ -33,7 +26,7 @@
  
 
 
-   </DashboardPage>
+   </ForumLayout>
 
 
 </template>
@@ -45,7 +38,7 @@ import AppHelper, {routeTo} from '@/js/app-helper'
  
 
  
-import DashboardPage from '../DashboardPage.vue';
+import ForumLayout from '../forum/ForumLayout.vue';
  import {resolveRoutedApiQuery} from '@/js/rest-api-helper.ts'
 import FrontendHelper from '@/js/frontend-helper';
 
@@ -58,7 +51,7 @@ import ButtonDefault from '@/views/elements/button_default.vue'
 export default {
   name: "EndpointIndex",
   props: [],
-  components: {DashboardPage,GenericTable,InfoPane,ButtonDefault},
+  components: {ForumLayout,GenericTable,InfoPane,ButtonDefault},
   data() {
     return {
         endpointsList: [] 

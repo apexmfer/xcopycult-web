@@ -44,19 +44,9 @@ export default class ThreadController extends APIController {
             return {success:false,error:"requires validated session"}
         }
 
-        let parentUserId = mongoIdToString(validatedSession._id)
+        let parentUserId =validatedSession.userId
+ 
 
-     /*   let validation = APIHelper.validateExists(
-            ["title","parentCategoryId","body"],
-             req.fields)
-        if(!validation.success) return validation
-
-       
-        let title = APIHelper.sanitizeInput( req.fields.title.toLowerCase(), 'string' ) 
-        let body = APIHelper.sanitizeInput( req.fields.body.toLowerCase(), 'string' ) 
-      
-        let parentCategoryId = APIHelper.sanitizeInput( req.fields.parentCategoryId.toLowerCase(), 'string' ) 
- */
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {title:'string',body:'string', parentCategoryId:'string'})
 
         if(!sanitizeResponse.success) return sanitizeResponse

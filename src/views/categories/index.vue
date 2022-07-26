@@ -1,39 +1,44 @@
 <template>
    
-  <PrimaryLayout 
-    mainTitle="My Shops" 
+  <ForumLayout 
+     
    > 
   
 
    
-    <div>
-        
-        <GenericTable
 
-        :topologyArray="[{label:'',value:'name'}]"
-        :dataArray="endpointsList"
-        @clicked="onClickedEndpoint"
+    <div class="flex flex-row"> 
+
+        <CategoriesNavbar> </CategoriesNavbar>
         
-        > </GenericTable> 
+
+        ,<div class="flex-grow text-right">
+          <ButtonDefault class=" inline-block  text-gray-900 border-2 border-neutral-500" @clicked="routeTo($router,{name:'threadnew'})">   New Thread  </ButtonDefault>
+
+          </div>
+    </div>
+
+
+    <div class=" ">
+        
+       
 
 
     </div> 
 
 
-    <InfoPane
+    <div
      class="my-16"
      >
          
-         <div> Define a new endpoint to start attaching QR codes.   </div> 
-
-
-         <ButtonDefault class="mt-4" @clicked="routeTo($router,{name:'dashboardendpointnew'})">  Create a New Shop  </ButtonDefault>
-    </InfoPane> 
+        
+        
+    </div> 
 
  
 
 
-   </PrimaryLayout>
+   </ForumLayout>
 
 
 </template>
@@ -45,7 +50,7 @@ import AppHelper, {routeTo} from '@/js/app-helper'
  
 
  
-import PrimaryLayout from '../PrimaryLayout.vue';
+import ForumLayout from '../forum/ForumLayout.vue';
  import {resolveRoutedApiQuery} from '@/js/rest-api-helper.ts'
 import FrontendHelper from '@/js/frontend-helper';
 
@@ -53,12 +58,18 @@ import GenericTable from '@/views/elements/generictable.vue'
 import InfoPane from '@/views/elements/infopane.vue'
 import ButtonDefault from '@/views/elements/button_default.vue'
 
- 
+  import CategoriesNavbar from "@/views/components/categories/CategoriesNavbar.vue"
+
  
 export default {
   name: "EndpointIndex",
   props: [],
-  components: {PrimaryLayout,GenericTable,InfoPane,ButtonDefault},
+  components: {
+    ForumLayout,
+  CategoriesNavbar,
+  GenericTable,
+  InfoPane,
+  ButtonDefault},
   data() {
     return {
         endpointsList: [] 

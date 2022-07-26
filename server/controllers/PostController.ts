@@ -46,9 +46,8 @@ export default class PostController extends APIController {
             return {success:false,error:"requires validated session"}
         }
 
-        let parentUserId = mongoIdToString(validatedSession._id)
-
-        
+        let parentUserId =validatedSession.userId
+ 
  
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {parentThreadId:'string',body:'string' })
 
