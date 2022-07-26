@@ -3,7 +3,7 @@
  
 import AppHelper from "../lib/app-helper";
 
-import { AssertionResponse, ControllerMethod } from "degen-route-loader"
+import { AssertionResponse, ControllerMethod, Route } from "degen-route-loader"
 
 import web3utils from 'web3-utils'
 import APIHelper from "../lib/api-helper";
@@ -18,6 +18,18 @@ import { createRecord, deleteRecord, findRecordById, findRecords } from "../lib/
 import { escapeString, mongoIdToString, unescapeString } from "../lib/parse-helper";
  export default class CategoryController extends APIController {
  
+
+ 
+    getRoutes() : Route[] {
+        return [
+           
+         //   {"type":"post","uri":"/post/create","method":"createPost","controller":this.getControllerName()}
+    
+        ]
+    }
+
+
+
     getControllerName() : string {
         return 'category'
     }
@@ -130,7 +142,7 @@ import { escapeString, mongoIdToString, unescapeString } from "../lib/parse-help
 
         return {
             name: unescapeString(category.name),
-            slug: unescapeString(category.slug),
+            urlSlug: unescapeString(category.urlSlug),
             categoryId, 
              
            // threads: await ProjectController.getChildEndpointsData(projectId, mongoDB)  

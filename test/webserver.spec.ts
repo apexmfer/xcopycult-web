@@ -66,7 +66,7 @@ describe('Web server',    () => {
 
 
            
-           await mongoDB.init(  'rqrcodes_'.concat(envmode) )
+           await mongoDB.init(  'ufodatabase'.concat('_').concat(envmode) )
 
  
            await mongoDB.dropDatabase()

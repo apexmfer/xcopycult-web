@@ -51,7 +51,7 @@ let serverConfig = serverConfigFile[envmode]
      validateServerConfig()
 
     let mongoDB = new ExtensibleMongoDB(  ) 
-    await mongoDB.init(  'rqrcodes'.concat('_').concat(envmode) )
+    await mongoDB.init(  'ufodatabase'.concat('_').concat(envmode) )
 
 
 

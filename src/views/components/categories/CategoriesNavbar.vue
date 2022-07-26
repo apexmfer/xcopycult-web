@@ -5,8 +5,10 @@
           
            <GenericDropdown
             class="  inline-block  " 
-            @clicked="routeTo($router,{name:'dashboardendpointnew'})"
-            :optionList="allCategories"
+            :onSelectCallback="onCategorySelect"
+            
+
+            :optionList="categoriesList"
             >
             
             
@@ -16,7 +18,7 @@
 
 
              
-           <ButtonDefault class="mx-2  inline-block  text-gray-900 border-2 border-neutral-500" @clicked="routeTo($router,{name:'recentactivity'})">  Recent Activity  </ButtonDefault>
+           <ButtonDefault class="mx-2 hidden inline-block  text-gray-900 border-2 border-neutral-500" @clicked="routeTo($router,{name:'recentactivity'})">  Recent Activity  </ButtonDefault>
           
         </div> 
 
@@ -27,6 +29,8 @@
 
 <script>
   
+import AppHelper, {routeTo} from '@/js/app-helper'
+ 
 
  
  import GenericDropdown from "@/views/components/GenericDropdown.vue"
@@ -35,11 +39,11 @@ import ButtonDefault from "@/views/elements/button_default.vue"
 
 export default {
   name: 'CategoriesNavbar',
-  props: [   ],
+  props: [  'categoriesList' ],
   components: {  GenericDropdown, ButtonDefault},
   data() {
     return {
-         allCategories: [{label:"observations",name:"observations"}]
+      //   allCategories: [{label:"observations",name:"observations"}]
 
     }
   },
@@ -58,8 +62,14 @@ export default {
       
   },
   methods: {
-    
+    routeTo,
 
+      onCategorySelect(optionData){
+
+          this.routeTo(this.$router,{name:'categoryshow',params:{slug:optionData.urlSlug}})
+
+           
+      }
 
   }
 }

@@ -79,8 +79,8 @@ export default new Router({
     },
 
     {
-      path: '/categories/:slug',
-      name: 'categoriesshow',
+      path: '/category/:slug',
+      name: 'categoryshow',
       component:CategoriesShow
     },
 

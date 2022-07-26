@@ -36,22 +36,11 @@
             align='center'
             alignSelf='center'
             position='relative'>
-            <CButton
-              colorScheme='green'
-              bg='green.400'
-              rounded='full'
-              px=6
-              
-              >
-              Get Started
-            </CButton>
-            <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,{name:'categoriesindex'})">
-             Browse All 
-            </CButton>
-             <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,{name:'recentactivity'})" >
+          
+             <CButton variant='link' class="text-neutral-800" colorScheme='blue' size='sm' @click="routeTo($router,{name:'categoriesindex'})" >
               Recent Activity
             </CButton>
-             <CButton variant='link' colorScheme='blue' size='sm' @click="routeTo($router,{name:'threadnew'})" >
+             <CButton variant='link' class="text-neutral-500" colorScheme='blue' size='sm' @click="routeTo($router,{name:'threadnew'})" >
               Add a Report
             </CButton>
              

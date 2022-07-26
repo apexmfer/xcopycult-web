@@ -9,7 +9,10 @@
 
     <div class="flex flex-row"> 
 
-        <CategoriesNavbar> </CategoriesNavbar>
+        <CategoriesNavbar
+        :categoriesList="categoriesList"
+        
+        > </CategoriesNavbar>
         
 
         ,<div class="flex-grow text-right">
@@ -19,11 +22,12 @@
     </div>
 
 
-    <div class=" ">
-        
-       
+    <div class="flex flex-col">
 
-
+      <ThreadTable
+      
+      > </ThreadTable>
+         
     </div> 
 
 
@@ -33,10 +37,7 @@
          
         
         
-    </div> 
-
- 
-
+    </div>  
 
    </ForumLayout>
 
@@ -54,7 +55,7 @@ import ForumLayout from '../forum/ForumLayout.vue';
  import {resolveRoutedApiQuery} from '@/js/rest-api-helper.ts'
 import FrontendHelper from '@/js/frontend-helper';
 
-import GenericTable from '@/views/elements/generictable.vue'
+import ThreadTable from '@/views/components/thread/ThreadTable.vue'
 import InfoPane from '@/views/elements/infopane.vue'
 import ButtonDefault from '@/views/elements/button_default.vue'
 
@@ -62,17 +63,18 @@ import ButtonDefault from '@/views/elements/button_default.vue'
 
  
 export default {
-  name: "EndpointIndex",
+  name: "CategoryIndex",
   props: [],
   components: {
     ForumLayout,
-  CategoriesNavbar,
-  GenericTable,
+  CategoriesNavbar, 
   InfoPane,
-  ButtonDefault},
+  ButtonDefault,
+  ThreadTable
+  },
   data() {
     return {
-        endpointsList: [] 
+        categoriesList: [] 
     };
   },
  
@@ -81,47 +83,45 @@ export default {
   },
   async mounted () {
 
-      this.loadEndpoints()
+      this.loadCategories()
+
   },
   methods: {
      
     routeTo, 
 
 
-    async loadEndpoints(){
+    async loadCategories(){
 
-      let sessionToken = FrontendHelper.getSessionToken()
+      let response = await resolveRoutedApiQuery('getCategories', {})
 
-      let response = await resolveRoutedApiQuery('getEndpoints', {sessionToken})
-
-      let myEndpointsList = response.data
+      let categoriesArray = response.data
         
-      console.log({myEndpointsList})
+      
+      this.categoriesList = []
 
-
-      this.endpointsList = []
-
-      if(myEndpointsList){
-         myEndpointsList.map( x => this.endpointsList.push(  x  ))
+      if(categoriesArray){
+         categoriesArray.map( x => this.categoriesList.push( 
+            {label: x.name, name: x.name, urlSlug: x.urlSlug }  ))
       } 
 
-      console.log('endpointsList',this.endpointsList)
-
-
+      console.log('categoriesList',this.categoriesList)
     },
 
-    onClickedEndpoint(row){ 
+
+
+    onClickedCategory(row){ 
 
      
 
-      if(!row || !row.endpointId){
-        console.error('no endpoint id')
-        returnshop
+      if(!row || !row.categoryId){
+        console.error('no category id')
+        return 
       }
 
       this.routeTo(this.$router,
-       {name: 'dashboardendpointshow', 
-       params: {endpointId:row.endpointId}} )
+       {name: 'categoryshow', 
+       params: {slug:row.urlSlug}} )
 
     }
   },

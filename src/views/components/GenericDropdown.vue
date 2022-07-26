@@ -4,7 +4,9 @@
 <div class="relative inline-block text-left">
   <div>
     <button 
-    @click="toggleMenu()" 
+   
+     @blur="hide()"
+     @mousedown="toggleMenu()" 
     type="button" 
     class="inline-flex 
     justify-center w-full rounded-md border border-gray-300 shadow-sm 
@@ -33,6 +35,7 @@
   -->
   <div 
   v-if="menuActive"
+   
   class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
     <div class="py-1" role="none">
      
@@ -40,8 +43,8 @@
       <div
         v-for="option in optionList"
         :key="option.name"
-       v-on:click="onChange( option.name, hide); "
-      class="text-gray-700 block px-4 py-2 text-sm" 
+       @mousedown="onChange( option.name, hide); "
+      class="text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:bg-neutral-500" 
       role="menuitem" 
       tabindex="-1" id="menu-item-0">{{option.label}}
       </div>
@@ -70,6 +73,7 @@ export default {
   data() {
     return {
      menuActive:false,
+     autoTrigger:false,
       
       selectedOptionData: {} 
     }
@@ -80,8 +84,11 @@ export default {
         if(this.optionList && this.optionList.length > 0){
            
            if( !this.selectedOptionData  || !this.selectedOptionData.label ){
-             console.log('handleSelectedOptionChanged')
-                this.handleSelectedOptionChanged( this.optionList[0] )
+             
+             if(this.autoTrigger){
+               this.handleSelectedOptionChanged( this.optionList[0] )
+             }
+               
            }
            
       }
@@ -90,15 +97,15 @@ export default {
 
 
   created(){
-      if(this.optionList && this.optionList.length > 0){
-            this.handleSelectedOptionChanged( this.optionList[0] )
+      if(this.optionList && this.optionList.length > 0 && this.autoTrigger){
+          this.handleSelectedOptionChanged( this.optionList[0] )
           
       }
        
   },
   mounted(){
 
-        if(this.optionList && this.optionList.length > 0){ 
+        if(this.optionList && this.optionList.length > 0 && this.autoTrigger){ 
 
           this.handleSelectedOptionChanged( this.optionList[0] )
       }
@@ -138,6 +145,9 @@ export default {
     },
     toggleMenu(){
       this.menuActive = !this.menuActive
+    },
+    hide(){
+      this.menuActive = false
     }
 
 

@@ -1,5 +1,6 @@
 import CategoryController from "../controllers/CategoryController";
-import { createRecord } from "../lib/mongo-helper";
+import { CategoryDefinition } from "../dbextensions/CategoryDBExtension";
+import { createRecord, findRecord } from "../lib/mongo-helper";
 import ServerSegmentManager from "./ServerSegmentManager";
 
 
@@ -18,7 +19,18 @@ export default class CategoryManager extends ServerSegmentManager  {
  
 
     async init() {  
-        await Promise.all(initCategories.map(x => CategoryController.insertNewCategory( x  , this.mongoDB)))
+
+        for(let category of initCategories){
+
+            let existingCategory = await findRecord({name:category.name},CategoryDefinition,this.mongoDB)
+        
+            if(!existingCategory.success){
+               await  CategoryController.insertNewCategory( category  , this.mongoDB)
+            }
+        }
+
+      
+    
     }
 
 
