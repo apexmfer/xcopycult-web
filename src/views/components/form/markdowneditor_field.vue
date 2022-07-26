@@ -11,7 +11,9 @@
 
     <div class="flex flex-column">
         <textarea v-if="viewMode == 0 || viewMode == 1" class="flex flex-grow border-2 border-neutral-500" style="min-height:600px" :value="input" @input="update"></textarea>
-        <div  v-if="viewMode == 0 || viewMode == 2"  class="flex flex-grow  markdown-body"   v-html="compiledMarkdown"></div>
+        <div class="flex flex-grow">
+        <div  v-if="viewMode == 0 || viewMode == 2"  class="  markdown-body"   v-html="compiledMarkdown"></div>
+        </div>
     </div>
 
      
