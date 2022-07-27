@@ -15,6 +15,10 @@ import { priceToCents } from './parse-helper'
             return APIHelper.sanitizeInput(replaced, 'string')
         }
 
+        static getRandomColorHex():string{
+            return '#0088CC'
+        }
+
 
         static sanitizeAndValidateInputs(fields:any, specification:any){
 

@@ -2,12 +2,26 @@
    
    <ForumLayout> 
  
+    <div v-if="threadData">
 
-    <div class=" font-sharp text-2xl ">  Thread </div>
+      <div class="flex flex-row">
+        <div class="flex-grow">
+         <div class=" font-sharp text-2xl "> {{threadData.title}} </div>
+        </div>
 
+          <div class=" ">
+         <div class=" font-sharp text-md "> {{threadData.createdAt}} </div>
+        </div>
+      </div>
 
     <hr class="" /> 
 
+
+    <div v-for="post of posts"> {{post.body}} </div>
+
+
+
+    </div>
   
   
 
@@ -63,11 +77,9 @@ export default {
 
     data() {
         return {
-            activeAccount: undefined,
-            categoriesList: [],
-            categoriesListOptions: [] ,
-            threadId: undefined //returned from post 
-            
+            activeAccount: undefined,          
+            threadData: undefined, 
+            posts:[]
         };
     },
     
@@ -82,7 +94,8 @@ export default {
 
       this.activeAccount = isSignedIn()
 
-      this.loadCategories()
+      this.loadThreadData()
+      this.loadPosts()
       //this.activeAccount = this.$store.state.web3Storage.account 
   },
   methods: {
@@ -90,25 +103,36 @@ export default {
     routeTo,isSignedIn,
 
  
-    async loadCategories(){
+    async loadThreadData(){
 
-      let response = await resolveRoutedApiQuery('getCategories', {})
 
-      let categoriesArray = response.data
+      const threadId = this.$route.params.threadId
+
+      let response = await resolveRoutedApiQuery('getThread', {threadId})
+
+      this.threadData = response.data
         
-      
-      this.categoriesList = []
-      this.categoriesListOptions = []
+       
 
-      if(categoriesArray){
-         categoriesArray.map( x => this.categoriesList.push( 
-            {label: x.name, name: x.name, urlSlug: x.urlSlug, categoryId: x.categoryId }  ))
+      console.log('threadData',this.threadData)
+    },
 
-             categoriesArray.map( x => this.categoriesListOptions.push( 
-            {label: x.name, value: x.categoryId }  ))
-      } 
 
-      console.log('categoriesList',this.categoriesList)
+    async loadPosts(){
+
+
+      const parentThreadId = this.$route.params.threadId
+
+      let response = await resolveRoutedApiQuery('getPosts', {parentThreadId})
+
+      this.posts = [] // response.data 
+
+      for(let post of response.data){
+        this.posts.push(post)
+      }
+
+
+      console.log('posts',this.posts)
     },
 
 

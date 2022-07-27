@@ -101,8 +101,7 @@ import { escapeString, mongoIdToString, unescapeString } from "../lib/parse-help
        
         let insertCategoryResponse = await CategoryController.insertNewCategory(  {name:categoryName} , this.mongoDB)
 
-        if(!insertCategoryResponse.success){
-            console.log('could not insert')
+        if(!insertCategoryResponse.success){ 
             return insertCategoryResponse
         }
  
@@ -127,7 +126,8 @@ import { escapeString, mongoIdToString, unescapeString } from "../lib/parse-help
          
         let inputData:Category  = {
             name:  escapeString(name.toLowerCase()),
-            urlSlug: APIHelper.buildSlug(name)
+            urlSlug: APIHelper.buildSlug(name),
+            colorCodeHex: APIHelper.getRandomColorHex()
         }
  
 

@@ -82,6 +82,30 @@ export default class ThreadController extends APIController {
     }
 
 
+    getThread: ControllerMethod = async (req:any )=> {
+        let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
+
+        let parentUserId = mongoIdToString(validatedSession._id)
+ 
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {threadId:'string'})
+
+        if(!sanitizeResponse.success) return sanitizeResponse
+
+        let sanitizedData = sanitizeResponse.data
+        
+        const {threadId} = sanitizedData
+
+      
+        let matchingThreadResponse = await findRecordById( threadId, ThreadDefinition, this.mongoDB )
+
+        console.log('matchingThreadResponse',matchingThreadResponse)
+        if(!matchingThreadResponse.success) return matchingThreadResponse
+
+        let data = await ThreadController.getThreadRenderData( matchingThreadResponse.data , this.mongoDB)
+ 
+        return {success:true, data}
+    }
+
     getThreads: ControllerMethod = async (req:any )=> {
         let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
 

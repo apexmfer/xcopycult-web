@@ -69,6 +69,37 @@ export default class PostController extends APIController {
     }
 
 
+
+    getPosts: ControllerMethod = async (req:any )=> {
+        let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
+
+        let parentUserId = mongoIdToString(validatedSession._id)
+        
+
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {parentThreadId:'string'})
+
+        if(!sanitizeResponse.success) return sanitizeResponse
+
+        let sanitizedData = sanitizeResponse.data
+        
+        const {parentThreadId} = sanitizedData
+
+
+      
+        let matchingPostsResponse = await findRecords( {parentThreadId}, PostDefinition, this.mongoDB )
+
+       
+        if(!matchingPostsResponse.success) return matchingPostsResponse
+
+
+        let outputArray = await Promise.all(matchingPostsResponse.data.map( x => PostController.getPostRenderData( x , this.mongoDB)))
+
+        return {success:true, data: outputArray}
+    }
+
+
+
+
     insertNewPost:InternalMethod = async ( {parentUserId,parentThreadId,body}:{parentUserId:string,parentThreadId:string,body:string} ) => {
     
         const currentTime = Date.now().toString()
