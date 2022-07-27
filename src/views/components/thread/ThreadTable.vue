@@ -1,13 +1,13 @@
 <template> 
 
 <div class=" my-16">
-
  
-     <table class="table-auto w-full" v-if="threadsArray && threadsArray.length > 0">
+ 
+     <table style="border-collapse: collapse" class="  w-full" v-if="threadsArray && threadsArray.length > 0">
           <thead>
-            <tr>
+            <tr class="text-center">
               
-              <th> Topic </th>
+              <th class="text-left"> Topic </th>
               <th> Replies </th>
               <th> Views </th>
               <th> Activity </th>

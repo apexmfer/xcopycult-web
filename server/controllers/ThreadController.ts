@@ -19,7 +19,7 @@ import UserSessionController from "./UserSessionController";
 import PostController from "./PostController";
 import { Thread, ThreadDefinition } from "../dbextensions/ThreadDBExtension";
  
- 
+ import {Category, CategoryDefinition} from "../dbextensions/CategoryDBExtension"
  
 
 export default class ThreadController extends APIController {
@@ -134,15 +134,26 @@ export default class ThreadController extends APIController {
 
         let threadId = mongoIdToString( thread._id ) 
 
+        let parentCategoryResponse = await findRecordById(thread.parentCategoryId,CategoryDefinition,mongoDB)
+
+        let parentCategoryName;
+
+        if(parentCategoryResponse.success){
+            let parentCategory:Category = parentCategoryResponse.data 
+
+            parentCategoryName = parentCategory.name
+        }
+
         return {
             threadId,
             title: unescapeString(thread.title),
             urlSlug: unescapeString(thread.urlSlug),
-            createdAt: thread.createdAt
+            createdAt: thread.createdAt,
+            parentCategoryName
             
             
         }
     }
   
 
-}
+} 

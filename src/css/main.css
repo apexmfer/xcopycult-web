@@ -59,6 +59,15 @@ a {
 
 
 
+.badge-category {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+
 .pixelated {
   image-rendering: pixelated;
 

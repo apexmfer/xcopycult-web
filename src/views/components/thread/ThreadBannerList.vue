@@ -5,13 +5,16 @@
 <template> 
 <tbody v-cloak>
 
-            <tr v-for="row of threadsArray" class="hover:bg-gray-700 cursor-pointer  py-4 rainbow-hover " @click="clickedRow(row)">
+            <tr v-for="row of threadsArray" :key="row.threadId"
+             class="  w-full py-4 hover:bg-neutral-200 cursor-pointer  text-center " @click="clickedRow(row)">
                
-              <td class="py-2 px-2 my-2 truncate" >
+              <td class="py-2 px-2 my-2  " style="width:65%" >
                   
-                 <ThreadBanner>
-                     
-                     {{row.title}}
+                 <ThreadBanner
+                  class="w-full text-left"
+                  :threadData="row"
+                  >
+                      
                      
                   </ThreadBanner>
                   
