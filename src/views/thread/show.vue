@@ -1,58 +1,19 @@
 <template>
    
-   <PrimaryLayout> 
+   <ForumLayout> 
  
 
-    <div class=" font-sharp text-2xl "> Create a new Shop </div>
+    <div class=" font-sharp text-2xl ">  Thread </div>
 
 
     <hr class="" /> 
 
+  
+  
 
+ 
 
-
-   <div v-if="activeAccount"> 
-    <AutoForm
-      
-        ref="autoform"
-
-        v-bind:formConfig="{
-            
-            fields: [
-                {modelname: 'name', label:'Shop Name', type: 'text'}, 
-                {modelname: 'thumbnailImages', label:'Brand Image', type: 'images', quantity: 3},
-            ],
-            submitRoute: 'createShop'
-
-            
-            
-            
-            }"
-
-          @onPostSuccess="routeTo($router,{name:'dashboardshopindex'})"
-          @onPostFailed="renderError"
-          @onError="renderError"
-    />
-
-     <ErrorBanner
-      ref="errorBanner"
-     />
-
-     <ButtonDefault @clicked="$refs.autoform.submit()"> Submit </ButtonDefault>
-      
-   </div>
-
-
-    <InfoPane 
-    class="mt-16"
-    v-if="!activeAccount ">
-
-        Please connect a web3 account.
-
-    </InfoPane> 
-   
-
-   </PrimaryLayout>
+   </ForumLayout>
 
 
 </template>
@@ -60,11 +21,13 @@
 
 <script>
 
+// {modelname: 'thumbnailImages', label:'Brand Image', type: 'images', quantity: 3},
+
 import AppHelper, {routeTo} from '@/js/app-helper'
  
 
  
-import PrimaryLayout from '../PrimaryLayout.vue';
+import ForumLayout from '../forum/ForumLayout.vue';
 import RestAPIHelper, {resolveRoutedApiQuery} from '@/js/rest-api-helper.ts'
 import {connectedToWeb3} from '@/js/ethereum-store-helper'
 
@@ -76,12 +39,17 @@ import ButtonDefault from '@/views/elements/button_default.vue'
 import ErrorBanner from '@/views/elements/ErrorBanner.vue'
 
 import AutoForm from '@/views/components/form/autoform.vue' 
+ 
+
+
+ 
+import {isSignedIn} from '@/js/frontend-helper'
 
 export default {
-    name: "ShopNew",
+    name: "ThreadShow",
     props: [],
     components: {
-      PrimaryLayout,
+      ForumLayout,
       ErrorBanner,
       GenericTable,
       InfoPane,
@@ -90,14 +58,16 @@ export default {
         
  
   watch: {
-    '$store.state.web3Storage.account' (newAccount) {
-      this.activeAccount = newAccount
-    }
+    
   },
 
     data() {
         return {
-            activeAccount: undefined
+            activeAccount: undefined,
+            categoriesList: [],
+            categoriesListOptions: [] ,
+            threadId: undefined //returned from post 
+            
         };
     },
     
@@ -110,15 +80,36 @@ export default {
   },
   async mounted () {
 
-    
-      this.activeAccount = this.$store.state.web3Storage.account 
+      this.activeAccount = isSignedIn()
+
+      this.loadCategories()
+      //this.activeAccount = this.$store.state.web3Storage.account 
   },
   methods: {
      
-    routeTo,
+    routeTo,isSignedIn,
 
+ 
+    async loadCategories(){
 
-    connectedToWeb3,
+      let response = await resolveRoutedApiQuery('getCategories', {})
+
+      let categoriesArray = response.data
+        
+      
+      this.categoriesList = []
+      this.categoriesListOptions = []
+
+      if(categoriesArray){
+         categoriesArray.map( x => this.categoriesList.push( 
+            {label: x.name, name: x.name, urlSlug: x.urlSlug, categoryId: x.categoryId }  ))
+
+             categoriesArray.map( x => this.categoriesListOptions.push( 
+            {label: x.name, value: x.categoryId }  ))
+      } 
+
+      console.log('categoriesList',this.categoriesList)
+    },
 
 
     renderError(msg){

@@ -92,7 +92,7 @@ import AutoForm from '@/views/components/form/autoform.vue'
 import {isSignedIn} from '@/js/frontend-helper'
 
 export default {
-    name: "ShopNew",
+    name: "ThreadNew",
     props: [],
     components: {
       ForumLayout,

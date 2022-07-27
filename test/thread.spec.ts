@@ -17,6 +17,7 @@ import ThreadController from '../server/controllers/ThreadController'
 import {describe, it} from 'mocha'
 import { mongo } from 'mongoose'
 import PostController from '../server/controllers/PostController'
+import CategoryDBExtension from '../server/dbextensions/CategoryDBExtension'
 
 describe('Endpoint Controller',    () => {
  
@@ -36,7 +37,7 @@ describe('Endpoint Controller',    () => {
             let dbExtensions:Array<DatabaseExtension> = []
     
             dbExtensions.push(...[
-               
+              new CategoryDBExtension(mongoDB),
               new ThreadDBExtension(mongoDB),
             
             ])
