@@ -1,10 +1,8 @@
 <template> 
 
 <div class=" ">
-
-    <div v-if="title" class="font-sharp text-lg mb-2"> {{title }} </div>
-
-     <table class="table-auto w-full" v-if="dataArray && dataArray.length > 0">
+ 
+     <table class="table-auto w-full" v-if="threadsArray && threadsArray.length > 0">
           <thead>
             <tr>
               
@@ -25,11 +23,11 @@
         </table>
 
         <PaginationBar
-        v-if="dataArray"
+        v-if="threadsArray && threadsArray.length > 0"
         
         > </PaginationBar>
 
-        <div v-if="!dataArray || dataArray.length == 0" v-cloak
+        <div v-if="!threadsArray || threadsArray.length == 0" v-cloak
         class="my-16">
           No records found.
         </div>
@@ -47,7 +45,7 @@
 import AppHelper, {routeTo} from '@/js/app-helper'
  
 
- 
+import RestAPIHelper, {resolveRoutedApiQuery} from '@/js/rest-api-helper.ts'
 import ThreadBannerList from "@/views/components/thread/ThreadBannerList.vue"
 import ButtonDefault from "@/views/elements/button_default.vue"
 import PaginationBar from "@/views/elements/PaginationBar.vue"
@@ -85,6 +83,7 @@ export default {
 
       let response = await resolveRoutedApiQuery('getThreads', {page})
 
+      console.log({response})
      this.threadsArray = []
       
 
