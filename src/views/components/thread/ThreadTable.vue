@@ -1,6 +1,7 @@
 <template> 
 
-<div class=" ">
+<div class=" my-16">
+
  
      <table class="table-auto w-full" v-if="threadsArray && threadsArray.length > 0">
           <thead>
@@ -23,6 +24,7 @@
         </table>
 
         <PaginationBar
+        class="mt-16"
         v-if="threadsArray && threadsArray.length > 0"
         
         > </PaginationBar>
@@ -84,7 +86,18 @@ export default {
       let response = await resolveRoutedApiQuery('getThreads', {page})
 
       console.log({response})
-     this.threadsArray = []
+
+      let threadsResponseArray = []
+
+      if(response.success){
+        threadsResponseArray = response.data 
+      }
+
+      this.threadsArray = []
+      threadsResponseArray.map(x =>   this.threadsArray.push( x ))
+       
+
+
       
 
     },

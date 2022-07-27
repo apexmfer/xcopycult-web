@@ -11,7 +11,7 @@
                   
                  <ThreadBanner>
                      
-                     
+                     {{row.title}}
                      
                   </ThreadBanner>
                   
@@ -57,23 +57,12 @@ export default {
   },
   mounted(){
 
-       
-      this.loadThreads()
+        
       
   },
   methods: {
     routeTo,
-
-    async loadThreads(){
-
-      let page = 0;
-
-      let response = await resolveRoutedApiQuery('getThreads', {page})
-
-        this.threadArray = []
-      
-
-    },
+ 
      
 
   }
