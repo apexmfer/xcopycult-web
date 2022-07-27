@@ -6,16 +6,17 @@
 <tbody v-cloak>
 
             <tr v-for="row of threadsArray" :key="row.threadId"
-             class="  w-full py-4 hover:bg-neutral-200 cursor-pointer  text-center " @click="clickedRow(row)">
+             class="  w-full py-4 hover:bg-neutral-200 cursor-pointer  text-center " 
+             @click="onClickedThreadBanner(row)">
                
               <td class="py-2 px-2 my-2  " style="width:65%" >
                   
+                
                  <ThreadBanner
                   class="w-full text-left"
                   :threadData="row"
-                  >
-                      
-                     
+                  
+                  > 
                   </ThreadBanner>
                   
              </td>
@@ -65,6 +66,11 @@ export default {
   },
   methods: {
     routeTo,
+
+    onClickedThreadBanner(threadData){
+      this.$emit('onClickThreadBanner',threadData)
+
+    }
  
      
 

@@ -4,7 +4,7 @@
  
  
      <table style="border-collapse: collapse" class="  w-full" v-if="threadsArray && threadsArray.length > 0">
-          <thead>
+          <thead >
             <tr class="text-center">
               
               <th class="text-left"> Topic </th>
@@ -18,6 +18,7 @@
 
                  <ThreadBannerList
                 :threadsArray="threadsArray"
+                @onClickThreadBanner="onClickThreadBanner"
                 > </ThreadBannerList> 
           
               
@@ -101,6 +102,10 @@ export default {
       
 
     },
+
+    onClickThreadBanner(threadData){
+      routeTo(this.$router,{name:'threadshow',params:{threadId:threadData.threadId}})
+    }
      
 
   }

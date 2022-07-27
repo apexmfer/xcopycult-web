@@ -90,7 +90,15 @@ export default new Router({
       name: 'threadnew',
       component:ThreadNew
     },
+
     
+    {
+      path: '/thread/:threadId',
+      name: 'threadshow',
+      component:ThreadShow
+    },
+    
+      
       
 
     {
