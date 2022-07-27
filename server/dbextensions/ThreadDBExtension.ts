@@ -52,11 +52,11 @@ import {MongoRecord} from "./MongoDBExtension"
  
 
   export const PostSchema = new Schema<Post>({    
-    parentUserId: {type:String, required:true},
+    parentUserId: {type:String, index:true, required:true},
 
-    parentThreadId: { type: String, index:true  },  
+    parentThreadId: { type: String, index:true   },  
     
-    body:  { type: String, required:true, index:true, unique:true  }, 
+    body:  { type: String    }, 
       
     createdAt: {type:String},
     updatedAt: {type:String},

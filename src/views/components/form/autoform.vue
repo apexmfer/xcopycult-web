@@ -159,7 +159,7 @@ export default {
 
        // let publicAddress = web3StorageData.account
 
-
+        console.log(JSON.stringify(this.getFieldsData()))
         //make sure no other fields are called 'publicAddress'
         //attach public address 
         let combinedData = Object.assign(this.getFieldsData() , {  sessionToken} )

@@ -10,7 +10,7 @@
         </div>
 
     <div class="flex flex-column">
-        <textarea v-if="viewMode == 0 || viewMode == 1" class="flex flex-grow border-2 border-neutral-500" style="min-height:600px" :value="input" @input="update"></textarea>
+        <textarea v-if="viewMode == 0 || viewMode == 1" class="flex flex-grow border-2 border-neutral-500" style="min-height:600px" :value="input" @input="update"  ></textarea>
         <div class="flex flex-grow">
         <div  v-if="viewMode == 0 || viewMode == 2"  class="  markdown-body"   v-html="compiledMarkdown"></div>
         </div>
@@ -38,7 +38,7 @@ import {marked} from 'marked'
 
 export default {
   name: 'MarkdownEditorField',
-  props: [  'modelname'  ],
+  props: [  'modelname' ,'value' ],
   components: {
      
    },
@@ -56,7 +56,7 @@ export default {
         },
   mounted(){
       
-
+    this.$emit('input', this.input);
   },
   methods: {
 
@@ -68,7 +68,9 @@ export default {
       },
   
       update: _.debounce(function(e) {
-        this.input = e.target.value;
+        this.input = e.target.value; 
+        
+        this.$emit('input', this.input);
       }, 300)
         
  

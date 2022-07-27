@@ -64,9 +64,10 @@ describe('Web server',    () => {
            console.log('envmode',envmode)
 
 
+           let appName = AppHelper.getAppName()
 
            
-           await mongoDB.init(  'ufodatabase'.concat('_').concat(envmode) )
+           await mongoDB.init(  appName.concat('_').concat(envmode) )
 
  
            await mongoDB.dropDatabase()

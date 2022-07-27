@@ -20,7 +20,7 @@
             
             fields: [
                 {modelname: 'title', label:'Thread Title', type: 'text'}, 
-                {modelname: 'categoryId', label:'Category', options:categoriesList, type: 'select'}, 
+                {modelname: 'parentCategoryId', label:'Category', options:categoriesListOptions, type: 'select'}, 
                 {modelname: 'body', label:'Post Body', type: 'markdown'}, 
                
             ],
@@ -29,7 +29,7 @@
             
             }"
 
-          @onPostSuccess="routeTo($router,{name:'dashboardshopindex'})"
+          @onPostSuccess="routeTo($router,{name:'threadshow',params:{threadId}})"
           @onPostFailed="renderError"
           @onError="renderError"
     />
@@ -110,7 +110,9 @@ export default {
     data() {
         return {
             activeAccount: undefined,
-            categoriesList: [] 
+            categoriesList: [],
+            categoriesListOptions: [] ,
+            threadId: undefined //returned from post 
             
         };
     },
@@ -142,10 +144,14 @@ export default {
         
       
       this.categoriesList = []
+      this.categoriesListOptions = []
 
       if(categoriesArray){
          categoriesArray.map( x => this.categoriesList.push( 
-            {label: x.name, name: x.name, urlSlug: x.urlSlug }  ))
+            {label: x.name, name: x.name, urlSlug: x.urlSlug, categoryId: x.categoryId }  ))
+
+             categoriesArray.map( x => this.categoriesListOptions.push( 
+            {label: x.name, value: x.categoryId }  ))
       } 
 
       console.log('categoriesList',this.categoriesList)

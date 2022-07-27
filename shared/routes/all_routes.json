@@ -1,7 +1,7 @@
 [  
    
-    {"type":"post","uri":"/endpoint/create","method":"createEndpoint","preHooks":[{"method":"requiresLogin","controller":"usersession"}],"controller":"endpoint"},
-    {"type":"post","uri":"/endpoints","method":"getEndpoints","preHooks":[{"method":"requiresLogin","controller":"usersession"}],"controller":"endpoint"},
+    {"type":"post","uri":"/thread/create","method":"createThread","preHooks":[{"method":"requiresLogin","controller":"usersession"}],"controller":"thread"},
+    {"type":"post","uri":"/threads","method":"getThreads","controller":"thread"},
 
     {"type":"post","uri":"/categories","method":"getCategories","controller":"category"}
             

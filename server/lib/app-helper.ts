@@ -15,6 +15,11 @@ const imageUploadValidations = require('../../shared/config/imageUploadValidatio
 
 export default class AppHelper  {
 
+  static getAppName() : string {
+
+    return 'ufodatabase'
+  }
+
   static getEnvironmentName() : string{
     let envName = NODE_ENV ? NODE_ENV : 'development'
 
