@@ -8,6 +8,8 @@ import Login from './views/Login.vue'
 import Dashboard from './views/dashboard/Dashboard.vue'
  
 import Profile from './views/profile/Profile.vue'
+ 
+import Map from './views/Map.vue'
 
 import ProfileOrderIndex from './views/profile/order/index.vue'
 
@@ -61,6 +63,14 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: Profile
+    },
+
+
+
+    {
+      path: '/map',
+      name: 'map',
+      component: Map
     },
 
     
