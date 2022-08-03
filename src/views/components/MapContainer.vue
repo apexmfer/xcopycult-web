@@ -36,7 +36,7 @@ new Map({
 });
 */
  
-
+const THUNDERFOREST_API_KEY = '4351cefdd8fd432097ebb2832949e7fe'
 
 import XYZ from 'ol/source/XYZ';
 
@@ -52,9 +52,13 @@ import XYZ from 'ol/source/XYZ';
         layers: [
           // adding a background tiled layer
           new TileLayer({
-              source: new XYZ({
+              source: new  OSM({
+                url: `https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png` +
+                      `?apikey=4351cefdd8fd432097ebb2832949e7fe`,
+              })
+              /*XYZ({
               url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-            })
+            })*/
           }),
         ],
 
