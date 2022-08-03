@@ -2,7 +2,7 @@
   <div>
    <PrimaryLayout> 
 
-    <div class="section   flex flex-col" style="min-height:400px"> 
+    <div class="section   flex flex-col mb-16" style="height:800px"> 
         <div> Map </div>
 
         <MapContainer 

@@ -2,9 +2,12 @@
 
 
 <template>
+
   <div ref="map-root"
-       style="width: 100%; height: 100%; min-height:400px;">
-  </div>
+       style="width: 100%;  height:400px;">
+  
+ </div>
+
 </template>
 
 <script>
@@ -54,7 +57,7 @@ import XYZ from 'ol/source/XYZ';
           new TileLayer({
               source: new  OSM({
                 url: `https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png` +
-                      `?apikey=4351cefdd8fd432097ebb2832949e7fe`,
+                      `?apikey=${THUNDERFOREST_API_KEY}`,
               })
               /*XYZ({
               url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
