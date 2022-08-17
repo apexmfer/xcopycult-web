@@ -29,48 +29,9 @@
      </div>
 
 
-     <div class="flex flex-row" v-if="!isSignedIn()" > 
- 
-        <ButtonDefault 
-        customClass="border-2 px-4 mx-4 border-neutral-300 text-neutral-800 hover:text-neutral-600"
-        @clicked="routeTo($router,{name:'login'})">
-          Sign Up
-        </ButtonDefault>
-         
+      
 
-         
-        <ButtonDefault 
-        customClass="px-4 mx-4 text-neutral-800  hover:text-neutral-600"
-        @clicked="routeTo($router,{name:'login'})"
-        >
-          Sign In
-        </ButtonDefault>
-         
- 
-        
-       
-     
-      </div>
-
-
-       <div  class="flex flex-row" v-if="isSignedIn()">
-
-        <ButtonDefault 
-        customClass="border-2 px-4 mx-4 border-neutral-300 text-neutral-800 hover:text-neutral-600"
-        @clicked="routeTo($router,{name:'dashboard'})">
-         Dashboard
-        </ButtonDefault>
-        
-        
-        <ButtonDefault 
-        customClass="px-4 mx-4 text-neutral-800  hover:text-neutral-600"
-        @clicked="redirectTo('@api/usersession/logout')"
-        >
-          Sign Out
-        </ButtonDefault>
-         
- 
-          </div>
+    <div> </div>
 
 
     </div>
