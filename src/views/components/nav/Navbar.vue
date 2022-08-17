@@ -13,7 +13,10 @@
 
           
               <div class=" hover:bg-neutral-200 px-4 py-2 inline-block cursor-pointer" @click="routeTo($router,{name:'home'})"> 
-                <img src="@/assets/images/ufoicon.png" style="max-width:40px;" /> 
+                <img src="@/assets/images/xcopyeye.png" style="max-width:40px;"  class=" inline "/> 
+
+
+                <span class="text-xl"> XCOPY Cult  </span>
              </div>   
              
          

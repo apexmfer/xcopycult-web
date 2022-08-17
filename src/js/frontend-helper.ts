@@ -9,9 +9,7 @@ const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
 const clientConfig = require('../../shared/config/clientConfig.json')[env]
 
 const localeData = require('../../shared/config/localeData.json')
-
-const fallbackImage = require('@/assets/images/toadz_outline.png')
-
+ 
 
 export default class FrontendHelper {
 
@@ -50,14 +48,7 @@ export function getImageURL( fileName:string ){
     const imageRoot = clientConfig['externalRoutes']['imageRoot']
     return imageRoot.concat(fileName)
 }
-
-export function getFallbackImageURL(  ){
-    //const fileName = ""
-    //let imageRoot = clientConfig['externalRoutes']['imageRoot']
-    //return imageRoot.concat(fileName)
-    return fallbackImage
-}
-
+ 
 
 export function toChecksumAddress( address:string ){
 

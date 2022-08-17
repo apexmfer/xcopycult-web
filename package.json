@@ -1,7 +1,7 @@
 {
-  "name": "UfoDatabase",
+  "name": "XCopyCult",
   "version": "0.2.0",
-  "description": "Online collection of data relating to observed unidentified flying object phenomena.",
+  "description": "Fan inspired website.",
   "scripts": {
     "build": "vue-cli-service build",
     "buildstaging": "vue-cli-service build --mode staging",
