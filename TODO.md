@@ -1,6 +1,7 @@
 ### TODO
 
--build specs for post, thread, and category 
+-build a controller for Digital Assets 
+-build a form for submitting Digital Assets 
 
 -build basic frontend 
 
