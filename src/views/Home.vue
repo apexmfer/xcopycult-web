@@ -29,7 +29,9 @@
             :fontSize= "{base: 'xl', sm: '2xl', md: '4xl' }"
             lineHeight='110%'
             color='black'>
-            The Doomed <br />
+            {{assetMetadata.title}} 
+            
+            <br />
            
             
 
@@ -37,7 +39,7 @@
           <CText color='gray.500'>
               
               
-             Tech won't save us.    
+             {{assetMetadata.description}}
          
           </CText>
 
@@ -78,7 +80,7 @@
 
 <script>
  
-
+ 
  
 import PrimaryLayout from './PrimaryLayout.vue';
  import {
@@ -118,12 +120,13 @@ export default {
     },
   data() {
     return {
-        
+        assetMetadata: {}
     };
   },
 
-  created() {
-     
+  async created() {
+     this.assetMetadata = await this.loadRandomAssetMetadata()
+    
   },
 
   methods: {
@@ -132,6 +135,19 @@ export default {
     getRouteTo(dest) {
       return FrontendHelper.getRouteTo(dest);
     },
+
+   async loadRandomAssetMetadata(){
+
+      return {
+
+        imagePath:"",
+        title: "The Doomed",
+        description: "Tech won't save us."
+
+
+      }
+
+    }
 
     
   },
