@@ -13,10 +13,10 @@
 
           
               <div class=" hover:bg-neutral-200 px-4 py-2 inline-block cursor-pointer" @click="routeTo($router,{name:'home'})"> 
-                <img src="@/assets/images/xcopyeye.png" style="max-width:40px;"  class=" inline "/> 
+                <img src="@/assets/images/redflamesxcopy.gif" style="max-width:40px;"  class=" inline "/> 
 
 
-                <span class="text-xl"> XCOPY Cult  </span>
+                <span class="text-xl px-8"> XCOPY Cult  </span>
              </div>   
              
          
@@ -112,7 +112,7 @@ export default {
        showSidenav(){
          this.$store.commit('setShowSidenav',true)
        }
-       
+
 
   }
 }

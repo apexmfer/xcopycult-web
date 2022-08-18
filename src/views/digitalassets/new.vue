@@ -15,7 +15,7 @@
  
 
 
-   <div v-if="activeAccount"> 
+   <div v-if="activeAccount()"> 
     <AutoForm
       
         ref="autoform"
@@ -56,7 +56,7 @@
 
     <InfoPane 
     class="mt-16"
-    v-if="!activeAccount ">
+    v-if="!activeAccount() ">
 
         Please sign in first.
 
@@ -93,10 +93,7 @@ import ErrorBanner from '@/views/elements/ErrorBanner.vue'
 import AutoForm from '@/views/components/form/autoform.vue' 
  
 
-
  
-import {isSignedIn} from '@/js/frontend-helper'
-
 export default {
     name: "ThreadNew",
     props: [],
@@ -115,7 +112,7 @@ export default {
 
     data() {
         return {
-            activeAccount: undefined,
+          
             categoriesList: [],
             categoriesListOptions: [] ,
             threadId: undefined //returned from post 
@@ -131,15 +128,20 @@ export default {
  
   },
   async mounted () {
-
-      this.activeAccount = isSignedIn()
-
+ 
       this.loadCategories()
       //this.activeAccount = this.$store.state.web3Storage.account 
   },
   methods: {
      
-    routeTo,isSignedIn,
+    routeTo,
+
+       web3IsActive(){          
+         return this.$store.state.web3Storage.active
+       },
+       activeAccount(){          
+         return this.$store.state.web3Storage.account
+       } ,
 
  
     async loadCategories(){
