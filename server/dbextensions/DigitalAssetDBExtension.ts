@@ -5,6 +5,7 @@ import ExtensibleMongoDatabase , {TableDefinition,DatabaseExtension} from 'exten
 import ServerSegmentManager from '../segmentmanagers/ServerSegmentManager'
  
 
+
 export interface DigitalAsset {
     title:  string,
     creator: string, 
@@ -65,7 +66,7 @@ export interface DigitalToken {
 
   export const DigitalAssetDefinition:TableDefinition={tableName:'digitalassets',schema:DigitalAssetSchema}
 
-  export const DigitalTokenDefinition:TableDefinition={tableName:'digitalassets',schema:DigitalTokenSchema}
+  export const DigitalTokenDefinition:TableDefinition={tableName:'digitaltokens',schema:DigitalTokenSchema}
 
  
  

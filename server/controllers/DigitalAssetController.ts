@@ -11,7 +11,7 @@ import AttachedImageController, { FileValidation } from "./AttachedImageControll
 import ExtensibleDB from 'extensible-mongoose'
   
 import { createRecord, deleteRecord, findRecord, findRecordById, findRecords } from "../lib/mongo-helper";
-import APIController, { InternalMethod } from "./APIController"; 
+import APIController, { InternalMethod, MongoRecord } from "./APIController"; 
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
  
@@ -19,6 +19,7 @@ import crypto from 'crypto'
 import EndpointController from "./ThreadController";
 import UserSessionController from "./UserSessionController";
 import { Post, PostDefinition } from "../dbextensions/ThreadDBExtension";
+import { DigitalAsset } from "../dbextensions/DigitalAssetDBExtension";
 
 export default class DigitalAssetController extends APIController {
 
@@ -92,7 +93,7 @@ export default class DigitalAssetController extends APIController {
         if(!matchingPostsResponse.success) return matchingPostsResponse
 
 
-        let outputArray = await Promise.all(matchingPostsResponse.data.map( x => PostController.getPostRenderData( x , this.mongoDB)))
+        let outputArray = await Promise.all(matchingPostsResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
 
         return {success:true, data: outputArray}
     }
@@ -121,15 +122,15 @@ export default class DigitalAssetController extends APIController {
  
 
  
-    static async getPostRenderData(post:Post,  mongoDB: ExtensibleDB ){
+    static async getDigitalAssetRenderData(digitalAsset:DigitalAsset & MongoRecord,  mongoDB: ExtensibleDB ){
 
-        let postId = mongoIdToString( post._id ) 
+        
+        let digitalAssetId = mongoIdToString( digitalAsset._id ) 
 
         return {
-            postId,
-            parentThreadId: post.parentThreadId,
-            parentUserId: post.parentUserId,
-            body: unescapeString(post.body)
+            digitalAssetId,
+            title: unescapeString(digitalAsset.title),
+            description: unescapeString(digitalAsset.description) 
         }
     }
   

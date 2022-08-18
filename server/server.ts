@@ -8,7 +8,7 @@ import WebServer from './lib/web-server'
 
 import FileHelper from './lib/file-helper'
   
-import AppHelper from './lib/app-helper'
+import AppHelper, { APP_NAME } from './lib/app-helper'
   
 
 import {DegenAuthExtension} from 'degen-auth'
@@ -35,9 +35,7 @@ import ThreadController from './controllers/ThreadController'
 
 
 require('dotenv').config()
-
-const APP_NAME = 'ufodatabase' 
-
+ 
 
 let envmode = AppHelper.getEnvironmentName()
 
@@ -98,7 +96,7 @@ let serverConfig = serverConfigFile[envmode]
 
 
     let serverMods: ServerModule[] = [
-      new OAuthModule()
+       
     ]
 
          

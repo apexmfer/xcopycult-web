@@ -10,7 +10,7 @@ import Web3 from 'web3'
 import FormData from 'form-data'
  
   
-import AppHelper from '../server/lib/app-helper'
+import AppHelper, { APP_NAME } from '../server/lib/app-helper'
   
 
 import ExtensibleMongoDB , {DatabaseExtension} from 'extensible-mongoose'
@@ -62,12 +62,10 @@ describe('Web server',    () => {
            console.log('server config: ',serverConfig)
 
            console.log('envmode',envmode)
-
-
-           let appName = AppHelper.getAppName()
+ 
 
            
-           await mongoDB.init(  appName.concat('_').concat(envmode) )
+           await mongoDB.init(  APP_NAME.concat('_').concat(envmode) )
 
  
            await mongoDB.dropDatabase()

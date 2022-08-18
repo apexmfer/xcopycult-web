@@ -7,7 +7,7 @@ const NODE_ENV = process.env.NODE_ENV
 import web3utils from 'web3-utils'
 import FileHelper from './file-helper'
 
-
+export const APP_NAME = 'xcopycult'
 
 const serverConfig = require('../serverconfig.json')
 
@@ -17,7 +17,7 @@ export default class AppHelper  {
 
   static getAppName() : string {
 
-    return 'ufodatabase'
+    return APP_NAME
   }
 
   static getEnvironmentName() : string{
