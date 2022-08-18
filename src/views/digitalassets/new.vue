@@ -23,9 +23,10 @@
         v-bind:formConfig="{
             
             fields: [
-                {modelname: 'title', label:'Thread Title', type: 'text'}, 
-                {modelname: 'parentCategoryId', label:'Category', options:categoriesListOptions, type: 'select'}, 
-                {modelname: 'body', label:'Post Body', type: 'markdown'}, 
+                {modelname: 'title', label:'Title', type: 'text'}, 
+                {modelname: 'contractAddress', label:'Contract Address' , type: 'text'},
+                {modelname: 'primaryTokenId', label:'Primary Token ID' , type: 'text'},
+                {modelname: 'metadataURI', label:'Metadata URI' , type: 'text'}, 
                
             ],
             submitRoute: 'createThread'

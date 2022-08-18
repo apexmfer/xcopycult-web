@@ -20,7 +20,9 @@ export interface DigitalAsset {
 
 
     thumbnailImageId: string, 
-    primaryImageId: string
+    primaryImageId: string,
+
+    status: string
   }
   
 
@@ -45,6 +47,8 @@ export interface DigitalToken {
     description: {type: String},
     thumbnailImageId: {type: String},
     primaryImageId: {type: String},
+
+    status: {type: String}
    
   })
  

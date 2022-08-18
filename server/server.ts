@@ -26,11 +26,11 @@ import UserController from './controllers/UserController'
 import OAuthController from './controllers/OAuthController'
 import UserDBExtension from './dbextensions/UserDBExtension'
 import UserSessionController from './controllers/UserSessionController'
-import ThreadDBExtension from './dbextensions/ThreadDBExtension'
+import DigitalAssetDBExtension from './dbextensions/DigitalAssetDBExtension'
 import CategoryDBExtension from './dbextensions/CategoryDBExtension'
 import CategoryManager from './segmentmanagers/CategoryManager'
-import CategoryController from './controllers/CategoryController'
-import PostController from './controllers/PostController'
+import DigitalAssetController from './controllers/DigitalAssetController'
+import DegenAuthController from './controllers/DegenAuthController'
 import ThreadController from './controllers/ThreadController'
 
 
@@ -62,8 +62,7 @@ let serverConfig = serverConfigFile[envmode]
     
     dbExtensions.push(...[
       new DegenAuthExtension(mongoDB),
-      new ThreadDBExtension(mongoDB),
-      new CategoryDBExtension(mongoDB),
+      new DigitalAssetDBExtension(mongoDB), 
       new UserDBExtension(mongoDB)
     ])
 
@@ -72,7 +71,7 @@ let serverConfig = serverConfigFile[envmode]
     //Initialize the server segment managers which are also db extensions
     let serverSegmentManagers:Array<ServerSegmentManager> = []
     serverSegmentManagers.push(...[     
-      new CategoryManager(mongoDB)
+      //new CategoryManager(mongoDB)
     ])
     serverSegmentManagers.map(ext => ext.init())
 
@@ -83,19 +82,16 @@ let serverConfig = serverConfigFile[envmode]
 
     console.log('web3 ready with provider ',serverConfig.web3provider )
     
-    let categoryController = new CategoryController(mongoDB)
-    let postController = new PostController(mongoDB)
-    let threadController = new ThreadController(postController,mongoDB)
+    let digitalAssetController = new DigitalAssetController(mongoDB) 
+    let degenAuthController = new DegenAuthController(mongoDB)
     let userController = new UserController(mongoDB)
     let userSessionController = new UserSessionController(mongoDB,userController)
-    let oAuthController = new OAuthController(mongoDB,userSessionController)
+    
     //init API Controllers 
 
     let apiControllers = [
-      categoryController, 
-      postController,
-      threadController,
-      oAuthController,
+      digitalAssetController,   
+      degenAuthController,
       userController,
       userSessionController
     ]

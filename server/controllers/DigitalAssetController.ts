@@ -20,10 +20,10 @@ import EndpointController from "./ThreadController";
 import UserSessionController from "./UserSessionController";
 import { Post, PostDefinition } from "../dbextensions/ThreadDBExtension";
 
-export default class PostController extends APIController {
+export default class DigitalAssetController extends APIController {
 
     getControllerName() : string {
-        return 'post'
+        return 'digitalasset'
     }
 
 
