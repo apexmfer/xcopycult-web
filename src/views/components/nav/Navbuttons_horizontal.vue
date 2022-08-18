@@ -1,11 +1,15 @@
 <template>
-  <nav role="navigation" class="  m-2 p-2  ">
+  <div   class="  flex flex-row py-4 ">
 
 
+      <div class="  px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'gallery'})" >  Collection   </div>
+     <div class="px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'about'})" >  About   </div>
     
+     <div class="ml-4  px-2 text-gray-700 hover:text-black cursor-pointer border-l-2 border-gray-100" @click="routeTo($router,{name:'about'})" >  Sign In   </div>
 
 
-</nav>
+
+</div>
 </template>
 
 
@@ -17,7 +21,7 @@ import Blockie from '../../elements/Blockie.vue'
  
 
 export default {
-  name: 'UpperNav',
+  name: 'NavButtonsHorizontal',
   props: [  ],
   components:{  Blockie  },
   watch: {

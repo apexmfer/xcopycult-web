@@ -8,7 +8,7 @@
        <img src="@/assets/images/thedoomed.gif" style="width:80%;"  class="centered p-4 border-neutral-500 border-2" /> 
  
 
-  <div class="py-4 px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'gallery'})" >  See the full gallery   </div>
+  <div class="py-4 px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'gallery'})" >  View the full collection   </div>
 
     </div>
 

@@ -20,20 +20,18 @@
              </div>   
              
          
-            <button @click="showResponsiveMenu=!showResponsiveMenu" class=" block lg:hidden px-3 py-2 border rounded text-black border-teal-400 hover:text-black hover:border-neutral-400">
-              <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-            </button>
-
-
+          
 
      </div>
 
 
-      
+      <button @click="showResponsiveMenu=!showResponsiveMenu" class=" block lg:hidden px-3 py-2 border rounded text-black border-teal-400 hover:text-black hover:border-neutral-400">
+              <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+      </button>
 
-    <div class="py-4 px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'gallery'})" >  Collection   </div>
-    <div class="py-4 px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'about'})" >  About   </div>
 
+      <NavbuttonsHorizontal class="hidden lg:flex" />
+  
 
     </div>
   
@@ -44,7 +42,7 @@
            <div class="flex-grow">
 
           
-            <div v-if="showResponsiveMenu" class="w-full absolute left-0 block flex-grow lg:flex lg:items-center lg:w-auto bg-gray-200">
+            <div v-if="showResponsiveMenu" class="w-full absolute left-0 block flex-grow  lg:hidden lg:items-center lg:w-auto bg-gray-200">
               <div class="text-sm lg:flex-grow">
                 <NavbuttonsVertical 
                 
