@@ -12,8 +12,15 @@
           </div>
         <div class="w-1/4 h-full">
           <h3 class=" text-lg  ">Community &amp; Social</h3>
+
+          <a href="https://xcopy.art/" target="_blank"> XCOPY Art </a>
          
          
+         </div>
+
+
+           <div class="w-1/4 text-gray-500 p-4">
+           XCOPYCULT is not officially affiliated with XCOPY
          </div>
 
 

@@ -6,8 +6,9 @@
     <div class=" w-1/2 text-white py-48 text-center">
 
        <img src="@/assets/images/thedoomed.gif" style="width:80%;"  class="centered p-4 border-neutral-500 border-2" /> 
+ 
 
-      <a href="https://en.wikipedia.org/wiki/Pentagon_UFO_videos" class="p-4 my-4 hidden">   </a>
+  <div class="py-4 px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'gallery'})" >  View the full collection   </div>
 
     </div>
 
@@ -80,6 +81,7 @@
 
 <script>
  
+ import AppHelper, {routeTo,redirectTo} from '@/js/app-helper'
  
  
 import PrimaryLayout from './PrimaryLayout.vue';
@@ -130,7 +132,7 @@ export default {
   },
 
   methods: {
-   
+    routeTo,
 
     getRouteTo(dest) {
       return FrontendHelper.getRouteTo(dest);

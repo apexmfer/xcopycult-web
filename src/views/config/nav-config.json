@@ -1,5 +1,7 @@
 {
-
-
+    "buttons":[
+    {"title":"Home","path":{"name":"home"}},
+    {"title":"Collection","path":{"name":"gallery"}}
+    ]
     
 }

@@ -10,6 +10,8 @@ import Dashboard from './views/dashboard/Dashboard.vue'
 import Gallery from './views/Gallery.vue'
   
 import About from './views/About.vue'
+
+import DigitalAssetsNew from './views/digitalassets/new.vue'
  
  
 
@@ -51,6 +53,14 @@ export default new Router({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard
+    },
+
+
+
+    {
+      path: '/digitalassets/new',
+      name: 'digitalassetsnew',
+      component: DigitalAssetsNew
     },
      
  

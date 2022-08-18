@@ -5,7 +5,7 @@ import Vuex from 'vuex'
 //@ts-ignore
 import web3Storage from "vuex-web3-plugin";
 
-import shoppingCart from "@/store/modules/shoppingCart";
+//import shoppingCart from "@/store/modules/shoppingCart";
 import frontendStorage from '@/store/modules/frontEnd'
 
 //import VueTailwind from 'vue-tailwind'
@@ -43,7 +43,7 @@ export const store = new Vuex.Store({
   actions: {},
   modules: {
     web3Storage,
-    shoppingCart,
+    //shoppingCart,
     frontendStorage
 
       // prediction: predictionStore,
@@ -55,7 +55,7 @@ export const store = new Vuex.Store({
 
 const initializeVuexStorage = (s:any) =>{
   
-  s.commit('initCart');
+  //s.commit('initCart');
   s.commit('initWeb3Storage');
 
 
