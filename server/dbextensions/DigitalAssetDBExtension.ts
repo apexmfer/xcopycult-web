@@ -11,10 +11,11 @@ export interface DigitalAsset {
 
     networkName: string,
     contractAddress: string,
-    tokenId: string, 
+    primaryTokenId: string,
 
 
     metadataURI:  string,
+    metadataCached:string,
     description:string, 
 
 
@@ -23,13 +24,24 @@ export interface DigitalAsset {
   }
   
 
+export interface DigitalToken {
+  digitalAssetId:string,
+  tokenId: string, 
+
+}
+
+
+
   export const DigitalAssetSchema = new Schema<DigitalAsset>({    
     title:  { type: String, index: true, unique: true, required:true  },
     creator: {type: String},
     networkName: {type: String},
     contractAddress: {type: String,required:true },
-    tokenId: {type: String,required:true },
+    primaryTokenId: {type:String},
+    
     metadataURI: {type: String},
+    metadataCached: {type: String},
+
     description: {type: String},
     thumbnailImageId: {type: String},
     primaryImageId: {type: String},
@@ -38,19 +50,31 @@ export interface DigitalAsset {
  
 
 
+  export const DigitalTokenSchema = new Schema<DigitalToken>({    
+    digitalAssetId:  { type: String, index: true,  required:true  },
+  
+    tokenId: {type: String,required:true },
+    
+   
+  })
+  
+
   export const DigitalAssetDefinition:TableDefinition={tableName:'digitalassets',schema:DigitalAssetSchema}
 
+  export const DigitalTokenDefinition:TableDefinition={tableName:'digitalassets',schema:DigitalTokenSchema}
+
  
  
 
-export default class CategoryDBExtension extends DatabaseExtension {
+export default class DigitalAssetDBExtension extends DatabaseExtension {
  
 
   
     getBindableModels() : Array<TableDefinition>{
 
         return  [
-          DigitalAssetDefinition 
+          DigitalAssetDefinition,
+          DigitalTokenDefinition
         ]
     } 
     
