@@ -1,5 +1,7 @@
 ### TODO
 
+- fix login refreshing by comparing to toadz shop code 
+
 -build a controller for Digital Assets 
 -build a form for submitting Digital Assets 
 
