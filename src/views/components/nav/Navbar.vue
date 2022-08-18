@@ -31,7 +31,8 @@
 
       
 
-    <div> </div>
+    <div class="py-4 px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'gallery'})" >  Collection   </div>
+    <div class="py-4 px-2 text-gray-700 hover:text-black cursor-pointer" @click="routeTo($router,{name:'about'})" >  About   </div>
 
 
     </div>

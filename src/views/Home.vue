@@ -5,32 +5,69 @@
   <div class="section w-container flex flex-row"> 
     <div class=" w-1/2 text-white py-48 text-center">
 
-       <img src="@/assets/images/gofast.png" style="width:80%;"  class="centered p-4 border-neutral-500 border-2" /> 
+       <img src="@/assets/images/thedoomed.gif" style="width:80%;"  class="centered p-4 border-neutral-500 border-2" /> 
 
-      <a href="https://en.wikipedia.org/wiki/Pentagon_UFO_videos" class="p-4 my-4"> US Pentagon Video 'GoFast' </a>
+      <a href="https://en.wikipedia.org/wiki/Pentagon_UFO_videos" class="p-4 my-4 hidden">   </a>
 
     </div>
 
      <div class=" w-1/2   text-white">
 
-       <CtaAnnotated />
+      <CFlex
+      minH='100vh'
+      align='center'
+      justify='center'
+      
+      >
+        <CStack
+            maxW='lg'
+          textAlign='center'
+          :spacing= "{base: 8, md: 14 }"
+          :py= "{base: 20, md: 36 }">
+          <CHeading
+            fontWeight=600
+            :fontSize= "{base: 'xl', sm: '2xl', md: '4xl' }"
+            lineHeight='110%'
+            color='black'>
+            The Doomed <br />
+           
+            
+
+          </CHeading>
+          <CText color='gray.500'>
+              
+              
+             Tech won't save us.    
+         
+          </CText>
+
+
+
+          <CStack
+            class="mt-16 hidden"
+            direction='column'
+            spacing=3
+            align='center'
+            alignSelf='center'
+            position='relative'>
+          
+             <CButton variant='link' class="text-neutral-800" colorScheme='blue' size='sm' @click="routeTo($router,{name:'categoriesindex'})" >
+              Recent Activity
+            </CButton>
+             <CButton variant='link' class="text-neutral-500" colorScheme='blue' size='sm' @click="routeTo($router,{name:'threadnew'})" >
+              Add a Report
+            </CButton>
+             
+          </CStack>
+        </CStack>
+     
+    </CFlex>
 
      </div>
 
      </div>
 
-
-  <div class="section text-white my-8 hidden">
-    <div class="flex flex-row container">
-      <div class="flex-grow"> </div>
-       <div>
-         <a href="https://chain.link">
-            <img src="@/assets/images/chainlink_badge_blue.svg" width="200px"  /> 
-
-          </a>
-      </div>
-    </div>
-  </div>
+ 
      
 
 
@@ -44,13 +81,41 @@
 
  
 import PrimaryLayout from './PrimaryLayout.vue';
- 
- import CtaAnnotated from '@/views/components/CtaAnnotated.vue'
+ import {
+  CFlex,
+  CBox,
+  CFormControl,
+  CFormLabel,
+  CInput,
+  CIcon,
+  CCheckbox,
+  CStack,
+  CLink,
+  CButton,
+  CHeading,
+  CHead,
+  CText 
+} from '@chakra-ui/vue';
 
 export default {
   name: "Home",
   props: [],
-  components: { PrimaryLayout, CtaAnnotated},
+  components: { 
+    PrimaryLayout,  
+    CFlex,
+    CBox,
+    CFormControl,
+    CFormLabel, 
+    CInput,
+    CIcon,
+    CCheckbox,
+    CStack,
+    CLink,
+    CButton,
+    CHeading,
+    CHead,
+    CText 
+    },
   data() {
     return {
         

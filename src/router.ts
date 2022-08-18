@@ -7,6 +7,10 @@ import Home from './views/Home.vue'
 import Dashboard from './views/dashboard/Dashboard.vue'
  
  
+import Gallery from './views/Gallery.vue'
+  
+import About from './views/About.vue'
+ 
  
 
 import NotFound from './views/NotFound.vue'
@@ -28,6 +32,19 @@ export default new Router({
 
     
     
+   
+    {
+      path: '/',
+      name: 'gallery',
+      component: Gallery
+    },
+
+
+    {
+      path: '/',
+      name: 'about',
+      component: About
+    },
 
 
     {
