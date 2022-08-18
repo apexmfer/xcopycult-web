@@ -16,10 +16,17 @@
       @click="showWeb3Modal()" >  Sign In   </div>
 
 
-    <div 
+    <img 
      v-if="activeAccount()"
      class="ml-4  px-2 text-gray-700 hover:text-black cursor-pointer border-l-2 border-gray-100"
-      @click="disconnectWeb3()" >  Sign Out   </div>
+      @click="showSidenav()"
+      src="@/assets/images/eth-logo-solid.png"
+      height="32px"
+      width="32px"
+      
+       />  
+
+     
 
 
 
@@ -45,12 +52,7 @@ export default {
   watch: {
     '$store.state.web3Storage.active':function(){
         console.log('web3 active ',this.web3IsActive() )
-    },
-     '$store.state.web3Storage.account':function(){
-        console.log('web3 account ',this.activeAccount() )
-
-        this.$forceUpdate();
-    }
+    } 
 
   },
   data() {
@@ -80,15 +82,7 @@ export default {
        },
        showSidenav(){
          this.$store.commit('setShowSidenav',true)
-       },
-        
-
-      disconnectWeb3(){
-        this.$store.dispatch('disconnect')
-       // this.hide()
-
-        this.$forceUpdate();
-      }
+       } 
 
   }
 }

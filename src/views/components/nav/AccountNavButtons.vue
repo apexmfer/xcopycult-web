@@ -28,7 +28,7 @@ export default {
    data() {
     return {
         buttonsArray: [
-          { label:"My Profile", path:"/profile"  }
+           
 
         ] 
     }
@@ -51,12 +51,7 @@ export default {
         */
 
        initialize(){
-         const showSalesDashboardButton = true // for now 
-
-         if(showSalesDashboardButton){
-           this.buttonsArray.push( { label:"Sales Dashboard", path:"/dashboard"  } ) 
-
-         }
+         
        },
 
       
