@@ -15,9 +15,10 @@
       <Footer />
     </div>
 
-   
+     
+    <Web3ConnectModal />
 
-     <AccountSidenav   />  
+    <AccountSidenav   />  
  
 
   </div>

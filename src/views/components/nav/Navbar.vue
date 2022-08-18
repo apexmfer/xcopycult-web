@@ -105,6 +105,15 @@ export default {
        } 
   */
 
+
+       showWeb3Modal(){
+         this.$store.commit('setShowWeb3ConnectModal',true)
+       },
+       showSidenav(){
+         this.$store.commit('setShowSidenav',true)
+       }
+       
+
   }
 }
 
