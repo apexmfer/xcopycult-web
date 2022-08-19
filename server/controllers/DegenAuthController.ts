@@ -7,6 +7,7 @@ import APIController from "./APIController";
 import APIHelper from "../lib/api-helper";
 import { findRecord } from "../lib/mongo-helper";
 
+const SERVICE_NAME = "xcopycult"
 
 export default class DegenAuthController extends APIController  {
 
@@ -15,9 +16,13 @@ export default class DegenAuthController extends APIController  {
     generateChallenge: ControllerMethod = async (req: any) => {
         
         const publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress,'publicaddress')
-        const serviceName = req.fields.serviceName
+        //const serviceName = req.fields.serviceName
   
-        let upsertedChallenge  = await DegenAuth.upsertNewChallengeForAccount( this.mongoDB, publicAddress, serviceName )
+        let upsertedChallenge  = await DegenAuth.upsertNewChallengeForAccount( 
+            this.mongoDB, 
+            publicAddress, 
+            SERVICE_NAME
+             )
 
         console.log('upsertedChallenge',upsertedChallenge)
 
@@ -29,19 +34,25 @@ export default class DegenAuthController extends APIController  {
         const publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress,'publicaddress')
         const signature = req.fields.signature
   
-        let authToken  = await DegenAuth.generateAuthenticatedSession( this.mongoDB, publicAddress, signature )
+        let authTokenResponse  = await DegenAuth.generateAuthenticatedSession(
+             this.mongoDB, 
+             publicAddress, 
+             signature )
 
-        console.log('authToken',authToken)
+        if(!authTokenResponse.success) return authTokenResponse
 
-        return  {success:true, data: {publicAddress:publicAddress, authToken: authToken} }
+        let authToken = authTokenResponse.authToken
+ 
+
+        return  {success:true, data: {publicAddress, authToken} }
     }
 
     validateAuthToken: ControllerMethod = async (req: any) => {
 
         //return true for now until authentication check is built out 
-        return  {success:true}
+        //return  {success:true}
 
-        /*
+        
         
         const publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress,'publicaddress')
         const authToken = APIHelper.sanitizeInput(req.fields.authToken,'string')
@@ -58,7 +69,9 @@ export default class DegenAuthController extends APIController  {
             return  {success:true, data: {publicAddress, authToken } }
         } 
       
-        return  {success:false, error: "#401: Not authenticated with DegenAuth session."}*/
+        return  {success:false, error: "#401: Not authenticated with DegenAuth session."}
+
+
     }
     
 

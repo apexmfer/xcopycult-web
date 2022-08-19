@@ -9,6 +9,7 @@
         "useHTTPS":true,
         "requireAuthentication":false,
         "chainId":1,
+        "port":6000,
         "web3provider":"https://eth-mainnet.alchemyapi.io/v2/" 
     },
     "staging":{

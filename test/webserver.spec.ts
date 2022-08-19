@@ -143,7 +143,7 @@ describe('Web server',    () => {
         })
 
 
-        it.skip('should return a response', async () => {
+        it('should return a response', async () => {
  
             let result = await axios.get( uri_root + '/api/ping' ,  {}  )
             

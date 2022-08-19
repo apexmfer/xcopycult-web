@@ -72,8 +72,6 @@ export default class DigitalAssetController extends APIController {
 
         if(!insertResponse.success) return   insertResponse
         
- 
-      
         return insertResponse  
     }
 
@@ -84,7 +82,6 @@ export default class DigitalAssetController extends APIController {
 
         let parentUserId = mongoIdToString(validatedSession._id)
         
-
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
             req.fields,
             {parentThreadId:'string'})
@@ -95,8 +92,6 @@ export default class DigitalAssetController extends APIController {
         
         const {parentThreadId} = sanitizedData
 
-
-      
         let matchingResponse = await findRecords( {parentThreadId}, DigitalAssetDefinition, this.mongoDB )
 
        

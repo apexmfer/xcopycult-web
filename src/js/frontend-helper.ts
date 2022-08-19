@@ -17,7 +17,7 @@ export default class FrontendHelper {
 }
 
 
-export function getCookies(): any {
+/*export function getCookies(): any {
     return document.cookie; 
 }
 
@@ -36,7 +36,7 @@ export function fetchCookie(cookieString:string, tag:string){
     return cookieString.split('; ')
     .find(row => row.startsWith(`${tag}=`))
     ?.split('=')[1];
-}
+}*/
 
 
 export function getConfiguredRouteTo(dest:string){

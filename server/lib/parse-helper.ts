@@ -3,16 +3,18 @@ import { BigNumber, ethers } from "ethers";
 const {ObjectId} = require('mongodb'); 
  
 
- 
 
-  export function escapeString(input: string) : string {
+  export function escapeString(input: string | undefined) : string {
+
+    if(!input) return ""
         
     return encodeURI(input)
   }
 
-  export function unescapeString(input: string) : string {
-      
-      return decodeURI(input)
+  export function unescapeString(input: string | undefined ) : string {
+    if(!input) return ""
+
+    return decodeURI(input)
   }
 
   export function mongoIdToString(mongoId: any) : string{

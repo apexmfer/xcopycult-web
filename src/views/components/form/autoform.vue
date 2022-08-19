@@ -43,7 +43,7 @@
 import axios from 'axios';
 
 import AppHelper, {routeTo,getWeb3StorageData} from '@/js/app-helper'
- import {getSessionToken}  from '@/js/frontend-helper'
+ import {fetchAuthToken}  from '@/js/degen-auth-helper'
 
 //import ButtonDefault from '../../elements/button_default.vue'
 import ImageTile from './imageinputtile.vue'
@@ -151,9 +151,11 @@ export default {
 
       //  const reservedFieldNames = ['publicAddress']
 
-        let sessionToken = getSessionToken()
+        let authTokenResponse = await fetchAuthToken(this.$store)
 
-        if(!sessionToken) throw new Error('cant load session token')
+        if(!authTokenResponse.success) throw new Error(authTokenResponse.error)
+
+        const authToken = authTokenResponse.data 
 
         let web3StorageData = this.getWeb3StorageData(this.$store) 
 
@@ -162,7 +164,7 @@ export default {
         console.log(JSON.stringify(this.getFieldsData()))
         //make sure no other fields are called 'publicAddress'
         //attach public address 
-        let combinedData = Object.assign(this.getFieldsData() , {  sessionToken} )
+        let combinedData = Object.assign(this.getFieldsData() , {  authToken } )
 
          //attach pass params 
         if(this.formConfig.passParams){
