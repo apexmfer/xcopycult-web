@@ -34,7 +34,7 @@
             
             }"
 
-          @onPostSuccess="routeTo($router,{name:'sigitalassetshow',params:{digitalAssetId}})"
+          @onPostSuccess="routeTo($router,{name:'digitalassetshow',params:{id:digitalAssetId}})"
           @onPostFailed="renderError"
           @onError="renderError"
     />

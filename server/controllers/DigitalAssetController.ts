@@ -21,6 +21,13 @@ import UserSessionController from "./UserSessionController";
 
 export default class DigitalAssetController extends APIController {
 
+
+    constructor(public mongoDB:ExtensibleDB, public userSessionController:UserSessionController){
+        super(mongoDB);
+    }
+
+
+
     getControllerName() : string {
         return 'digitalasset'
     }
@@ -38,13 +45,13 @@ export default class DigitalAssetController extends APIController {
     
     createDigitalAsset: ControllerMethod = async (req:any )=> {
         
-        let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
+        let validatedSession = await this.userSessionController.validateSessionTokenParam(req)
        
-        if(!validatedSession){
+        if(!validatedSession.success){
             return {success:false,error:"requires validated session"}
         }
 
-        let parentUserId =validatedSession.userId
+        let parentUserId = validatedSession.data.userId
  
  
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(

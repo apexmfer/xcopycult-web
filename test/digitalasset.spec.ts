@@ -18,8 +18,11 @@ import {describe, it} from 'mocha'
 import { mongo } from 'mongoose'
 import DigitalAssetController from '../server/controllers/DigitalAssetController'
 import DigitalAssetDBExtension from '../server/dbextensions/DigitalAssetDBExtension'
+import { UserSessionDefinition } from '../server/dbextensions/UserDBExtension'
+import UserSessionController from '../server/controllers/UserSessionController'
+import UserController from '../server/controllers/UserController'
 
-describe('Endpoint Controller',    () => {
+describe('Digital Asset Controller',    () => {
   
         let digitalAssetController:DigitalAssetController
         let mongoDB
@@ -27,9 +30,18 @@ describe('Endpoint Controller',    () => {
         beforeEach(async () => {
 
             mongoDB  = await getTestDatabase()
-            await mongoDB.dropDatabase()
+            await mongoDB.dropDatabase()        
+
+            let userController = new UserController(mongoDB)
             
-            digitalAssetController = new DigitalAssetController(mongoDB)
+            let userSessionController = new UserSessionController(mongoDB,userController)
+
+
+            userSessionController.validateSessionTokenParam  = async () => {
+                return {success:true, data:{userId:1}}
+            }
+
+            digitalAssetController = new DigitalAssetController(mongoDB, userSessionController)
             
           
             let dbExtensions:Array<DatabaseExtension> = []
@@ -49,14 +61,17 @@ describe('Endpoint Controller',    () => {
             await mongoDB.disconnect()
         })
         
-        it('should create a thread ', async () => {
+        it('should create a digital asset ', async () => {
+
+            let sessionToken = 'testtoken'
 
             let created = await digitalAssetController.createDigitalAsset( 
                 { fields: {
                 title:"The Doomed",
                 contractAddress:"0xb1000",
                 primaryTokenId:'12',
-                metadataURI: "ipfs://"
+                metadataURI: "ipfs://",
+                sessionToken
                
             } } )
   

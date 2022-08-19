@@ -12,8 +12,7 @@ import Gallery from './views/Gallery.vue'
 import About from './views/About.vue'
 
 import DigitalAssetsNew from './views/digitalassets/new.vue'
- 
- 
+import DigitalAssetsShow from './views/digitalassets/show.vue'
 
 import NotFound from './views/NotFound.vue'
 
@@ -63,6 +62,11 @@ export default new Router({
       component: DigitalAssetsNew
     },
      
+    {
+      path: '/digitalassets/:id',
+      name: 'digitalassetshow',
+      component: DigitalAssetsShow
+    },
  
       
 

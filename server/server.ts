@@ -80,11 +80,12 @@ let serverConfig = serverConfigFile[envmode]
 
     console.log('web3 ready with provider ',serverConfig.web3provider )
     
-    let digitalAssetController = new DigitalAssetController(mongoDB) 
-    let degenAuthController = new DegenAuthController(mongoDB)
     let userController = new UserController(mongoDB)
     let userSessionController = new UserSessionController(mongoDB,userController)
-    
+
+    let degenAuthController = new DegenAuthController(mongoDB,userSessionController)
+   
+    let digitalAssetController = new DigitalAssetController(mongoDB,userSessionController) 
     //init API Controllers 
 
     let apiControllers = [

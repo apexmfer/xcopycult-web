@@ -7,7 +7,8 @@
         <div class="w-1/4 ">
           <h3 class=" text-lg   ">Documentation</h3>
 
-
+        <a href="https://github.com/apexmfer/xcopycult-web" target="_blank"> Source Code </a>
+         
            
           </div>
         <div class="w-1/4 h-full">

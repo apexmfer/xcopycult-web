@@ -1,33 +1,18 @@
 <template>
    
-   <ForumLayout> 
+   <PrimaryLayout> 
  
-    <div v-if="threadData">
-
-      <div class="flex flex-row">
-        <div class="flex-grow">
-         <div class=" font-sharp text-2xl "> {{threadData.title}} </div>
-        </div>
-
-          <div class=" ">
-         <div class=" font-sharp text-md "> {{threadData.createdAt}} </div>
-        </div>
-      </div>
-
-    <hr class="" /> 
+    <div class="section w-container flex flex-col my-16 "> 
 
 
-    <div v-for="post of posts"> {{post.body}} </div>
-
-
-
+      Digital Asset Show 
     </div>
   
   
 
  
 
-   </ForumLayout>
+   </PrimaryLayout>
 
 
 </template>
@@ -41,7 +26,7 @@ import AppHelper, {routeTo} from '@/js/app-helper'
  
 
  
-import ForumLayout from '../forum/ForumLayout.vue';
+import PrimaryLayout from '@/views/PrimaryLayout.vue';
 import RestAPIHelper, {resolveRoutedApiQuery} from '@/js/rest-api-helper.ts'
 import {connectedToWeb3} from '@/js/ethereum-store-helper'
 
@@ -63,7 +48,7 @@ export default {
     name: "ThreadShow",
     props: [],
     components: {
-      ForumLayout,
+      PrimaryLayout,
       ErrorBanner,
       GenericTable,
       InfoPane,
@@ -78,8 +63,8 @@ export default {
     data() {
         return {
             activeAccount: undefined,          
-            threadData: undefined, 
-            posts:[]
+            digitalAssetData: undefined, 
+            
         };
     },
     
@@ -92,18 +77,16 @@ export default {
   },
   async mounted () {
 
-      this.activeAccount = isSignedIn()
-
-      this.loadThreadData()
-      this.loadPosts()
-      //this.activeAccount = this.$store.state.web3Storage.account 
+     
+      this.loadDigitalAssetData()
+    
   },
   methods: {
      
-    routeTo,isSignedIn,
+    routeTo, 
 
  
-    async loadThreadData(){
+    async loadDigitalAssetData(){
 
 
       const threadId = this.$route.params.threadId

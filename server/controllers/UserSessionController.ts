@@ -20,6 +20,7 @@ import UserController from "./UserController";
 import { User, UserDefinition, UserSessionDefinition } from "../dbextensions/UserDBExtension";
 
 
+const adminList = require("../../shared/config/adminList.json")
 export default class UserSessionController extends APIController {
 
     
@@ -36,65 +37,50 @@ export default class UserSessionController extends APIController {
 
     getRoutes() : Route[] {
         return [
-            {"type":"get","uri":"/usersession/logout","method":"redirectHome","preHooks":[{"method":"clearUserSession", "controller":this.getControllerName()}], "controller":this.getControllerName()},
             
-   
         ]
     }
+ 
+ 
 
+    userIsAdmin: InternalMethod = async(req:any) => {
 
-    //A prehook used to log out via cookies by setting sessionToken null 
-    clearUserSession: InternalMethod = async (req:any) => {
-        return {success:true, specialAction:'setCookie', data:{key:"sessionToken"}}
-    }
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
+            req.fields,
+             {publicAddress:'publicaddress'  })
 
-    /*
-    logout: ControllerMethod = async (req:any) => {
+        if(!sanitizeResponse.success) return sanitizeResponse
 
-        return {success:true, specialAction:'redirect', data:{url:"/"}}//user will clear auth cookies on their end 
-    }
-    */
-
-    redirectHome: ControllerMethod = async (req:any) => {
-       
-        return {success:true, specialAction:'redirect', data:{url:"/"}}//user will clear auth cookies on their end 
-    }
-
-
-    requiresLogin: InternalMethod = async(req:any) => {
-
-       
-        let result =  await this.validateSessionToken(req)
-
-        if(AppHelper.getEnvironmentName() == 'development'){
-            //no auth needed in dev 
-            result = {success:true}
-        }
-
-
-
-        //if req type is get 
-        if(!result.success){
-            if(req.method.toLowerCase()=="get"){
-                return await this.redirectHome(req) //redirect home 
-            }else{
-                return {success:false,error:'requiresLogin'}
-            }
-        }
-
-        return result
-    }
-
-     /*
-    Used as a prehook to gate pages that require login 
-    */
-    validateSessionToken: InternalMethod = async(req:any) => {
-
-        const cookies = req.cookies
+        let sanitizedData = sanitizeResponse.data 
         
+        const {publicAddress} = sanitizedData
 
-        const sessionToken = cookies.sessionToken
-        if(!sessionToken) return {success:false, error:"Missing session token"}
+        if(adminList.includes(APIHelper.toChecksumAddress(publicAddress))){
+
+            return {success:true}
+
+        }
+
+        return {success:false, error:'Not an admin'}
+
+         
+    }
+ 
+
+    validateSessionTokenParam : InternalMethod = async(req:any) => {
+
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
+            req.fields,
+             {publicAddress:'publicaddress',
+             sessionToken:'string' })
+
+        if(!sanitizeResponse.success) return sanitizeResponse
+
+        let sanitizedData = sanitizeResponse.data
+
+        
+        const {publicAddress,sessionToken} = sanitizedData
+
 
         let matchingTokenResponse = await findRecord({sessionToken}, UserSessionDefinition, this.mongoDB)
         if(!matchingTokenResponse.success) return matchingTokenResponse
@@ -104,54 +90,34 @@ export default class UserSessionController extends APIController {
         let matchingUserResponse = await findRecordById(matchingToken.parentUserId, UserDefinition,this.mongoDB)
         if(!matchingUserResponse) return matchingUserResponse
 
-        //inject validated user data into req for the next hook
-        req.validatedSessionUser = matchingUserResponse.data
 
-        return {success:true, data: {userId: matchingToken.parentUserId}}
+        return {success:true, data: {userId: matchingToken.parentUserId, sessionToken, publicAddress}}
 
     }
 
 
-    static getValidatedSessionUserFromHeader(req:any){
 
-        if(AppHelper.getEnvironmentName() == 'development'){
-            return {_id:'dev_session_id', userId: 'dev_session_id'} 
-        }
-
-
-        if(AppHelper.getEnvironmentName() == 'test'){
-            return {_id:'test_session_id', userId: 'test_session_id'} 
-        }
-
-        let output = Object.apply({}, req.validatedSessionUser)
-        output.userId = mongoIdToString(req.validatedSessionUser._id)
-
-        return output 
  
-    }
- 
-    /*
-    Used as a prehook during oauth flow to set authToken cookie 
-    */
     createNewAuthenticatedUserSession: InternalMethod = async (req:any) => {
         
-        let userData = req.user
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
+            req.fields,
+             {publicAddress:'publicaddress'  })
 
-        let primaryEmailObject = userData.emails[0]
+        if(!sanitizeResponse.success) return sanitizeResponse
 
-        if(!primaryEmailObject.verified){
-            return {success:false, error:"Primary email not verified"}
-        }
+        let sanitizedData = sanitizeResponse.data
 
-        let primaryEmail = primaryEmailObject.value.toLowerCase()
+        
+        const {publicAddress} = sanitizedData
 
         let matchingUser;
-        let matchingUserResponse = await findRecord({email:primaryEmail},UserDefinition,this.mongoDB)
+        let matchingUserResponse = await findRecord({publicAddress},UserDefinition,this.mongoDB)
 
         if(!matchingUserResponse.success){
             //create a new user 
 
-            let createdUserResponse = await this.userController.insertNewUser( {email: primaryEmail} )
+            let createdUserResponse = await this.userController.insertNewUser( { publicAddress } )
             if(!createdUserResponse.success) return createdUserResponse
 
             matchingUser = createdUserResponse.data 
@@ -174,12 +140,8 @@ export default class UserSessionController extends APIController {
 
       
 
-        return  {success: true, specialAction: 'setCookie', data: {key:'sessionToken', value:sessionCreationResponse.data.sessionToken}}
-       /* if(!sessionCreationResponse.success){
-            return sessionCreationResponse
-        }
-
-        return {success:true, data:{ authToken }}*/
+        return  {success: true,  data: sessionCreationResponse.data.sessionToken}
+      
     }
 
 
@@ -199,6 +161,10 @@ export default class UserSessionController extends APIController {
 
         }, UserSessionDefinition, this.mongoDB  )
 
+        if(!newRecordResponse.success){
+            return newRecordResponse
+        }
+
         return {success:true, data: {sessionToken, userId: parentUserId}}
     }
 
@@ -206,15 +172,12 @@ export default class UserSessionController extends APIController {
     static generateNewAuthToken(){
         return crypto.randomBytes(24).toString('hex');
     }
+ 
 
-/*
-     
-    destroyUserSession: InternalMethod = async (req:any) => {
 
-        return {success:true}
-    }
 
-*/
+
+ 
   
 
 }

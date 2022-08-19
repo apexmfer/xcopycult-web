@@ -17,9 +17,14 @@ import ThreadController from '../server/controllers/ThreadController'
 import {describe, it} from 'mocha'
 import { mongo } from 'mongoose'
 import DegenAuthController from '../server/controllers/DegenAuthController'
+import UserSessionController from '../server/controllers/UserSessionController'
+import UserController from '../server/controllers/UserController'
+import UserDBExtension from '../server/dbextensions/UserDBExtension'
  
 describe('Degen Auth Controller',    () => {
-  
+
+        let userController:UserController 
+        let userSessionController:UserSessionController
         let degenAuthController:DegenAuthController
         let mongoDB
 
@@ -27,13 +32,17 @@ describe('Degen Auth Controller',    () => {
 
             mongoDB  = await getTestDatabase()
             await mongoDB.dropDatabase()
-            
-            degenAuthController = new DegenAuthController(mongoDB)
+
+            userController = new UserController(mongoDB)            
+            userSessionController = new UserSessionController(mongoDB,userController)
+            degenAuthController = new DegenAuthController(mongoDB, userSessionController)
             
           
             let dbExtensions:Array<DatabaseExtension> = []
     
             dbExtensions.push(...[
+              new UserDBExtension(mongoDB),
+              
               new DegenAuthExtension(mongoDB),
            
             ])
@@ -62,6 +71,34 @@ describe('Degen Auth Controller',    () => {
         })
 
          
+        it('should generate a degen user session  ', async () => {
+
+            let userWallet = Wallet.createRandom()
+
+            let challengeResponse = await degenAuthController.generateChallenge( 
+                { fields: {
+                publicAddress:userWallet.address
+               
+            } } )
+  
+            let challenge = challengeResponse.data.challenge
+
+
+            let signature = await userWallet.signMessage(challenge)
+
+
+            let userSessionResponse = await degenAuthController.generateDegenAuthSession({
+                fields:{
+                    publicAddress: userWallet.address,
+                    signature
+                }
+            })
+
+             
+            expect(userSessionResponse.success).to.eql(true)
+
+        })
+
         it('should generate a user session  ', async () => {
 
             let userWallet = Wallet.createRandom()
@@ -116,18 +153,19 @@ describe('Degen Auth Controller',    () => {
 
  
 
-            let authToken = userSessionResponse.data.authToken
+            let sessionToken = userSessionResponse.data.sessionToken
  
 
 
-            let validationResponse = await degenAuthController.validateAuthToken({
+            let validationResponse = await userSessionController.validateSessionTokenParam({
                 fields:{
                     publicAddress: userWallet.address,
-                    authToken
+                    sessionToken
 
                 }
             })
 
+            console.log({validationResponse})
             expect(validationResponse.success).to.eql(true)
 
         })

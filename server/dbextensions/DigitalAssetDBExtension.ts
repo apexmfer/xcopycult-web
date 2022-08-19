@@ -40,7 +40,9 @@ export interface DigitalToken {
 
 
 
-  export const DigitalAssetSchema = new Schema<DigitalAsset>({    
+  export const DigitalAssetSchema = new Schema<DigitalAsset>({  
+    parentUserId: {type: String, required:true , index:true },
+    
     title:  { type: String, index: true, unique: true, required:true  },
     creator: {type: String},
     networkName: {type: String},

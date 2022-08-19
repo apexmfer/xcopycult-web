@@ -6,6 +6,7 @@ import { ControllerMethod, Route } from "degen-route-loader"
 import APIController from "./APIController";
 import APIHelper from "../lib/api-helper";
 import { findRecord } from "../lib/mongo-helper";
+import UserSessionController from "./UserSessionController";
 
 const SERVICE_NAME = "xcopycult"
  
@@ -21,7 +22,11 @@ export const routes: Route[]=[
 
 export default class DegenAuthController extends APIController  {
      
+    
 
+    constructor(public mongoDB:ExtensibleDB, public userSessionController:UserSessionController){
+        super(mongoDB);
+    }
     
 
     getRoutes() : Route[] {
@@ -51,7 +56,8 @@ export default class DegenAuthController extends APIController  {
         return   {success:true, data:{ publicAddress:publicAddress, challenge: upsertedChallenge} }
     }
 
-    generateUserSession: ControllerMethod = async (req: any) => {
+    //not used
+    generateDegenAuthSession: ControllerMethod = async (req: any) => {
         
         const publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress,'publicaddress')
         const signature = req.fields.signature
@@ -69,6 +75,47 @@ export default class DegenAuthController extends APIController  {
         return  {success:true, data: {publicAddress, authToken} }
     }
 
+
+    generateUserSession: ControllerMethod = async (req: any) => {
+        
+        const publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress,'publicaddress')
+        const signature = req.fields.signature
+        let challenge = req.fields.challenge
+
+        if(!challenge){
+            let challengeRecord = await DegenAuth.findActiveChallengeForAccount(this.mongoDB,publicAddress)
+              
+            if(challengeRecord){
+            challenge = challengeRecord.challenge
+            }
+          }
+    
+          if(!challenge){
+            return {success:false, error:'no active challenge found for user'} 
+          }
+
+        //validate signature
+
+        let signatureValid =  DegenAuth.validatePersonalSignature(publicAddress,signature,challenge)
+
+        if(!signatureValid){
+            return {success:false, error:"signature invalid"}
+        }
+ 
+  
+        let newSessionResponse  = await this.userSessionController.createNewAuthenticatedUserSession(
+             req  )
+
+        if(!newSessionResponse.success) return newSessionResponse
+
+        let sessionToken = newSessionResponse.data
+ 
+
+        return  {success:true, data: {publicAddress, sessionToken} }
+    }
+
+    //not used 
+    /* 
     validateAuthToken: ControllerMethod = async (req: any) => {
 
         
@@ -92,6 +139,6 @@ export default class DegenAuthController extends APIController  {
 
 
     }
-    
+    */
 
 }
