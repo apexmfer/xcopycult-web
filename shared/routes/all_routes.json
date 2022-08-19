@@ -1,7 +1,9 @@
 [  
    
     {"type":"post","uri":"/generateChallenge","method":"generateChallenge","controller":"degenauth"},
-    {"type":"post","uri":"/generateAuthToken","method":"generateAuthToken","controller":"degenauth"}
+    {"type":"post","uri":"/generateUserSession","method":"generateUserSession","controller":"degenauth"},
+       
+    {"type":"post","uri":"/createDigitalAsset","method":"createDigitalAsset","controller":"digitalasset"}
        
 
        

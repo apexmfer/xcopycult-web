@@ -37,7 +37,8 @@ export default class DegenAuthController extends APIController  {
     generateChallenge: ControllerMethod = async (req: any) => {
         
         const publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress,'publicaddress')
-        //const serviceName = req.fields.serviceName
+       
+        //make sure public address is a valid address 
   
         let upsertedChallenge  = await DegenAuth.upsertNewChallengeForAccount( 
             this.mongoDB, 

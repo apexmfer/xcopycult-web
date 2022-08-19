@@ -21,9 +21,20 @@ return {success:true, data: generateChallengeResponse.data}
 
 }
 
-export async function fetchNewAuthToken(publicAddress:string, challenge:string, signature: string): Promise<AssertionResponse> {
+export async function generateNewUserSession(publicAddress:string, challenge:string, signature: string): Promise<AssertionResponse> {
 
-    return {success:false}
+  
+let generateSessionResponse = await resolveRoutedApiQuery( 
+    'generateUserSession' ,
+     {publicAddress,
+    challenge,
+    signature} )
+
+if(!generateSessionResponse.success) return generateSessionResponse
+
+return {success:true, data: generateSessionResponse.data}
+  
+
 
 }
 
@@ -50,7 +61,7 @@ export async function fetchAuthToken(store:any): Promise<AssertionResponse> {
 
         console.log({challengeResponse})
 
-        let challenge = challengeResponse.data
+        let challenge = challengeResponse.data.challenge
 
         store.commit('setChallenge', challenge)
 
@@ -60,14 +71,16 @@ export async function fetchAuthToken(store:any): Promise<AssertionResponse> {
 
         let signature = await provider.getSigner(publicAddress).signMessage(challenge)
 
-        console.log({signature})
+      
+        let authTokenResponse = await generateNewUserSession(publicAddress,challenge,signature)
+
+        console.log({authTokenResponse})
 
 
-        let authTokenResponse = await fetchNewAuthToken(publicAddress,challenge,signature)
 
         if(!authTokenResponse.success) return authTokenResponse
 
-        authToken = authTokenResponse.data
+        authToken = authTokenResponse.data.authToken
 
         store.commit('setAuthToken', authToken)
 

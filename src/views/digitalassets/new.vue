@@ -29,12 +29,12 @@
                 {modelname: 'metadataURI', label:'Metadata URI' , type: 'text'}, 
                
             ],
-            submitRoute: 'createThread'
+            submitRoute: 'createDigitalAsset'
  
             
             }"
 
-          @onPostSuccess="routeTo($router,{name:'threadshow',params:{threadId}})"
+          @onPostSuccess="routeTo($router,{name:'sigitalassetshow',params:{digitalAssetId}})"
           @onPostFailed="renderError"
           @onError="renderError"
     />
