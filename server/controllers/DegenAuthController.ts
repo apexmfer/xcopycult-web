@@ -2,16 +2,37 @@ import DegenAuth, { AuthenticationToken, AuthenticationTokenDefinition } from "d
 import ExtensibleDB from 'extensible-mongoose'
 import AppHelper from "../lib/app-helper";
 
-import { ControllerMethod } from "degen-route-loader"
+import { ControllerMethod, Route } from "degen-route-loader"
 import APIController from "./APIController";
 import APIHelper from "../lib/api-helper";
 import { findRecord } from "../lib/mongo-helper";
 
 const SERVICE_NAME = "xcopycult"
+ 
+
+export const controllerName = "degenauth"
+
+
+export const routes: Route[]=[
+
+    {"type":"post","uri":"/generateChallenge","method":"generateChallenge","controller":controllerName}
+    
+]
 
 export default class DegenAuthController extends APIController  {
+     
 
-  
+    
+
+    getRoutes() : Route[] {
+        return routes
+    }
+
+
+
+    getControllerName() : string {
+        return controllerName
+    }
  
     generateChallenge: ControllerMethod = async (req: any) => {
         

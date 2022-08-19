@@ -1,12 +1,10 @@
 [  
    
-    {"type":"post","uri":"/thread/create","method":"createThread","preHooks":[{"method":"requiresLogin","controller":"usersession"}],"controller":"thread"},
-    {"type":"post","uri":"/threads","method":"getThreads","controller":"thread"},
-    {"type":"post","uri":"/thread","method":"getThread","controller":"thread"},
-    {"type":"post","uri":"/posts","method":"getPosts","controller":"post"},
+    {"type":"post","uri":"/generateChallenge","method":"generateChallenge","controller":"degenauth"},
+    {"type":"post","uri":"/generateAuthToken","method":"generateAuthToken","controller":"degenauth"}
+       
 
-    {"type":"post","uri":"/categories","method":"getCategories","controller":"category"}
-            
+       
 
 
 ]

@@ -28,7 +28,12 @@ export interface FileValidation  {
 
 export default class AttachedImageController extends APIController {
 
- 
+  
+
+
+  getControllerName() : string {
+      return 'attachedimage'
+  }
 
  
     /*

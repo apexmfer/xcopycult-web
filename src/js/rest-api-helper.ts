@@ -1,13 +1,20 @@
 import { AssertionResponse, ControllerMethod } from "degen-route-loader"
  
-
+//import {routes as degenAuthRoutes } from '../../server/controllers/DegenAuthController' 
  
 //import axios from "axios";
 const axios = require('axios')
 
 //import AppHelper from './app-helper.js'
  
-const AllRoutes = require('../../shared/routes/all_routes.json')
+const allRoutes = require('../../shared/routes/all_routes.json')
+
+//let degenAuthRoutes = DegenAuthController.routes 
+
+//allRoutes = allRoutes.concat(degenAuthRoutes)
+
+
+
 
  const clientConfig = require('../../shared/config/clientConfig.json')
 
@@ -28,7 +35,7 @@ const AllRoutes = require('../../shared/routes/all_routes.json')
   export function  resolveURIFromRouteName(routeName:string){
  
 
-    for(const route of (AllRoutes)){
+    for(const route of (allRoutes)){
 
       if(route.method.toLowerCase() == routeName.toLowerCase()){
         

@@ -1,6 +1,34 @@
+/* eslint-disable */ 
 import { AssertionResponse } from "degen-route-loader";
- 
+import {resolveURIFromRouteName, resolveRestQueryAsserted} from '@/js/rest-api-helper'
+import { resolveRoutedApiQuery } from "./rest-api-helper";
+
+
 const ethers = require('ethers')
+
+
+
+export async function fetchNewChallenge(publicAddress:string): Promise<AssertionResponse> {
+
+let generateChallengeResponse = await resolveRoutedApiQuery( 
+    'generateChallenge' ,
+     {publicAddress} )
+
+if(!generateChallengeResponse.success) return generateChallengeResponse
+
+return {success:true, data: generateChallengeResponse.data}
+  
+
+}
+
+export async function fetchNewAuthToken(publicAddress:string, challenge:string, signature: string): Promise<AssertionResponse> {
+
+    return {success:false}
+
+}
+
+
+
 
 export async function fetchAuthToken(store:any): Promise<AssertionResponse> {
 
@@ -14,9 +42,18 @@ export async function fetchAuthToken(store:any): Promise<AssertionResponse> {
         
         console.log({injectedEthereum})
 
-        let publicAddress = store.state.web3Storage.publicAddress
+        let publicAddress = store.state.web3Storage.account
 
-        let challenge = "my first challenge"
+        let challengeResponse = await fetchNewChallenge(publicAddress)
+        
+        if(!challengeResponse.success) return challengeResponse
+
+        console.log({challengeResponse})
+
+        let challenge = challengeResponse.data
+
+        store.commit('setChallenge', challenge)
+
 
         let provider = new ethers.providers.Web3Provider(injectedEthereum)
 
@@ -26,11 +63,13 @@ export async function fetchAuthToken(store:any): Promise<AssertionResponse> {
         console.log({signature})
 
 
-        store.commit('setDegenAuthChallenge', authToken)
+        let authTokenResponse = await fetchNewAuthToken(publicAddress,challenge,signature)
 
+        if(!authTokenResponse.success) return authTokenResponse
 
+        authToken = authTokenResponse.data
 
-        store.commit('setDegenAuthToken', authToken)
+        store.commit('setAuthToken', authToken)
 
         
     }
