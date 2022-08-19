@@ -71,8 +71,6 @@ describe('Web server',    () => {
            await mongoDB.dropDatabase()
         
            
-           //let degenAuthInterface = await AuthTools.initializeDatabase()
-       
            let dbExtensions:Array<DatabaseExtension> = []
     
            dbExtensions.push(...[ 
@@ -105,6 +103,7 @@ describe('Web server',    () => {
              
             if(!portUsed){
                 await webServer.start(  )
+                 
             }else{
                 console.log(`Detected server already listening on port ${serverPort}`)
             }
@@ -144,9 +143,7 @@ describe('Web server',    () => {
         })
 
 
-
-
-        it('should return a response', async () => {
+        it.skip('should return a response', async () => {
  
             let result = await axios.get( uri_root + '/api/ping' ,  {}  )
             
@@ -159,9 +156,7 @@ describe('Web server',    () => {
 
         //formidable is messing w the image binary data... ? 
 
-        
-
-
+         
 
 
     })

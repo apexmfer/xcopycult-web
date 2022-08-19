@@ -7,6 +7,9 @@ import ServerSegmentManager from '../segmentmanagers/ServerSegmentManager'
 
 
 export interface DigitalAsset {
+
+    parentUserId: string, //the submitter 
+
     title:  string,
     creator: string, 
 
@@ -16,14 +19,16 @@ export interface DigitalAsset {
 
 
     metadataURI:  string,
-    metadataCached:string,
-    description:string, 
+    metadataCached?:string,
+    description?:string, 
 
 
-    thumbnailImageId: string, 
-    primaryImageId: string,
+    thumbnailImageId?: string, 
+    primaryImageId?: string,
 
-    status: string
+    status: string,
+    createdAt: string,
+    updatedAt: string
   }
   
 
@@ -49,7 +54,9 @@ export interface DigitalToken {
     thumbnailImageId: {type: String},
     primaryImageId: {type: String},
 
-    status: {type: String}
+    status: {type: String},
+    createdAt: {type: String},
+    updatedAt: {type: String}
    
   })
  

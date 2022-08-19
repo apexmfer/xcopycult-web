@@ -8,17 +8,20 @@ import AppHelper from '../server/lib/app-helper'
 import { findRecordById } from '../server/lib/mongo-helper'
 import ImageDBExtension, { AttachedImage, AttachedImageDefinition } from '../server/dbextensions/ImageDBExtension'
 import AttachedImageController from '../server/controllers/AttachedImageController' 
-import CategoryDBExtension from '../server/dbextensions/CategoryDBExtension'
+import ThreadDBExtension from '../server/dbextensions/ThreadDBExtension'
 import { DegenAuthExtension } from 'degen-auth' 
 import { mongoIdToString } from '../server/lib/parse-helper'
-import CategoryController from '../server/controllers/CategoryController'
+import ThreadController from '../server/controllers/ThreadController'
 
  
 import {describe, it} from 'mocha'
- 
-describe('Category Controller',    () => {
- 
-        let categoryController:CategoryController
+import { mongo } from 'mongoose'
+import DigitalAssetController from '../server/controllers/DigitalAssetController'
+import DigitalAssetDBExtension from '../server/dbextensions/DigitalAssetDBExtension'
+
+describe('Endpoint Controller',    () => {
+  
+        let digitalAssetController:DigitalAssetController
         let mongoDB
 
         beforeEach(async () => {
@@ -26,14 +29,14 @@ describe('Category Controller',    () => {
             mongoDB  = await getTestDatabase()
             await mongoDB.dropDatabase()
             
-            categoryController = new CategoryController(mongoDB)
-     
+            digitalAssetController = new DigitalAssetController(mongoDB)
+            
           
             let dbExtensions:Array<DatabaseExtension> = []
     
-            dbExtensions.push(...[ 
-              new CategoryDBExtension(mongoDB),
-            
+            dbExtensions.push(...[
+              new DigitalAssetDBExtension(mongoDB),
+           
             ])
  
             dbExtensions.map(ext => ext.bindModelsToDatabase())
@@ -46,14 +49,15 @@ describe('Category Controller',    () => {
             await mongoDB.disconnect()
         })
         
-        it('should create a category', async () => {
+        it('should create a thread ', async () => {
 
-
-            let created = await categoryController.createCategory( 
-                { fields: { 
-                name:"aliens",
-                parentCategoryId:"testId"
-
+            let created = await digitalAssetController.createDigitalAsset( 
+                { fields: {
+                title:"The Doomed",
+                contractAddress:"0xb1000",
+                primaryTokenId:'12',
+                metadataURI: "ipfs://"
+               
             } } )
   
             console.log({created})
@@ -63,7 +67,7 @@ describe('Category Controller',    () => {
 
         })
 
-
+   
      
 
  

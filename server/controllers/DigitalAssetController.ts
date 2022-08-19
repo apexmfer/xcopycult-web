@@ -15,11 +15,9 @@ import APIController, { InternalMethod, MongoRecord } from "./APIController";
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
  
-import crypto from 'crypto'
-import EndpointController from "./ThreadController";
+
+import { DigitalAsset, DigitalAssetDefinition } from "../dbextensions/DigitalAssetDBExtension";
 import UserSessionController from "./UserSessionController";
-import { Post, PostDefinition } from "../dbextensions/ThreadDBExtension";
-import { DigitalAsset } from "../dbextensions/DigitalAssetDBExtension";
 
 export default class DigitalAssetController extends APIController {
 
@@ -38,7 +36,7 @@ export default class DigitalAssetController extends APIController {
     }
   
     
-    createPost: ControllerMethod = async (req:any )=> {
+    createDigitalAsset: ControllerMethod = async (req:any )=> {
         
         let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
        
@@ -49,17 +47,27 @@ export default class DigitalAssetController extends APIController {
         let parentUserId =validatedSession.userId
  
  
-        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {parentThreadId:'string',body:'string' })
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
+            req.fields,
+             {title:'string',
+             contractAddress:'string',
+             primaryTokenId: 'string',
+             metadataURI: 'string' })
 
         if(!sanitizeResponse.success) return sanitizeResponse
 
         let sanitizedData = sanitizeResponse.data
 
         
-        const {body,parentThreadId} = sanitizedData
+        const {title,contractAddress,primaryTokenId,metadataURI} = sanitizedData
 
 
-        let insertResponse = await this.insertNewPost( {parentUserId,parentThreadId,body} )
+        let insertResponse = await this.insertNewDigitalAsset(
+             {parentUserId,
+                title,
+                contractAddress,
+                primaryTokenId,
+                metadataURI} )
  
 
         if(!insertResponse.success) return   insertResponse
@@ -71,13 +79,15 @@ export default class DigitalAssetController extends APIController {
 
 
 
-    getPosts: ControllerMethod = async (req:any )=> {
+    getDigitalAssets: ControllerMethod = async (req:any )=> {
         let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
 
         let parentUserId = mongoIdToString(validatedSession._id)
         
 
-        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(req.fields, {parentThreadId:'string'})
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
+            req.fields,
+            {parentThreadId:'string'})
 
         if(!sanitizeResponse.success) return sanitizeResponse
 
@@ -87,13 +97,13 @@ export default class DigitalAssetController extends APIController {
 
 
       
-        let matchingPostsResponse = await findRecords( {parentThreadId}, PostDefinition, this.mongoDB )
+        let matchingResponse = await findRecords( {parentThreadId}, DigitalAssetDefinition, this.mongoDB )
 
        
-        if(!matchingPostsResponse.success) return matchingPostsResponse
+        if(!matchingResponse.success) return matchingResponse
 
 
-        let outputArray = await Promise.all(matchingPostsResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
+        let outputArray = await Promise.all(matchingResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
 
         return {success:true, data: outputArray}
     }
@@ -101,22 +111,30 @@ export default class DigitalAssetController extends APIController {
 
 
 
-    insertNewPost:InternalMethod = async ( {parentUserId,parentThreadId,body}:{parentUserId:string,parentThreadId:string,body:string} ) => {
+    insertNewDigitalAsset:InternalMethod = async ( 
+        {parentUserId,title,contractAddress,primaryTokenId,metadataURI}:
+        {parentUserId:string,title:string,contractAddress:string,primaryTokenId:string, metadataURI: string } ) => {
     
         const currentTime = Date.now().toString()
 
-        let insertionData:Post  = {
+        let insertionData:DigitalAsset  = {
             parentUserId,
-            parentThreadId, 
-            body,
+            title, 
+            creator: "XCOPY",
+            networkName: "mainnet",
+
+            contractAddress,
+            primaryTokenId,
+            metadataURI,
+            
 
             createdAt: currentTime,
             updatedAt: currentTime,
 
-            status: 'active'
+            status: 'pending'
         }
 
-       return await createRecord( insertionData, PostDefinition, this.mongoDB  )
+       return await createRecord( insertionData, DigitalAssetDefinition, this.mongoDB  )
  
     }
  
