@@ -49,9 +49,6 @@ export default class DegenAuthController extends APIController  {
 
     validateAuthToken: ControllerMethod = async (req: any) => {
 
-        //return true for now until authentication check is built out 
-        //return  {success:true}
-
         
         
         const publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress,'publicaddress')
@@ -69,7 +66,7 @@ export default class DegenAuthController extends APIController  {
             return  {success:true, data: {publicAddress, authToken } }
         } 
       
-        return  {success:false, error: "#401: Not authenticated with DegenAuth session."}
+        return  {success:false, error: "Not authenticated with DegenAuth session.", specialAction:'reject'}
 
 
     }

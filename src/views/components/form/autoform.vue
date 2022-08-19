@@ -146,16 +146,12 @@ export default {
       /*
         Append all of the fields data together into a formData object
       */
-      getFormData(){
+      getFormData(authToken){
 
 
       //  const reservedFieldNames = ['publicAddress']
 
-        let authTokenResponse = await fetchAuthToken(this.$store)
-
-        if(!authTokenResponse.success) throw new Error(authTokenResponse.error)
-
-        const authToken = authTokenResponse.data 
+        
 
         let web3StorageData = this.getWeb3StorageData(this.$store) 
 
@@ -203,7 +199,15 @@ export default {
       async submit(){ 
  
 
-        let formData = this.getFormData()
+        let authTokenResponse = await fetchAuthToken(this.$store)
+
+        if(!authTokenResponse.success) throw new Error(authTokenResponse.error)
+
+        const authToken = authTokenResponse.data 
+
+        
+
+        let formData = this.getFormData( authToken )
 
           console.log(  'formData' , formData)
          

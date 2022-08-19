@@ -55,9 +55,7 @@ describe('Degen Auth Controller',    () => {
                 publicAddress:"0xB11ca87E32075817C82Cc471994943a4290f4a14" 
                
             } } )
-  
-            console.log({created})
-  
+   
             expect(created.success).to.eql(true) 
             
 
@@ -87,7 +85,7 @@ describe('Degen Auth Controller',    () => {
                 }
             })
 
-            console.log({userSessionResponse})
+             
             expect(userSessionResponse.success).to.eql(true)
 
         })
@@ -116,12 +114,10 @@ describe('Degen Auth Controller',    () => {
                 }
             })
 
+ 
 
-            console.log({userSessionResponse})
-            
             let authToken = userSessionResponse.data.authToken
-
-            console.log({authToken})
+ 
 
 
             let validationResponse = await degenAuthController.validateAuthToken({

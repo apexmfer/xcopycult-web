@@ -23,6 +23,7 @@ import './css/main.css'
 import './css/normalize.css'
 import './css/transitions.css'
 import Chakra, { CThemeProvider } from '@chakra-ui/vue'
+import degenAuthStorage from './store/modules/degenAuth';
 
 Vue.use(Chakra) 
 
@@ -44,6 +45,8 @@ export const store = new Vuex.Store({
   modules: {
     web3Storage,
     //shoppingCart,
+
+    degenAuthStorage,
     frontendStorage
 
       // prediction: predictionStore,
