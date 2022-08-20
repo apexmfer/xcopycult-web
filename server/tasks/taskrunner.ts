@@ -1,11 +1,14 @@
 
 
+import { DegenAuthExtension } from 'degen-auth'
 import ExtensibleMongoDB , {DatabaseExtension} from 'extensible-mongoose'
  
 //import FileHelper from '../lib/file-helper.js'
   
 import Web3 from 'web3'
 import { APP_NAME } from '../../server/lib/app-helper'
+import DigitalAssetDBExtension from '../dbextensions/DigitalAssetDBExtension'
+import UserDBExtension from '../dbextensions/UserDBExtension'
 import { scrapeDataOpensea } from './scrape-data-opensea'
 
 let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
@@ -26,6 +29,17 @@ let serverConfig = serverConfigFile[envmode]
     await mongoDB.init(  APP_NAME.concat('_').concat(envmode) )
 
   
+    let dbExtensions:Array<DatabaseExtension> = []
+    
+    dbExtensions.push(...[
+      new DegenAuthExtension(mongoDB),
+      new DigitalAssetDBExtension(mongoDB), 
+      new UserDBExtension(mongoDB)
+    ])
+
+    dbExtensions.map(ext => ext.bindModelsToDatabase())
+    
+    
 
     let web3 = new Web3( serverConfig.web3provider  )
 

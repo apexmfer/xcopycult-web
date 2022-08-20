@@ -41,7 +41,7 @@ export interface DigitalToken {
 
 
   export const DigitalAssetSchema = new Schema<DigitalAsset>({  
-    parentUserId: {type: String, required:true , index:true },
+    parentUserId: {type: String,  index:true },
     
     title:  { type: String, index: true, unique: true, required:true  },
     creator: {type: String},
@@ -49,7 +49,7 @@ export interface DigitalToken {
     contractAddress: {type: String,required:true },
     primaryTokenId: {type:String},
     
-    metadataURI: {type: String},
+    metadataURI: {type: String, unique: true },
     metadataCached: {type: String},
 
     description: {type: String},
@@ -81,7 +81,13 @@ export interface DigitalToken {
  
 
 export default class DigitalAssetDBExtension extends DatabaseExtension {
- 
+  
+    constructor(mongoDB: ExtensibleMongoDatabase){
+      super(mongoDB)
+
+      DigitalTokenSchema.index( { "digitalAssetId": 1, "tokenId": 1 }, { unique: true } )
+
+    }
 
   
     getBindableModels() : Array<TableDefinition>{
