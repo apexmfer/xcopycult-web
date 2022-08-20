@@ -107,7 +107,7 @@ getImages: ControllerMethod = async (req:any ) => {
 }
 
 
- static async uploadNewImage(fileData: any, adminAddress: string ,  mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
+ static async uploadNewImage(fileData: any,    mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
          
 
   let fileName = fileData.name 
@@ -151,7 +151,7 @@ getImages: ControllerMethod = async (req:any ) => {
     }
 
     let recordCreate = await AttachedImageController.insertNewUploadedImageRecord(
-      fileName , metadata, adminAddress, mongoDB)
+      fileName , metadata,   mongoDB)
     
      
   
@@ -164,11 +164,8 @@ getImages: ControllerMethod = async (req:any ) => {
 
 } 
 
- 
-  /*
-  the attacherPublicAddress must == the owner of the image record 
-  */
-    static async attachImage( imageId : string,  parentType: string, parentId: string, attacherPublicAddress: string,  mongoDB: ExtensibleDB) {
+  
+    static async attachImage( imageId : string,  parentType: string, parentId: string,  mongoDB: ExtensibleDB) {
            
 
       let validations: FileValidation[] = AppHelper.getImageUploadValidationsForDomain( parentType )
@@ -187,11 +184,7 @@ getImages: ControllerMethod = async (req:any ) => {
 
       console.log( )
 
-
-      if(imageRecord.adminAddress != attacherPublicAddress){
-        console.log(imageRecord.adminAddress, attacherPublicAddress)
-        return {success: false, error: 'Invalid owner trying to attach image.'}
-      }
+ 
 
       let metadata = JSON.parse(imageRecord.metadata)
 
@@ -221,14 +214,14 @@ getImages: ControllerMethod = async (req:any ) => {
 
   
      
-    static async insertNewUploadedImageRecord(filename:string, metadata: ImageMetadata,  adminAddress:string,  mongoDB: ExtensibleDB): Promise<AssertionResponse>{
+    static async insertNewUploadedImageRecord(filename:string, metadata: ImageMetadata,  mongoDB: ExtensibleDB): Promise<AssertionResponse>{
   
        
       let metadataStringified = JSON.stringify(metadata)
 
         let result = await mongoDB.getModel(AttachedImageDefinition).create({
           filename,
-          adminAddress: AppHelper.toChecksumAddress( adminAddress ) ,
+         // adminAddress: AppHelper.toChecksumAddress( adminAddress ) ,
           metadata: metadataStringified ,
           status:'detached'}) 
 

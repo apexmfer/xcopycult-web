@@ -35,7 +35,7 @@ export interface ImageMetadata extends FileMetadata {
     filename:  { type: String, index: true, unique: true },
     metadata: String ,
     md5_hash: String,
-    adminAddress: { type: String, required:true },
+    adminAddress: { type: String  },
     parentType: { type: String  },
     parentId: { type: String  },
     status:   { type: String, required:true } 
