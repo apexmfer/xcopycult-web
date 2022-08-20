@@ -49,7 +49,7 @@ export interface DigitalToken {
     contractAddress: {type: String,required:true },
     primaryTokenId: {type:String},
     
-    metadataURI: {type: String, unique: true },
+    metadataURI: {type: String, unique: true, required: true },
     metadataCached: {type: String},
 
     description: {type: String},

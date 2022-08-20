@@ -10,7 +10,7 @@ import AttachedImageController, { FileValidation } from "./AttachedImageControll
  
 import ExtensibleDB from 'extensible-mongoose'
   
-import { createRecord, deleteRecord, findRecord, findRecordById, findRecords } from "../lib/mongo-helper";
+import { createRecord, deleteRecord, findRecord, findRecordById, findRecords, modifyRecord } from "../lib/mongo-helper";
 import APIController, { InternalMethod, MongoRecord } from "./APIController"; 
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
@@ -146,6 +146,11 @@ export default class DigitalAssetController extends APIController {
 
        return await createRecord( insertionData, DigitalAssetDefinition, this.mongoDB  )
  
+    }
+
+    updateDigitalAsset:InternalMethod = async ({assetId, modifyParams}:{assetId:string, modifyParams:any}) => {
+ 
+        return await modifyRecord( assetId, modifyParams, DigitalAssetDefinition, this.mongoDB   )
     }
  
 

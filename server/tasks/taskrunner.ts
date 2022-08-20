@@ -9,6 +9,7 @@ import Web3 from 'web3'
 import { APP_NAME } from '../../server/lib/app-helper'
 import DigitalAssetDBExtension from '../dbextensions/DigitalAssetDBExtension'
 import UserDBExtension from '../dbextensions/UserDBExtension'
+import { fetchAssetMetadata } from './fetch-asset-metadata'
 import { scrapeDataOpensea } from './scrape-data-opensea'
 
 let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
@@ -45,15 +46,10 @@ let serverConfig = serverConfigFile[envmode]
 
     console.log('web3 ready with provider ',serverConfig.web3provider )
 
-  // let contractAddress = AssetHelper.getMineableTokenAddressFromChainId( serverConfig.chainId ) 
-
-    await scrapeDataOpensea({collectionName:'xcopy'},mongoDB)
-
-    //await DatabaseTasks.deleteDifficultyAndHashrateData(vibegraphInterface, contractAddress)
-
-    //await MintEstimateTasks.estimateDifficultyForAllMints(vibegraphInterface, contractAddress)
-    //await MintEstimateTasks.estimateHashrateForAllMints(vibegraphInterface, contractAddress)
-
+  
+   // await scrapeDataOpensea({collectionName:'xcopy'},mongoDB)
+    await fetchAssetMetadata( mongoDB )
+     
 
 }
 
