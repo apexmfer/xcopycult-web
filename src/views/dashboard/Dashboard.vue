@@ -4,7 +4,7 @@
  
  
 
-     <div   class=" font-sharp font-bold text-2xl mb-8 ">  RQR Dashboard   </div>
+     <div   class=" font-sharp font-bold text-2xl mb-8 ">  XCOPY CULT Dashboard   </div>
 
 
 
@@ -12,7 +12,7 @@
 
 
     <InfoPane
-     class="my-16"
+     class="my-16 hidden"
      >
 
      <CHeading > Create </CHeading>

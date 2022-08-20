@@ -71,15 +71,14 @@ export default class UserSessionController extends APIController {
 
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
             req.fields,
-             {publicAddress:'publicaddress',
-             sessionToken:'string' })
+             {  sessionToken:'string' })
 
         if(!sanitizeResponse.success) return sanitizeResponse
 
         let sanitizedData = sanitizeResponse.data
 
         
-        const {publicAddress,sessionToken} = sanitizedData
+        const {sessionToken} = sanitizedData
 
 
         let matchingTokenResponse = await findRecord({sessionToken}, UserSessionDefinition, this.mongoDB)
@@ -91,7 +90,7 @@ export default class UserSessionController extends APIController {
         if(!matchingUserResponse) return matchingUserResponse
 
 
-        return {success:true, data: {userId: matchingToken.parentUserId, sessionToken, publicAddress}}
+        return {success:true, data: {userId: matchingToken.parentUserId, sessionToken}}
 
     }
 
@@ -157,7 +156,7 @@ export default class UserSessionController extends APIController {
             parentUserId,
             sessionToken,
             lastUsed: currentTime,
-            createAt: currentTime
+            createdAt: currentTime
 
         }, UserSessionDefinition, this.mongoDB  )
 

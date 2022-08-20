@@ -47,6 +47,9 @@ export default class DigitalAssetController extends APIController {
         
         let validatedSession = await this.userSessionController.validateSessionTokenParam(req)
        
+
+        console.log({validatedSession})
+        
         if(!validatedSession.success){
             return {success:false,error:"requires validated session"}
         }
@@ -85,9 +88,14 @@ export default class DigitalAssetController extends APIController {
 
 
     getDigitalAssets: ControllerMethod = async (req:any )=> {
-        let validatedSession = UserSessionController.getValidatedSessionUserFromHeader(req)
+        let validatedSession = await this.userSessionController.validateSessionTokenParam(req)
+        
+        if(!validatedSession.success){
+            return {success:false,error:"requires validated session"}
+        }
 
-        let parentUserId = mongoIdToString(validatedSession._id)
+
+        let parentUserId = mongoIdToString(validatedSession.data.userId)
         
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
             req.fields,

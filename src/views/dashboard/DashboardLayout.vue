@@ -23,9 +23,9 @@
 
                <ButtonH 
                 customClass="" 
-                :highlighted="currentRouteName=='dashboardendpointindex'"
-                @clicked="routeTo($router,{name:'dashboardendpointindex'})"> 
-                QR Code Endpoints 
+                :highlighted="currentRouteName=='dashboarddigitalassetsindex'"
+                @clicked="routeTo($router,{name:'dashboarddigitalassetsindex'})"> 
+                Digital Assets
               </ButtonH>
            
            

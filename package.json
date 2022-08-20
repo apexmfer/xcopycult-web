@@ -11,7 +11,8 @@
     "dev": "vue-cli-service serve",
     "pm2dev": "pm2 start pm2.dev.json",
     "server": "npx ts-node server/server.ts",
-    "tasks": "node server/tasks/taskrunner.js",
+    "task": "node server/tasks/taskrunner.js",
+    
     "test": "NODE_ENV=test ts-mocha  'test/**/*.spec.ts' --timeout 10000",
     "vibegraph": "npx ts-node vibegraph/server.ts"
   },

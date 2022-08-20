@@ -39,9 +39,9 @@ export default class UserController extends APIController {
     //make sure people cant CSRF or MITM attack this -- use session key? or something 
     getUserData: ControllerMethod = async (req:any ) => {
 
-        let sessionUser = UserSessionController.getValidatedSessionUserFromHeader(req)
+       // let sessionUser = UserSessionController.getValidatedSessionUserFromHeader(req)
         
-        return   {success:true, data:{sessionUser} } 
+        return   {success:false  } 
 
 
     } 

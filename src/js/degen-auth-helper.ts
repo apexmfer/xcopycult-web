@@ -80,7 +80,7 @@ export async function fetchAuthToken(store:any): Promise<AssertionResponse> {
 
         if(!authTokenResponse.success) return authTokenResponse
 
-        authToken = authTokenResponse.data.authToken
+        authToken = authTokenResponse.data.sessionToken
 
         store.commit('setAuthToken', authToken)
 

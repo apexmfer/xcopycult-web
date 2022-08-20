@@ -146,7 +146,7 @@ export default {
       /*
         Append all of the fields data together into a formData object
       */
-      getFormData(authToken){
+      getFormData(sessionToken){
 
 
       //  const reservedFieldNames = ['publicAddress']
@@ -160,7 +160,7 @@ export default {
         console.log(JSON.stringify(this.getFieldsData()))
         //make sure no other fields are called 'publicAddress'
         //attach public address 
-        let combinedData = Object.assign(this.getFieldsData() , {  authToken } )
+        let combinedData = Object.assign(this.getFieldsData() , {  sessionToken } )
 
          //attach pass params 
         if(this.formConfig.passParams){
@@ -203,11 +203,11 @@ export default {
 
         if(!authTokenResponse.success) throw new Error(authTokenResponse.error)
 
-        const authToken = authTokenResponse.data 
+        const sessionToken = authTokenResponse.data 
 
-        
 
-        let formData = this.getFormData( authToken )
+
+        let formData = this.getFormData( sessionToken )
 
           console.log(  'formData' , formData)
          

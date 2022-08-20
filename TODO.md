@@ -2,8 +2,9 @@
 
 - fix login refreshing by comparing to toadz shop code 
 
--build a controller for Digital Assets 
--build a form for submitting Digital Assets 
+-build a dashboard where i can approve the submissions 
+
+-build a data scraper on top of opensea 
 
 -build basic frontend 
 

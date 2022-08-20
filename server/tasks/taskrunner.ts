@@ -1,7 +1,7 @@
 
 
+import ExtensibleMongoDB , {DatabaseExtension} from 'extensible-mongoose'
 
-import MongoInterface from '../lib/mongo-interface.js'
 
 import DatabaseTasks from './database-tasks.js'
 import MintEstimateTasks from './mint-estimate-tasks.js'
@@ -11,6 +11,8 @@ import AssetHelper from '../lib/asset-helper.js'
 import FileHelper from '../lib/file-helper.js'
   
 import Web3 from 'web3'
+import { APP_NAME } from '../lib/app-helper.js'
+import { scrapeDataOpensea } from './scrape-data-opensea.js'
 
 let envmode = process.env.NODE_ENV
 
@@ -26,12 +28,11 @@ let serverConfig = serverConfigFile[envmode]
     console.log('server config: ',serverConfig)
 
 
-    let mongoInterface = new MongoInterface(  ) 
-    await mongoInterface.init( 'open_0xbtc_api_'.concat(envmode) )
+ 
+    let mongoDB = new ExtensibleMongoDB(  ) 
+    await mongoDB.init(  APP_NAME.concat('_').concat(envmode) )
 
-
-    let vibegraphInterface = new MongoInterface(  ) 
-    await vibegraphInterface.init( 'vibegraph_'.concat(envmode) )
+  
 
     let web3 = new Web3( serverConfig.web3provider  )
 
@@ -39,11 +40,12 @@ let serverConfig = serverConfigFile[envmode]
 
     let contractAddress = AssetHelper.getMineableTokenAddressFromChainId( serverConfig.chainId ) 
 
+    await scrapeDataOpensea({collectionName:'xcopy'},mongoDB)
 
-    await DatabaseTasks.deleteDifficultyAndHashrateData(vibegraphInterface, contractAddress)
+    //await DatabaseTasks.deleteDifficultyAndHashrateData(vibegraphInterface, contractAddress)
 
-    await MintEstimateTasks.estimateDifficultyForAllMints(vibegraphInterface, contractAddress)
-    await MintEstimateTasks.estimateHashrateForAllMints(vibegraphInterface, contractAddress)
+    //await MintEstimateTasks.estimateDifficultyForAllMints(vibegraphInterface, contractAddress)
+    //await MintEstimateTasks.estimateHashrateForAllMints(vibegraphInterface, contractAddress)
 
 
 }
