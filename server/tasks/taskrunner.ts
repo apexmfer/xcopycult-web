@@ -1,23 +1,17 @@
 
 
 import ExtensibleMongoDB , {DatabaseExtension} from 'extensible-mongoose'
-
-
-import DatabaseTasks from './database-tasks.js'
-import MintEstimateTasks from './mint-estimate-tasks.js'
-
-import AssetHelper from '../lib/asset-helper.js'
-
-import FileHelper from '../lib/file-helper.js'
+ 
+//import FileHelper from '../lib/file-helper.js'
   
 import Web3 from 'web3'
-import { APP_NAME } from '../lib/app-helper.js'
-import { scrapeDataOpensea } from './scrape-data-opensea.js'
+import { APP_NAME } from '../../server/lib/app-helper'
+import { scrapeDataOpensea } from './scrape-data-opensea'
 
-let envmode = process.env.NODE_ENV
+let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
 
 
-let serverConfigFile = FileHelper.readJSONFile('./server/serverconfig.json')
+let serverConfigFile = require('../../server/serverconfig.json')
 let serverConfig = serverConfigFile[envmode]
 
 //let assetConfig = FileHelper.readJSONFile('./server/assetconfig.json')
@@ -25,8 +19,7 @@ let serverConfig = serverConfigFile[envmode]
 
   async function start(){
 
-    console.log('server config: ',serverConfig)
-
+   
 
  
     let mongoDB = new ExtensibleMongoDB(  ) 
@@ -38,7 +31,7 @@ let serverConfig = serverConfigFile[envmode]
 
     console.log('web3 ready with provider ',serverConfig.web3provider )
 
-    let contractAddress = AssetHelper.getMineableTokenAddressFromChainId( serverConfig.chainId ) 
+  // let contractAddress = AssetHelper.getMineableTokenAddressFromChainId( serverConfig.chainId ) 
 
     await scrapeDataOpensea({collectionName:'xcopy'},mongoDB)
 
