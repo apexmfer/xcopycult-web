@@ -33,7 +33,7 @@ export async function scrapeDataOpensea(query, mongoDB:ExtensibleMongoDB){
         console.log({response})
     
         nextCursor = response.next 
-        
+
         let assets = response.assets
 
         //console.log(JSON.stringify(assets))
@@ -50,14 +50,14 @@ export async function scrapeDataOpensea(query, mongoDB:ExtensibleMongoDB){
             let image_preview_url = asset.image_preview_url 
 
             try{
-            await digitalAssetController.insertNewDigitalAsset({
-                parentUserId: undefined,
-                title: nameSimple,
-                contractAddress: asset.asset_contract.address ,
-                primaryTokenId: asset.token_id,
-                metadataURI: asset.token_metadata 
+                await digitalAssetController.insertNewDigitalAsset({
+                    parentUserId: undefined,
+                    title: nameSimple,
+                    contractAddress: asset.asset_contract.address ,
+                    primaryTokenId: asset.token_id,
+                    metadataURI: asset.token_metadata 
 
-            })
+                })
             }catch(e){
                 console.error(e)
             }

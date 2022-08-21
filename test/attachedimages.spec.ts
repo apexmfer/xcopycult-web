@@ -177,6 +177,35 @@ describe('Attached Images Controller',    () => {
             expect(validate.success).to.eql(false)
         })
 
+
+        it.only  ('should  download an image from api ', async () => {
+
+
+            let imageURI = 'https://media.niftygateway.com/image/upload/v1597411820/XCOPY/3._XCOPY_DEATHLESS_l6txqt.gif'
+
+           
+            let imageBuffer = await FileHelper.downloadImageToBinary( imageURI )
+
+            let fileName = 'testfile.gif'
+            let writtenFile = await FileHelper.writeBufferToFile( imageBuffer, "../../imagestorage/".concat(fileName))
+
+           /* let binary = await FileHelper.getFileDataBinary(fileData)
+
+            if(typeof binary != 'string' ){
+                throw 'wrong file type for binary'
+                 
+            }
+
+            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,binary)
+  
+
+            let validations = [{"name":"minWidth", "value": "1000"}]
+            let validate = AttachedImageController.validateImageFile(metadata, validations )
+            */
+
+            //expect(validate.success).to.eql(false)
+        })
+
         
  
        

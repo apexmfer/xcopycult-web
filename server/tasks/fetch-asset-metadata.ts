@@ -5,6 +5,7 @@ import AttachedImageController from "../controllers/AttachedImageController";
 import DigitalAssetController from "../controllers/DigitalAssetController";
 import UserSessionController from "../controllers/UserSessionController";
 import { DigitalAssetDefinition } from "../dbextensions/DigitalAssetDBExtension";
+import FileHelper from "../lib/file-helper";
 import { findRecord } from "../lib/mongo-helper";
 import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
  
@@ -65,11 +66,11 @@ export async function fetchAssetMetadata(  mongoDB:ExtensibleMongoDB){
 
         let imageURL = response.image 
 
-        let downloadedImageData = downloadImageToBinary(  imageURL )
+        let downloadedImageDataBuffer = await FileHelper.downloadImageToBinary(  imageURL )
 
-        console.log({downloadedImageData})
+        //console.log({downloadedImageData})
 
-        let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageData, mongoDB  )
+        let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, mongoDB  )
         await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
 
 
@@ -99,28 +100,5 @@ function sleep(ms) {
   });
 }
 
-async function downloadImageToBinary(imageURL){
-
-    return new Promise( (resolve,reject) => {
-      axios.get(imageURL,
-            {
-                responseType: 'arraybuffer',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/pdf'
-                }
-            })
-            .then((response) => {
-
-                resolve(new Blob([response.data]))
-                
-            })
-            .catch((error) => reject(error));
-
-    })
-
-}
-
-    
 
 }

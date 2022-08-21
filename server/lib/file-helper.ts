@@ -1,5 +1,6 @@
 
  
+import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
 
@@ -128,5 +129,38 @@ export default class FileHelper{
 
     }
 
+
+
+
+    static async downloadImageToBinary(imageURL){
+
+        return new Promise( (resolve,reject) => {
+        axios.get(imageURL,
+                {
+                    responseType: 'arraybuffer',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/pdf'
+                    }
+                })
+                .then((response) => {
+
+                    resolve( response.data )
+                    
+                })
+                .catch((error) => reject(error));
+
+        })
+
+    }
+
+    static async writeBufferToFile(buffer, filePath){
+        let fullPath = path.join(__dirname, filePath) 
+        console.log({fullPath})
+        fs.writeFileSync(fullPath , buffer); 
+        console.log({buffer})
+    }
+
+    
 
 }

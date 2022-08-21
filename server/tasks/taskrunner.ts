@@ -47,7 +47,7 @@ let serverConfig = serverConfigFile[envmode]
     console.log('web3 ready with provider ',serverConfig.web3provider )
 
   
-   // await scrapeDataOpensea({collectionName:'xcopy'},mongoDB)
+    //await scrapeDataOpensea({collectionName:'xcopy'},mongoDB)
     await fetchAssetMetadata( mongoDB )
      
 

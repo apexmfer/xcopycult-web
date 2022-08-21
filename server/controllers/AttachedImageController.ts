@@ -55,7 +55,7 @@ export default class AttachedImageController extends APIController {
     let firstFile = firstFileData[1]
  
 
-    let insertedImageFile = await AttachedImageController.uploadNewImage( firstFile, publicAddress,  this.mongoDB  )
+    let insertedImageFile = await AttachedImageController.uploadNewImage( firstFile,   this.mongoDB  )
 
     console.log('image file response',insertedImageFile)
     
@@ -107,8 +107,8 @@ getImages: ControllerMethod = async (req:any ) => {
 }
 
 
- static async uploadNewImage(fileData: any,    mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
-         
+
+static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
 
   let fileName = fileData.name 
 
@@ -122,8 +122,17 @@ getImages: ControllerMethod = async (req:any ) => {
   }
  
 
+  return await AttachedImageController.uploadNewImage( fileDataBinary, mongoDB  )
+}
+         
 
-  let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData, fileDataBinary)
+
+ static async uploadNewImage(fileDataBuffer: any,    mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
+          
+ 
+
+/*
+  let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData, fileDataBuffer)
   
   if(!metadata){
     return {success:false, error:`File ${fileName} could not be read.`  }
@@ -134,7 +143,7 @@ getImages: ControllerMethod = async (req:any ) => {
   if(!success){
     return {success:false, error:`File ${fileName} is invalid: ${error}`  }
   }  
-
+*/
 
 
   if (typeof fileDataBinary == 'string'){ 
@@ -260,6 +269,8 @@ getImages: ControllerMethod = async (req:any ) => {
 
 
     }
+ 
+
 
 
 
