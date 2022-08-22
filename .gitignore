@@ -8,3 +8,6 @@ test/cache/**
 
 
 .env
+
+dist/**
+imagestorage/**
