@@ -132,33 +132,37 @@ export default class FileHelper{
 
 
 
-    static async downloadImageToBinary(imageURL){
+    static async downloadImageToBinary(imageURL) : Promise<Buffer>{
 
         return new Promise( (resolve,reject) => {
-        axios.get(imageURL,
-                {
-                    responseType: 'arraybuffer',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/pdf'
-                    }
-                })
-                .then((response) => {
+            axios.get(imageURL,
+                    {
+                        responseType: 'arraybuffer',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf'
+                        }
+                    })
+                    .then((response) => {
 
-                    resolve( response.data )
-                    
-                })
-                .catch((error) => reject(error));
+                        resolve( response.data )
+                        
+                    })
+                    .catch((error) => reject(error));
 
         })
 
     }
 
-    static async writeBufferToFile(buffer, filePath){
-        let fullPath = path.join(__dirname, filePath) 
+    static async writeBufferToFile(buffer, filePath) : Promise<String>{
+
+
+        let fullPath = path.join(__dirname, '../../'.concat(filePath)) 
         console.log({fullPath})
         fs.writeFileSync(fullPath , buffer); 
         console.log({buffer})
+
+        return  fullPath //new File(buffer, fullPath)
     }
 
     

@@ -178,7 +178,7 @@ describe('Attached Images Controller',    () => {
         })
 
 
-        it.only  ('should  download an image from api ', async () => {
+        it  ('should  download an image from api ', async () => {
 
 
             let imageURI = 'https://media.niftygateway.com/image/upload/v1597411820/XCOPY/3._XCOPY_DEATHLESS_l6txqt.gif'
@@ -187,7 +187,7 @@ describe('Attached Images Controller',    () => {
             let imageBuffer = await FileHelper.downloadImageToBinary( imageURI )
 
             let fileName = 'testfile.gif'
-            let writtenFile = await FileHelper.writeBufferToFile( imageBuffer, "../../imagestorage/".concat(fileName))
+            let writtenFile = await FileHelper.writeBufferToFile( imageBuffer, "/imagestorage/".concat(fileName))
 
            /* let binary = await FileHelper.getFileDataBinary(fileData)
 

@@ -15,6 +15,11 @@ import APIHelper from "../lib/api-helper";
 import { ImageMetadata } from "../dbextensions/ImageDBExtension";
 import { escapeString, stringToMongoId, unescapeString } from "../lib/parse-helper";
 
+
+const crypto = require('crypto');
+const hashingSecret= process.env.HASH_SECRET ? process.env.HASH_SECRET : "hashingSecret"
+
+
 var sizeOf = require('buffer-image-size');
 
 const MAX_FILE_SIZE = 10485760 //bytes //10MB
@@ -39,6 +44,7 @@ export default class AttachedImageController extends APIController {
     /*
       Starts out unattached, 
     */
+   /*
   createImage: ControllerMethod = async (req:any )=> {
      
     let publicAddress = APIHelper.sanitizeInput(req.fields.publicAddress, 'publicaddress')
@@ -66,7 +72,7 @@ export default class AttachedImageController extends APIController {
 
 }
 
-
+*/
 
 getImages: ControllerMethod = async (req:any ) => {
 
@@ -127,37 +133,38 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
          
 
 
- static async uploadNewImage(fileDataBuffer: any,    mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
+ static async uploadNewImage(fileDataBuffer: Buffer, mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
           
  
+ 
 
-/*
-  let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData, fileDataBuffer)
+    // Calling createHash method
+    const hash = crypto.createHash('sha256', hashingSecret)
+                        
+    // updating data
+    .update(fileDataBuffer)
+
+    // Encoding to be used
+    .digest('hex');
+
+    // Displays output
+   
+
+    let extension:string = '.gif'
+
+
+    let fileName = hash.concat(extension)
+
+    let newFilePath = "/imagestorage/".concat(fileName)
+
   
-  if(!metadata){
-    return {success:false, error:`File ${fileName} could not be read.`  }
-  }
 
-  let {success,error} = AttachedImageController.validateImageFile( metadata )
+    let fullFilePath = await FileHelper.writeBufferToFile( fileDataBuffer, newFilePath)
 
-  if(!success){
-    return {success:false, error:`File ${fileName} is invalid: ${error}`  }
-  }  
-*/
+    console.log( { fullFilePath});  
 
-
-  if (typeof fileDataBinary == 'string'){ 
-
-
-    let fileName = FileHelper.addRandomSaltToFileName(fileData.name) //thumbnailImage.name.concat(fileNameSalt)
-       
-    let {savedFile,error} = FileHelper.saveBinaryFileToCache(fileDataBinary, fileName)
-    
-    if(!savedFile){
-      console.log('could not save image file to cache', fileName)
-      console.error(error)
-      return {success:false, error:'could not save image file to cache'}
-    }
+    let metadata = await AttachedImageController.getImageMetadata(fileName,fileDataBuffer)
+ 
 
     let recordCreate = await AttachedImageController.insertNewUploadedImageRecord(
       fileName , metadata,   mongoDB)
@@ -165,9 +172,9 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
      
   
     return recordCreate
-  }
+   
 
-  return {success:false, error:'unknown error' }
+  //return {success:false, error:'unknown error' }
 
 
 
@@ -271,16 +278,45 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
     }
  
 
+    static async getImageMetadata(fileName:string, fileBuffer:Buffer ) : Promise<ImageMetadata>{
+       
 
-
-
-    static async getImageMetadata( file:any , fileDataBinary: string) : Promise<ImageMetadata>{
-        
- 
-
-      let imgBuffer = Buffer.from(fileDataBinary as string,'binary' ) 
+      let imgBuffer:Buffer = fileBuffer //Buffer.from(fileDataBinary as string,'binary' ) 
        
       let imageDimensions = {width:0,height:0}
+
+ 
+      try{
+        imageDimensions = sizeOf( imgBuffer );
+      }catch(err){ 
+        console.error(err)
+        // return {success:false, error:'Could not read file dimensions'}
+      }
+
+      //let combinedFileData = Object.assign( file, imageDimensions )
+
+      return  {
+        name: fileName,
+        sizeBytes: imgBuffer.length,
+        type: 'image',
+        widthPixels: imageDimensions.width,
+        heightPixels : imageDimensions.height  
+      }
+    }
+
+
+
+/*
+
+    static async getImageMetadata( fileBuffer:Buffer ) : Promise<ImageMetadata>{
+       
+
+      let imgBuffer:Buffer = await file.arrayBuffer() //Buffer.from(fileDataBinary as string,'binary' ) 
+       
+      let imageDimensions = {width:0,height:0}
+
+
+      
 
  
       
@@ -300,7 +336,7 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
         widthPixels: combinedFileData.width,
         heightPixels : combinedFileData.height  
       }
-    }
+    }*/
 
 
     static validateImageFile(metadata: ImageMetadata, validations? : FileValidation[]) : AssertionResponse{

@@ -1,16 +1,10 @@
 {
     
     
-    "shop":[
-        {"name":"minWidth", "value": "1000"},
-        {"name":"minHeight", "value": "700"}
-    ],
-
-
-
-    "product":[
-        {"name":"minWidth", "value": "1000"},
-        {"name":"minHeight", "value": "700"}
-
+    "digitalasset":[
+        {"name":"minWidth", "value": "400"},
+        {"name":"minHeight", "value": "400"}
     ]
+
+ 
 }

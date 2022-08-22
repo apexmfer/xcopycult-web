@@ -5,7 +5,7 @@ import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
 
 
 require('dotenv').config()
-export async function scrapeDataOpensea(query, mongoDB:ExtensibleMongoDB){
+export async function scrapeDataOpensea(args:string[], mongoDB:ExtensibleMongoDB){
  
     const options = { 
 
@@ -20,8 +20,10 @@ export async function scrapeDataOpensea(query, mongoDB:ExtensibleMongoDB){
     
     while(active){
 
+        let query = args[0]
+
         let uri = "https://api.opensea.io/api/v1/assets?"
-        uri = uri.concat(`collection=${query.collectionName}`)
+        uri = uri.concat(`collection=${query}`)
         uri = uri.concat("&limit=50")
         
         if(nextCursor){

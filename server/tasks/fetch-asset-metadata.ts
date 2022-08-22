@@ -9,7 +9,7 @@ import FileHelper from "../lib/file-helper";
 import { findRecord } from "../lib/mongo-helper";
 import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
  
-export async function fetchAssetMetadata(  mongoDB:ExtensibleMongoDB){
+export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMongoDB){
  
     const options = { 
 
@@ -37,6 +37,7 @@ export async function fetchAssetMetadata(  mongoDB:ExtensibleMongoDB){
         if(!nextAsset.success || !nextAsset.data)  {
             active = false
             break 
+            
         }
 
         console.log('next asset', nextAsset.data )
@@ -56,24 +57,26 @@ export async function fetchAssetMetadata(  mongoDB:ExtensibleMongoDB){
         let stringifiedResponse = JSON.stringify(response) 
  
       
-        await digitalAssetController.updateDigitalAsset({
+        let updateResponse = await digitalAssetController.updateDigitalAsset({
             assetId: nextAsset.data._id,
             modifyParams: {
                  metadataCached: stringifiedResponse ,
                  description: response.description}  
         }) 
 
+        console.log({updateResponse})
+
 
         let imageURL = response.image 
-
-        let downloadedImageDataBuffer = await FileHelper.downloadImageToBinary(  imageURL )
-
-        //console.log({downloadedImageData})
+        
+        let downloadedImageDataBuffer:Buffer = await FileHelper.downloadImageToBinary(  imageURL )
+ 
 
         let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, mongoDB  )
-        await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
+        let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
 
-
+        console.log({newImageRecord})
+        console.log({attach})
         //link image to this asset 
 
 
@@ -91,14 +94,18 @@ export async function fetchAssetMetadata(  mongoDB:ExtensibleMongoDB){
         await sleep(1000)
 
 
-    }
+    }   
+
+    console.log('finished task')
 
    
+
+}
+
+
 function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-
-}
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+  
