@@ -188,7 +188,11 @@ export default class DigitalAssetController extends APIController {
             digitalAssetId,
             title: unescapeString(digitalAsset.title),
             description: unescapeString(digitalAsset.description),
-            imageData
+            imageData,
+            metadataURI: digitalAsset.metadataURI,
+            contractAddress: digitalAsset.contractAddress
+
+            
         }
     }
   

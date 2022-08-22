@@ -8,9 +8,14 @@
 
        <div v-if="assetData" class="flex flex-row">
 
-         <div class="flex-grow">
-            <div class="text-2xl">  {{assetData.title}}  </div>
-            <div class="text-md text-gray-500">  {{assetData.description}}  </div>
+         <div class="flex-grow flex flex-col">
+            <div class="text-2xl my-4">  {{assetData.title}}  </div>
+            <div class="text-md text-gray-500 mb-8 ">  {{assetData.description}}  </div>
+
+              <a   target="_blank" :href="assetData.metadataURI" class="text-md text-gray-500 my-4"> Asset Metadata  </a>
+              <a  target="_blank" :href="blockScannerURL(assetData.contractAddress)" class="text-md text-gray-500 my-4"> Smart Contract on Etherscan   </a>
+
+             
         </div>
 
         <div class="w-1/2">
@@ -122,6 +127,11 @@ export default {
     renderError(msg){
       this.$refs.errorBanner.renderError(msg)
     },
+
+
+    blockScannerURL(assetAddress){
+      return `https://etherscan.io/address/${assetAddress}`
+    }
 
   },
 };
