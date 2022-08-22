@@ -152,15 +152,12 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
     // Encoding to be used
     .digest('hex');
 
-    
 
     let fileName = hash.concat(extension)
 
-    let newFilePath = "/imagestorage/".concat(fileName)
+    let imageStorageFolder:string = "/dist/imagestorage/"
 
-  
-
-    let fullFilePath = await FileHelper.writeBufferToFile( fileDataBuffer, newFilePath)
+    let fullFilePath = await FileHelper.writeBufferToFile( fileDataBuffer, imageStorageFolder.concat(fileName))
 
     console.log( { fullFilePath});  
 
@@ -169,8 +166,6 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
 
     let recordCreate = await AttachedImageController.insertNewUploadedImageRecord(
       fileName , metadata,  hash,  mongoDB)
-    
-     
   
     return recordCreate
    
@@ -444,7 +439,8 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
 
     static async getAttachedImageRenderData(img:any  ){
        return {
-          filename: unescapeString(img.filename) 
+          filename: unescapeString(img.filename),
+          metadata: unescapeString(img.metadata)
         
       }
     }

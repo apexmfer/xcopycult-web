@@ -48,6 +48,7 @@ describe('Digital Asset Controller',    () => {
     
             dbExtensions.push(...[
               new DigitalAssetDBExtension(mongoDB),
+              new ImageDBExtension(mongoDB)
            
             ])
  
@@ -81,6 +82,31 @@ describe('Digital Asset Controller',    () => {
             
 
         })
+
+
+        it.only('should get a digital asset ', async () => {
+
+            let sessionToken = 'testtoken'
+
+            let created = await digitalAssetController.createDigitalAsset( 
+                { fields: {
+                title:"The Doomed",
+                contractAddress:"0xb1000",
+                primaryTokenId:'12',
+                metadataURI: "ipfs://",
+                sessionToken
+               
+            } } )
+  
+            console.log({created})
+            
+            let digitalAssetsResponse = await digitalAssetController.getDigitalAssets({fields:{offset:'0'}})
+            let digitalAssets = digitalAssetsResponse.data
+
+            console.log({digitalAssets})
+
+        })
+
 
    
      

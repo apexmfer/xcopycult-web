@@ -7,7 +7,15 @@
    
 
       <div class=" py-24 ">
-        Gallery !
+      
+        <GalleryImageTile
+        
+          title="Guzzler"
+          :hyperlink="{name:'digitalassetshow', params:{id: 2}}"
+          :imageURL="getImageStoragePath('77bc994e88d7e33e1ea2b6a8912c4d5463ed7212fa8cc422cbe616e75db3ac2f.gif')"
+        
+         />
+
       </div>
 
       <div class="flex flex-row  py-12 w-full ">
@@ -38,33 +46,42 @@
  
 
 import AppHelper, {routeTo,redirectTo} from '@/js/app-helper'
+import {getImageStoragePath,getRouteTo} from '@/js/frontend-helper'
  
- 
+ import {resolveRoutedApiQuery} from '@/js/rest-api-helper'
 import PrimaryLayout from './PrimaryLayout.vue';
  
 import ButtonDefault from '@/views/elements/button_default.vue'
- 
+import GalleryImageTile from '@/views/elements/gallery/GalleryImageTile.vue'
 export default {
   name: "Home",
   props: [],
-  components: { PrimaryLayout, ButtonDefault},
+  components: { PrimaryLayout, ButtonDefault, GalleryImageTile},
   data() {
     return {
-        
+        digitalAssetsArray: [] 
     };
   },
 
-  created() {
+  async created() {
+    await this.loadDigitalAssets()
      
   },
 
   methods: {
     routeTo,
+    getImageStoragePath,
+    getRouteTo,
 
-    getRouteTo(dest) {
-      return FrontendHelper.getRouteTo(dest);
-    },
+    loadDigitalAssets(){
 
+      let offset = 0 
+
+      let assetsResponse = await resolveRoutedApiQuery('getDigitalAssets',{offset})
+
+      console.log({assetsResponse})
+    }
+ 
     
   },
 };

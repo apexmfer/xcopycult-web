@@ -62,9 +62,7 @@
 <script>
 
 import AppHelper, {routeTo,redirectTo} from '@/js/app-helper'
- 
- 
-import {isSignedIn} from '@/js/frontend-helper'
+  
 
 import NavbuttonsHorizontal from './Navbuttons_horizontal.vue';
 import NavbuttonsVertical from './Navbuttons_vertical.vue';
@@ -95,15 +93,15 @@ export default {
   methods: {
 
      routeTo,redirectTo,
-     isSignedIn,
-  /*
+    
+ 
       web3IsActive(){          
          return this.$store.state.web3Storage.active
        },
        activeAccount(){          
          return this.$store.state.web3Storage.account
-       } 
-  */
+       } ,
+ 
 
 
        showWeb3Modal(){

@@ -98,18 +98,9 @@ export function limitEntropy( input: any , entropyCount:number ){
     return input.toString().substring(0, input.toString().length - excessEntropy)
 }
 
-export function loadFromLocalStorage( key:string ){
+export function getImageStoragePath(imageFilename:string){
 
-   const item = localStorage.getItem(key)
+    const serverPath = getConfiguredRouteTo('api')
 
-   if(item && typeof item =='string'){
-    return JSON.parse(item)
-   }
-
-   return undefined
-   
-}
-
-export function saveToLocalStorage(key:string,value:any){
-    localStorage.setItem(key,JSON.stringify(value));
+    return `${serverPath}/imagestorage/${imageFilename}`
 }

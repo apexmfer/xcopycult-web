@@ -87,18 +87,20 @@ describe('Attached Images Controller',    () => {
 
             let imageURI = 'test/files/roboflyz.png'
 
+            let title ='roboflyz'
+
             const fileData = new LocalFileData(imageURI)
             fileData.path = imageURI
             console.log('fileData',fileData)
 
-            let binary = await FileHelper.getFileDataBinary(fileData)
+            let binary  = await FileHelper.getFileDataBinary(fileData)
 
             if(typeof binary != 'string' ){
                 throw 'wrong file type for binary'
                  
             }
           
-            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,binary)
+            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,title,Buffer.from(binary))
   
  
             let insert = await AttachedImageController.insertNewUploadedImageRecord( 'testFile', metadata , publicAddress,  mongoDB )
@@ -113,6 +115,7 @@ describe('Attached Images Controller',    () => {
  
             let insert = await AttachedImageController.insertNewUploadedImageRecord( 'getlost_0xa10d540bf6c208d4b22496819130a42d.jpg',  
                 {name: 'getlost.jpg',
+                title:'getlost',
                 sizeBytes: 3094285,
                 type: 'jpg',
                 widthPixels: 4480,
@@ -132,6 +135,8 @@ describe('Attached Images Controller',    () => {
 
             let imageURI = 'test/files/roboflyz.png'
 
+            let title = 'roboflyz'
+
             const fileData = new LocalFileData(imageURI)
             fileData.path = imageURI
             
@@ -142,7 +147,7 @@ describe('Attached Images Controller',    () => {
                  
             }
            
-            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,binary)
+            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,title,Buffer.from(binary))
   
  
             let validate = AttachedImageController.validateImageFile(metadata )
@@ -156,6 +161,8 @@ describe('Attached Images Controller',    () => {
 
             let imageURI = 'test/files/roboflyz.png'
 
+            let title = 'roboflyz'
+
             const fileData = new LocalFileData(imageURI)
             fileData.path = imageURI
             console.log('fileData',fileData)
@@ -167,7 +174,7 @@ describe('Attached Images Controller',    () => {
                  
             }
 
-            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,binary)
+            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,title,Buffer.from(binary))
   
 
             let validations = [{"name":"minWidth", "value": "1000"}]
@@ -187,26 +194,12 @@ describe('Attached Images Controller',    () => {
             let imageBuffer = await FileHelper.downloadImageToBinary( imageURI )
 
             let fileName = 'testfile.gif'
-            let writtenFile = await FileHelper.writeBufferToFile( imageBuffer, "/imagestorage/".concat(fileName))
+            let writtenFile = await FileHelper.writeBufferToFile( imageBuffer, "/dist/imagestorage/".concat(fileName))
 
-           /* let binary = await FileHelper.getFileDataBinary(fileData)
-
-            if(typeof binary != 'string' ){
-                throw 'wrong file type for binary'
-                 
-            }
-
-            let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,binary)
-  
-
-            let validations = [{"name":"minWidth", "value": "1000"}]
-            let validate = AttachedImageController.validateImageFile(metadata, validations )
-            */
-
-            //expect(validate.success).to.eql(false)
+         
         })
 
-        
+         
  
        
        

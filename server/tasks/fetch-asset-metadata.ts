@@ -22,7 +22,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
 
     try{
-    fs.mkdirSync('../../imagestorage')
+    fs.mkdirSync('../../dist/imagestorage')
     }catch(e){}
 
      

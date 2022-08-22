@@ -18,6 +18,7 @@ import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "
 
 import { DigitalAsset, DigitalAssetDefinition } from "../dbextensions/DigitalAssetDBExtension";
 import UserSessionController from "./UserSessionController";
+import { AttachedImageDefinition } from "../dbextensions/ImageDBExtension";
 
 export default class DigitalAssetController extends APIController {
 
@@ -88,30 +89,31 @@ export default class DigitalAssetController extends APIController {
 
 
     getDigitalAssets: ControllerMethod = async (req:any )=> {
-        let validatedSession = await this.userSessionController.validateSessionTokenParam(req)
+        /*let validatedSession = await this.userSessionController.validateSessionTokenParam(req)
         
         if(!validatedSession.success){
             return {success:false,error:"requires validated session"}
         }
 
-
         let parentUserId = mongoIdToString(validatedSession.data.userId)
-        
+        */
+
+        if(!req.fields.offset) req.fields.offset = '0'
+
+
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
             req.fields,
-            {parentThreadId:'string'})
+            {offset:'number'})
 
         if(!sanitizeResponse.success) return sanitizeResponse
 
         let sanitizedData = sanitizeResponse.data
         
-        const {parentThreadId} = sanitizedData
+        const {offset} = sanitizedData
 
-        let matchingResponse = await findRecords( {parentThreadId}, DigitalAssetDefinition, this.mongoDB )
-
+        let matchingResponse = await findRecords( { }, DigitalAssetDefinition, this.mongoDB )
        
         if(!matchingResponse.success) return matchingResponse
-
 
         let outputArray = await Promise.all(matchingResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
 
@@ -160,10 +162,20 @@ export default class DigitalAssetController extends APIController {
         
         let digitalAssetId = mongoIdToString( digitalAsset._id ) 
 
+        let primaryAttachedImageResponse = await findRecord({parentId:digitalAssetId,parentType:'digitalasset'},AttachedImageDefinition,  mongoDB)
+
+        let primaryAttachedImage = primaryAttachedImageResponse.data 
+
+        let imageData 
+        
+        if(primaryAttachedImage){
+         imageData = await AttachedImageController.getAttachedImageRenderData(primaryAttachedImage)
+        }
         return {
             digitalAssetId,
             title: unescapeString(digitalAsset.title),
-            description: unescapeString(digitalAsset.description) 
+            description: unescapeString(digitalAsset.description),
+            imageData
         }
     }
   
