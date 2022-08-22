@@ -85,19 +85,32 @@ export default class DigitalAssetController extends APIController {
         
         return insertResponse  
     }
+ 
 
+    getDigitalAsset: ControllerMethod = async (req:any )=> {
+       
+        const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
+            req.fields,
+            {digitalAssetId:'string'})
+
+        if(!sanitizeResponse.success) return sanitizeResponse
+
+        let sanitizedData = sanitizeResponse.data
+        
+        const {digitalAssetId} = sanitizedData
+
+        let matchingResponse = await findRecordById( digitalAssetId, DigitalAssetDefinition, this.mongoDB )
+       
+        if(!matchingResponse.success) return matchingResponse
+            
+        let outputData = await DigitalAssetController.getDigitalAssetRenderData( matchingResponse.data , this.mongoDB)
+        
+        return {success:true, data: outputData}
+    }
 
 
     getDigitalAssets: ControllerMethod = async (req:any )=> {
-        /*let validatedSession = await this.userSessionController.validateSessionTokenParam(req)
-        
-        if(!validatedSession.success){
-            return {success:false,error:"requires validated session"}
-        }
-
-        let parentUserId = mongoIdToString(validatedSession.data.userId)
-        */
-
+       
         if(!req.fields.offset) req.fields.offset = '0'
 
 

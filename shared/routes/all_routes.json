@@ -6,7 +6,8 @@
     {"type":"post","uri":"/createDigitalAsset","method":"createDigitalAsset","controller":"digitalasset"},
        
        
-    {"type":"post","uri":"/getDigitalAssets","method":"getDigitalAssets","controller":"digitalasset"}
+    {"type":"post","uri":"/getDigitalAssets","method":"getDigitalAssets","controller":"digitalasset"},
+    {"type":"post","uri":"/getDigitalAsset","method":"getDigitalAsset","controller":"digitalasset"}
        
 
        

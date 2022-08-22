@@ -9,11 +9,11 @@
       <div class=" py-24 ">
       
         <GalleryImageTile
-        
-          title="Guzzler"
-          :hyperlink="{name:'digitalassetshow', params:{id: 2}}"
-          :imageURL="getImageStoragePath('77bc994e88d7e33e1ea2b6a8912c4d5463ed7212fa8cc422cbe616e75db3ac2f.gif')"
-        
+          v-for="assetData of digitalAssetsArray"
+          :key="assetData.digitalAssetId"
+          :title="assetData.title"
+          :hyperlink="{name:'digitalassetshow', params:{id: assetData.digitalAssetId}}"
+          :imageURL="getImageStoragePath(assetData.imageData.filename)"
          />
 
       </div>
@@ -24,7 +24,7 @@
           <ButtonDefault 
            :customClass="' w-full mt-8 bg-purple-500 border-2 border-neutral-600 hover:bg-purple-400 text-gray-200'"  
            @clicked="routeTo($router,{name:'digitalassetsnew'})" 
-           > Add XCOPY Digital Assets </ButtonDefault>
+           > Add Missing XCOPY Assets </ButtonDefault>
 
          
         </div>
@@ -73,13 +73,32 @@ export default {
     getImageStoragePath,
     getRouteTo,
 
-    loadDigitalAssets(){
+    async loadDigitalAssets(){
 
-      let offset = 0 
+      let offset = "0"
 
       let assetsResponse = await resolveRoutedApiQuery('getDigitalAssets',{offset})
 
       console.log({assetsResponse})
+
+      if(!assetsResponse.success){
+        console.error(assetsResponse.error)
+        return 
+      }
+
+      this.digitalAssetsArray=[]
+
+      for(let asset of assetsResponse.data){
+
+        let assetData = Object.assign({},asset)
+
+        if(assetData && assetData.imageData){  
+
+          this.digitalAssetsArray.push(assetData)
+        }
+
+
+      }
     }
  
     

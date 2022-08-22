@@ -4,8 +4,21 @@
  
     <div class="section w-container flex flex-col my-16 "> 
 
+'     
 
-      Digital Asset Show 
+       <div v-if="assetData" class="flex flex-row">
+
+         <div class="flex-grow">
+            <div class="text-2xl">  {{assetData.title}}  </div>
+            <div class="text-md text-gray-500">  {{assetData.description}}  </div>
+        </div>
+
+        <div class="w-1/2">
+        <img :src="getImageStoragePath(assetData.imageData.filename)" />
+          </div>
+      </div>
+    
+
     </div>
   
   
@@ -41,11 +54,13 @@ import AutoForm from '@/views/components/form/autoform.vue'
  
 
 
+import {getImageStoragePath,getRouteTo} from '@/js/frontend-helper'
  
+
 import {isSignedIn} from '@/js/frontend-helper'
 
 export default {
-    name: "ThreadShow",
+    name: "DigitalAssetShow",
     props: [],
     components: {
       PrimaryLayout,
@@ -63,7 +78,7 @@ export default {
     data() {
         return {
             activeAccount: undefined,          
-            digitalAssetData: undefined, 
+            assetData: undefined, 
             
         };
     },
@@ -84,39 +99,24 @@ export default {
   methods: {
      
     routeTo, 
+    getImageStoragePath,
 
  
     async loadDigitalAssetData(){
 
 
-      const threadId = this.$route.params.threadId
+      const digitalAssetId = this.$route.params.id
 
-      let response = await resolveRoutedApiQuery('getThread', {threadId})
+      let response = await resolveRoutedApiQuery('getDigitalAsset', {digitalAssetId})
 
-      this.threadData = response.data
-        
+      console.log({response})
+      this.assetData = response.data        
        
 
-      console.log('threadData',this.threadData)
+      console.log('assetData',this.assetData)
     },
 
-
-    async loadPosts(){
-
-
-      const parentThreadId = this.$route.params.threadId
-
-      let response = await resolveRoutedApiQuery('getPosts', {parentThreadId})
-
-      this.posts = [] // response.data 
-
-      for(let post of response.data){
-        this.posts.push(post)
-      }
-
-
-      console.log('posts',this.posts)
-    },
+ 
 
 
     renderError(msg){

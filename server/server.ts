@@ -32,6 +32,7 @@ import CategoryManager from './segmentmanagers/CategoryManager'
 import DigitalAssetController from './controllers/DigitalAssetController'
 import DegenAuthController from './controllers/DegenAuthController'
 import ThreadController from './controllers/ThreadController'
+import ImageDBExtension from './dbextensions/ImageDBExtension'
 
 
 require('dotenv').config()
@@ -61,7 +62,8 @@ let serverConfig = serverConfigFile[envmode]
     dbExtensions.push(...[
       new DegenAuthExtension(mongoDB),
       new DigitalAssetDBExtension(mongoDB), 
-      new UserDBExtension(mongoDB)
+      new UserDBExtension(mongoDB),
+      new ImageDBExtension(mongoDB)
     ])
 
     dbExtensions.map(ext => ext.bindModelsToDatabase())
