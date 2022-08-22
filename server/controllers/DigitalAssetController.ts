@@ -112,19 +112,20 @@ export default class DigitalAssetController extends APIController {
     getDigitalAssets: ControllerMethod = async (req:any )=> {
        
         if(!req.fields.offset) req.fields.offset = '0'
+        if(!req.fields.status) req.fields.status = 'active'
 
 
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
             req.fields,
-            {offset:'number'})
+            {offset:'number', status:'string'})
 
         if(!sanitizeResponse.success) return sanitizeResponse
 
         let sanitizedData = sanitizeResponse.data
         
-        const {offset} = sanitizedData
+        const {offset,status} = sanitizedData
 
-        let matchingResponse = await findRecords( { }, DigitalAssetDefinition, this.mongoDB )
+        let matchingResponse = await findRecords( { status }, DigitalAssetDefinition, this.mongoDB )
        
         if(!matchingResponse.success) return matchingResponse
 
@@ -190,9 +191,9 @@ export default class DigitalAssetController extends APIController {
             description: unescapeString(digitalAsset.description),
             imageData,
             metadataURI: digitalAsset.metadataURI,
-            contractAddress: digitalAsset.contractAddress
+            contractAddress: digitalAsset.contractAddress,
+            status: digitalAsset.status
 
-            
         }
     }
   

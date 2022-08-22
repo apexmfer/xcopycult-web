@@ -152,12 +152,20 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
     // Encoding to be used
     .digest('hex');
 
+    if(!extension.endsWith('png') 
+    && !extension.endsWith('gif')
+    && !extension.endsWith('jpg')
+    && !extension.endsWith('jpeg')){
+      extension = '.gif'
+    }
+
 
     let fileName = hash.concat(extension)
 
     let imageStorageFolder:string = "/dist/imagestorage/"
 
-    let fullFilePath = await FileHelper.writeBufferToFile( fileDataBuffer, imageStorageFolder.concat(fileName))
+    let fullFilePath = await FileHelper.writeBufferToFile( 
+      fileDataBuffer, imageStorageFolder.concat(fileName))
 
     console.log( { fullFilePath});  
 

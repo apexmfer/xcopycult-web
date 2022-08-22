@@ -12,6 +12,8 @@ import DigitalAssetDBExtension from '../dbextensions/DigitalAssetDBExtension'
 import ImageDBExtension from '../dbextensions/ImageDBExtension'
 import UserDBExtension from '../dbextensions/UserDBExtension'
 import { fetchAssetMetadata } from './fetch-asset-metadata'
+import { parseSuperrareInput } from './parse-sr-input'
+import { scrapeDataLocal } from './scrape-data-local'
 import { scrapeDataOpensea } from './scrape-data-opensea'
 
 let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
@@ -21,7 +23,9 @@ let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
 
 const taskMap: any = { 
   fetchAssetMetadata,
-  scrapeDataOpensea
+  scrapeDataOpensea,
+  scrapeDataLocal,
+  parseSuperrareInput
 }
 
 /*
@@ -30,6 +34,7 @@ npm run task scrapeDataOpensea xcopy
 
 npm run task fetchAssetMetadata
 
+npm run task parseSuperrareInput
 */
 
 
@@ -81,8 +86,7 @@ let serverConfig = serverConfigFile[envmode]
     
     await taskMethod(taskArgs, mongoDB)
 
-    //await scrapeDataOpensea({collectionName:'xcopy'},mongoDB)
-    //await fetchAssetMetadata( mongoDB )
+    console.log('Task finished. ')
      
 
 }

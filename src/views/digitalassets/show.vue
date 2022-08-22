@@ -12,8 +12,8 @@
             <div class="text-2xl my-4">  {{assetData.title}}  </div>
             <div class="text-md text-gray-500 mb-8 ">  {{assetData.description}}  </div>
 
-              <a   target="_blank" :href="assetData.metadataURI" class="text-md text-gray-500 my-4"> Asset Metadata  </a>
-              <a  target="_blank" :href="blockScannerURL(assetData.contractAddress)" class="text-md text-gray-500 my-4"> Smart Contract on Etherscan   </a>
+              <a   target="_blank" :href="assetData.metadataURI" class="text-sm text-gray-500 mt-4 my-2 no-underline hover:underline"> 🔗 Asset Metadata  </a>
+              <a  target="_blank" :href="blockScannerURL(assetData.contractAddress)" class="text-sm text-gray-500 my-2 no-underline hover:underline"> 🔗 Smart Contract [Etherscan]   </a>
 
              
         </div>

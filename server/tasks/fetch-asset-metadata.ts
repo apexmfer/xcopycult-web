@@ -78,7 +78,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             assetId: nextAsset.data._id,
             modifyParams: {
                  metadataCached: stringifiedResponse ,
-                 description: response.data.description}  
+                 description: formatDescription(response.data.description)}  
         }) 
 
         console.log({updateResponse})
@@ -119,6 +119,26 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
    
 
+}
+
+
+function formatDescription(input:any){
+
+    if(input && Array.isArray(input)){
+
+        let output = ''
+
+        for(let row of input){
+            output = output.concat(row)
+        }
+
+        //output = output.replace('\n','')
+
+
+        return output 
+    }
+  
+    return input 
 }
 
 

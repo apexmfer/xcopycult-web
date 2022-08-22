@@ -56,7 +56,7 @@ export async function scrapeDataOpensea(args:string[], mongoDB:ExtensibleMongoDB
             let image_preview_url = asset.image_preview_url 
 
             try{
-                await digitalAssetController.insertNewDigitalAsset({
+                let newAssetResponse = await digitalAssetController.insertNewDigitalAsset({
                     parentUserId: undefined,
                     title: nameSimple,
                     contractAddress: asset.asset_contract.address ,
@@ -64,6 +64,14 @@ export async function scrapeDataOpensea(args:string[], mongoDB:ExtensibleMongoDB
                     metadataURI: asset.token_metadata 
 
                 })
+
+                let newAsset = newAssetResponse.data 
+
+                await digitalAssetController.updateDigitalAsset(
+                    {assetId: newAsset._id,modifyParams:{status:'active'}} 
+                )
+
+
             }catch(e){
                 console.error(e)
             }

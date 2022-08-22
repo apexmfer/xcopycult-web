@@ -14,6 +14,8 @@ const {ObjectId} = require('mongodb');
   export function unescapeString(input: string | undefined ) : string {
     if(!input) return ""
 
+    console.log({input})
+
     return decodeURI(input)
   }
 
