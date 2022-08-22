@@ -33,10 +33,14 @@ export async function scrapeDataOpensea(args:string[], mongoDB:ExtensibleMongoDB
         let response = await resolveGetQueryAsserted(uri,options)
 
         console.log({response})
-    
-        nextCursor = response.next 
 
-        let assets = response.assets
+        if(!response.success){
+            continue
+        }
+    
+        nextCursor = response.data.next 
+
+        let assets = response.data.assets
 
         //console.log(JSON.stringify(assets))
 

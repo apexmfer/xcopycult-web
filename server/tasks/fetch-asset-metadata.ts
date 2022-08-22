@@ -9,6 +9,8 @@ import FileHelper from "../lib/file-helper";
 import { findRecord } from "../lib/mongo-helper";
 import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
  
+import fs from 'fs'
+
 export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMongoDB){
  
     const options = { 
@@ -17,6 +19,11 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
     }  
 
     let active = true 
+
+
+    try{
+    fs.mkdirSync('../../imagestorage')
+    }catch(e){}
 
      
     
@@ -53,7 +60,17 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         let response = await resolveGetQueryAsserted(uri,options)
 
         console.log({response})
-    
+        
+        if(!response.success){
+            
+            continue 
+        }
+        
+        let remoteImageTitle:string = response.data.image 
+        let extension:string = remoteImageTitle.substring(remoteImageTitle.lastIndexOf('.'))
+
+        console.log({extension})
+
         let stringifiedResponse = JSON.stringify(response) 
  
       
@@ -61,18 +78,20 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             assetId: nextAsset.data._id,
             modifyParams: {
                  metadataCached: stringifiedResponse ,
-                 description: response.description}  
+                 description: response.data.description}  
         }) 
 
         console.log({updateResponse})
 
+        let imageTitle = nextAsset.data.title 
 
-        let imageURL = response.image 
+
+        let imageURL = response.data.image 
         
         let downloadedImageDataBuffer:Buffer = await FileHelper.downloadImageToBinary(  imageURL )
  
 
-        let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, mongoDB  )
+        let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, imageTitle, extension, mongoDB  )
         let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
 
         console.log({newImageRecord})

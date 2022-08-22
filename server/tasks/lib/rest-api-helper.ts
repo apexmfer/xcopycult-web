@@ -11,7 +11,7 @@ export async function resolveGetQueryAsserted(uri:string, options:any ) /* : Pro
   
                   const results = res.data 
   
-                  return results
+                  return {success:true, data: results }
               })
               .catch((error:any) => {
   

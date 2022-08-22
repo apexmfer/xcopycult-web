@@ -126,14 +126,19 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
       console.error(error)
       return {success:false, error:`Could not read file ${fileName}  `  }
   }
- 
 
-  return await AttachedImageController.uploadNewImage( fileDataBinary, mongoDB  )
+
+  let title = fileName.substring(0,fileName.lastIndexOf('.'))
+  let extension:string = fileName.substring(fileName.lastIndexOf('.'))
+
+
+
+  return await AttachedImageController.uploadNewImage( fileDataBinary, title,extension, mongoDB  )
 }
          
 
 
- static async uploadNewImage(fileDataBuffer: Buffer, mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
+ static async uploadNewImage(fileDataBuffer: Buffer, title:string, extension:string,  mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
           
  
  
@@ -147,11 +152,7 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
     // Encoding to be used
     .digest('hex');
 
-    // Displays output
-   
-
-    let extension:string = '.gif'
-
+    
 
     let fileName = hash.concat(extension)
 
@@ -163,11 +164,11 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
 
     console.log( { fullFilePath});  
 
-    let metadata = await AttachedImageController.getImageMetadata(fileName,fileDataBuffer)
+    let metadata = await AttachedImageController.getImageMetadata(fileName,title,fileDataBuffer)
  
 
     let recordCreate = await AttachedImageController.insertNewUploadedImageRecord(
-      fileName , metadata,   mongoDB)
+      fileName , metadata,  hash,  mongoDB)
     
      
   
@@ -230,13 +231,14 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
 
   
      
-    static async insertNewUploadedImageRecord(filename:string, metadata: ImageMetadata,  mongoDB: ExtensibleDB): Promise<AssertionResponse>{
+    static async insertNewUploadedImageRecord(filename:string, metadata: ImageMetadata, sha256_hash:string, mongoDB: ExtensibleDB): Promise<AssertionResponse>{
   
        
       let metadataStringified = JSON.stringify(metadata)
 
         let result = await mongoDB.getModel(AttachedImageDefinition).create({
           filename,
+          sha256_hash,
          // adminAddress: AppHelper.toChecksumAddress( adminAddress ) ,
           metadata: metadataStringified ,
           status:'detached'}) 
@@ -278,7 +280,7 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
     }
  
 
-    static async getImageMetadata(fileName:string, fileBuffer:Buffer ) : Promise<ImageMetadata>{
+    static async getImageMetadata(fileName:string,title:string, fileBuffer:Buffer ) : Promise<ImageMetadata>{
        
 
       let imgBuffer:Buffer = fileBuffer //Buffer.from(fileDataBinary as string,'binary' ) 
@@ -297,6 +299,7 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
 
       return  {
         name: fileName,
+        title,
         sizeBytes: imgBuffer.length,
         type: 'image',
         widthPixels: imageDimensions.width,
