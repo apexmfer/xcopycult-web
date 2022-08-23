@@ -16,7 +16,7 @@
 
          <div class="flex flex-row">
 
-         <div class="flex-grow flex flex-col">
+         <div class="  flex flex-col w-1/2  pr-2">
             
             <div class="text-md text-gray-500 mb-8 ">  {{assetData.description}}  </div>
 
@@ -26,7 +26,7 @@
              
         </div>
 
-        <div class="w-1/2">
+        <div class="w-1/2 p-4">
         <img :src="getImageStoragePath(assetData.imageData.filename)" />
         </div>
       </div>
