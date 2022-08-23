@@ -17,6 +17,12 @@
     
 
 
+## ISSUES 
+
+mr elevator
+blood 
+
+
 
 
 
