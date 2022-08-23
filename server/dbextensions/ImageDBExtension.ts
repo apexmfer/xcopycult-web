@@ -20,6 +20,9 @@ export interface ImageMetadata extends FileMetadata {
   export interface AttachedImage {
     filename:  string,
     title:string,
+
+    tagname:string, //like   thumbnail
+
     metadata: string,  //stringified 
     sha256_hash: string,
 
@@ -36,6 +39,7 @@ export interface ImageMetadata extends FileMetadata {
   export const  AttachedImageSchema = new Schema<AttachedImage>({    
     filename:  { type: String, index: true, unique: true },
     title:String,
+    tagname:String,
     metadata: String ,
     sha256_hash: String,
     adminAddress: { type: String  },

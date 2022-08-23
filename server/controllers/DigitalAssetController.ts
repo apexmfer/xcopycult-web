@@ -103,7 +103,7 @@ export default class DigitalAssetController extends APIController {
        
         if(!matchingResponse.success) return matchingResponse
             
-        let outputData = await DigitalAssetController.getDigitalAssetRenderData( matchingResponse.data , this.mongoDB)
+        let outputData = await DigitalAssetController.getDigitalAssetRenderData( matchingResponse.data , 'primary', this.mongoDB)
         
         return {success:true, data: outputData}
     }
@@ -140,7 +140,7 @@ export default class DigitalAssetController extends APIController {
 
         for(let data of matchingResponse.data){
             try{
-            let renderData = await DigitalAssetController.getDigitalAssetRenderData( data , this.mongoDB)
+            let renderData = await DigitalAssetController.getDigitalAssetRenderData( data , 'thumbnail', this.mongoDB)
             outputArray.push(renderData)
             }catch(e){
                 console.error(e)
@@ -187,12 +187,22 @@ export default class DigitalAssetController extends APIController {
  
 
  
-    static async getDigitalAssetRenderData(digitalAsset:DigitalAsset & MongoRecord,  mongoDB: ExtensibleDB ){
+    static async getDigitalAssetRenderData(
+        digitalAsset:DigitalAsset & MongoRecord, 
+        tagname: string | undefined,
+         mongoDB: ExtensibleDB ){   
+
+        if(!tagname){
+            tagname = 'thumbnail'
+        }
 
         
         let digitalAssetId = mongoIdToString( digitalAsset._id ) 
 
-        let primaryAttachedImageResponse = await findRecord({parentId:digitalAssetId,parentType:'digitalasset'},AttachedImageDefinition,  mongoDB)
+        let primaryAttachedImageResponse = await findRecord({
+            parentId:digitalAssetId,
+            parentType:'digitalasset',
+            tagname:'primary'},AttachedImageDefinition,  mongoDB)
 
         let primaryAttachedImage = primaryAttachedImageResponse.data 
 

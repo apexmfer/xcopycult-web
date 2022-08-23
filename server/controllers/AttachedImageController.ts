@@ -138,7 +138,12 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
          
 
 
- static async uploadNewImage(fileDataBuffer: Buffer, title:string, extension:string,  mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
+ static async uploadNewImage(
+   fileDataBuffer: Buffer, 
+   title:string, 
+   extension:string, 
+   tagname:string,
+   mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
           
  
  
@@ -173,7 +178,7 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
  
 
     let recordCreate = await AttachedImageController.insertNewUploadedImageRecord(
-      fileName , metadata,  hash,  mongoDB)
+      fileName , metadata,  hash, tagname, mongoDB)
   
     return recordCreate
    
@@ -234,7 +239,12 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
 
   
      
-    static async insertNewUploadedImageRecord(filename:string, metadata: ImageMetadata, sha256_hash:string, mongoDB: ExtensibleDB): Promise<AssertionResponse>{
+    static async insertNewUploadedImageRecord(
+      filename:string, 
+      metadata: ImageMetadata, 
+      sha256_hash:string, 
+      tagname:string,
+      mongoDB: ExtensibleDB): Promise<AssertionResponse>{
   
        
       let metadataStringified = JSON.stringify(metadata)
@@ -242,6 +252,7 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
         let result = await mongoDB.getModel(AttachedImageDefinition).create({
           filename,
           sha256_hash,
+          tagname,
          // adminAddress: AppHelper.toChecksumAddress( adminAddress ) ,
           metadata: metadataStringified ,
           status:'detached'}) 

@@ -11,6 +11,8 @@ import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
  
 import fs from 'fs'
 
+const gifResize = require('@gumlet/gif-resize'); 
+
 export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMongoDB){
  
     const options = { 
@@ -90,10 +92,20 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         let imageURL = response.data.image 
         
         let downloadedImageDataBuffer:Buffer = await FileHelper.downloadImageToBinary(  imageURL )
- 
+        
+         
+        let resizedBuffer = await gifResize(
+            {  width: 260 }
+            )(downloadedImageDataBuffer) 
+           
 
-        let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, imageTitle, extension, mongoDB  )
+
+        let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, imageTitle, extension, 'primary', mongoDB  )
         let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
+        
+        let newThumbnailImageRecord = await AttachedImageController.uploadNewImage( resizedBuffer, imageTitle, extension, 'thumbnail', mongoDB  )
+        let attachThumbnail = await AttachedImageController.attachImage(newThumbnailImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
+
 
         console.log({newImageRecord})
         console.log({attach})
