@@ -54,12 +54,7 @@
             alignSelf='center'
             position='relative'>
           
-             <CButton variant='link' class="text-neutral-800" colorScheme='blue' size='sm' @click="routeTo($router,{name:'categoriesindex'})" >
-              Recent Activity
-            </CButton>
-             <CButton variant='link' class="text-neutral-500" colorScheme='blue' size='sm' @click="routeTo($router,{name:'threadnew'})" >
-              Add a Report
-            </CButton>
+             
              
           </CStack>
         </CStack>
