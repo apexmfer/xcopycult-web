@@ -10,13 +10,13 @@
 
          <div>
 
-              <div class="text-2xl my-4">  {{assetData.title}}  </div>
+              <div class="text-2xl my-4 px-2">  {{assetData.title}}  </div>
 
          </div>
 
-         <div class="flex flex-row">
+         <div class="flex flex-col md:flex-row">
 
-         <div class="  flex flex-col w-1/2  pr-2">
+         <div class="  flex flex-col md:w-1/2  p-2">
             
             <div class="text-md text-gray-500 mb-8 ">  {{assetData.description}}  </div>
 
@@ -26,7 +26,7 @@
              
         </div>
 
-        <div class="w-1/2 p-4 flex flex-col ">
+        <div class="md:w-1/2 p-4 flex flex-col ">
            <img :src="getImageStoragePath(assetData.imageData.filename)" />
           <div class="text-center"> 
               <a :href="getImageStoragePath(assetData.imageData.filename)" target="_blank" class="text-sm text-gray-500 my-2 no-underline hover:underline" > View Fullsize </a>
