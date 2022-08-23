@@ -31,7 +31,28 @@ export async function findRecord( query: any, definition: TableDefinition, mongo
 
 export async function findRecords( query: any, definition: TableDefinition, mongoDB: ExtensibleDB ) : Promise<AssertionResponse>{
 
-    let items = await mongoDB.getModel(definition).find( query )
+
+
+    let items = await mongoDB.getModel(definition).find( query ).limit(limit)
+    
+    if(!items ){
+        return {success:false, error:`Could not find records for ${definition.tableName}`}
+    }
+
+    items = items.filter(x => typeof x != 'undefined')
+
+    return {success:true, data: items}
+}
+
+
+export async function findRecordsWithOptions( query: any, options:any, definition: TableDefinition, mongoDB: ExtensibleDB ) : Promise<AssertionResponse>{
+    
+    let limit = 1000
+    if(options.limit && !isNaN(options.limit)){
+        limit = options.limit;
+    }
+
+    let items = await mongoDB.getModel(definition).find( query ).limit(limit)
     
     if(!items ){
         return {success:false, error:`Could not find records for ${definition.tableName}`}

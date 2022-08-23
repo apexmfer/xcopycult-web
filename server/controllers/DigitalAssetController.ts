@@ -10,7 +10,7 @@ import AttachedImageController, { FileValidation } from "./AttachedImageControll
  
 import ExtensibleDB from 'extensible-mongoose'
   
-import { createRecord, deleteRecord, findRecord, findRecordById, findRecords, modifyRecord } from "../lib/mongo-helper";
+import { createRecord, deleteRecord, findRecord, findRecordById, findRecords, findRecordsWithOptions, modifyRecord } from "../lib/mongo-helper";
 import APIController, { InternalMethod, MongoRecord } from "./APIController"; 
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
@@ -112,20 +112,25 @@ export default class DigitalAssetController extends APIController {
     getDigitalAssets: ControllerMethod = async (req:any )=> {
        
         if(!req.fields.offset) req.fields.offset = '0'
+        if(!req.fields.limit) req.fields.limit = '50'
         if(!req.fields.status) req.fields.status = 'active'
 
 
         const sanitizeResponse = APIHelper.sanitizeAndValidateInputs(
             req.fields,
-            {offset:'number', status:'string'})
+            {offset:'number', limit:'number', status:'string'})
 
         if(!sanitizeResponse.success) return sanitizeResponse
 
         let sanitizedData = sanitizeResponse.data
         
-        const {offset,status} = sanitizedData
+        let {offset,status,limit} = sanitizedData
 
-        let matchingResponse = await findRecords( { status }, DigitalAssetDefinition, this.mongoDB )
+        if(isNaN(limit) || limit > 50){
+            limit = 50
+        }
+
+        let matchingResponse = await findRecordsWithOptions( { status }, {limit}, DigitalAssetDefinition, this.mongoDB )
        
         if(!matchingResponse.success) return matchingResponse
 
