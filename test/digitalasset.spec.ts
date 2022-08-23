@@ -84,7 +84,7 @@ describe('Digital Asset Controller',    () => {
         })
 
 
-        it.only('should get a digital asset ', async () => {
+        it('should get a digital asset ', async () => {
 
             let sessionToken = 'testtoken'
 
