@@ -205,10 +205,7 @@ static async uploadNewImageFromFile(fileData: any,  tagname:string, mongoDB: Ext
 
       if(imageRecord.status != 'detached'){
         return {success: false, error: 'Image attachment failed.'}
-      }
-
-      console.log( )
-
+      } 
  
 
       let metadata = JSON.parse(imageRecord.metadata)
