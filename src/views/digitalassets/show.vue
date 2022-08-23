@@ -26,8 +26,11 @@
              
         </div>
 
-        <div class="w-1/2 p-4">
-        <img :src="getImageStoragePath(assetData.imageData.filename)" />
+        <div class="w-1/2 p-4 flex flex-col ">
+           <img :src="getImageStoragePath(assetData.imageData.filename)" />
+          <div class="text-center"> 
+              <a :href="getImageStoragePath(assetData.imageData.filename)" target="_blank" class="text-sm text-gray-500 my-2 no-underline hover:underline" > View Fullsize </a>
+          </div>
         </div>
       </div>
 
