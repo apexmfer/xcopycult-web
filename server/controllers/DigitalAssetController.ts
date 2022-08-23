@@ -202,7 +202,8 @@ export default class DigitalAssetController extends APIController {
         let primaryAttachedImageResponse = await findRecord({
             parentId:digitalAssetId,
             parentType:'digitalasset',
-            tagname:'primary'},AttachedImageDefinition,  mongoDB)
+            tagname
+        },AttachedImageDefinition,  mongoDB)
 
         let primaryAttachedImage = primaryAttachedImageResponse.data 
 
