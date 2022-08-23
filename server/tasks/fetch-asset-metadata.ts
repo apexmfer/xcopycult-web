@@ -103,23 +103,27 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, imageTitle, extension, 'primary', mongoDB  )
         let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
         
+
+        console.log({newImageRecord})
+        console.log({attach})
+
         let newThumbnailImageRecord = await AttachedImageController.uploadNewImage( resizedBuffer, imageTitle, extension, 'thumbnail', mongoDB  )
         let attachThumbnail = await AttachedImageController.attachImage(newThumbnailImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
 
 
-        console.log({newImageRecord})
-        console.log({attach})
         //link image to this asset 
 
 
     }catch(e){
+
+        console.error(e)
         
         await digitalAssetController.updateDigitalAsset({
             assetId: nextAsset.data._id,
             modifyParams: { metadataCached: errorMessage }  
         }) 
 
-        console.error(e)
+       
     }
 
 

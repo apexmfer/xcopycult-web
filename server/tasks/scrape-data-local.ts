@@ -42,7 +42,7 @@ export async function scrapeDataLocal(args:string[], mongoDB:ExtensibleMongoDB){
             let provider = new JsonRpcProvider(RPCURL)
 
             try{
-                
+
             let tokenContract = new ethers.Contract(row.contractAddress, ERC721ABI, provider)
 
  
@@ -59,6 +59,8 @@ export async function scrapeDataLocal(args:string[], mongoDB:ExtensibleMongoDB){
                 })
 
                 let newAsset = newAssetResponse.data 
+
+                console.log({newAsset})
 
                 await digitalAssetController.updateDigitalAsset(
                     {assetId: newAsset._id,modifyParams:{status:'active'}} 
