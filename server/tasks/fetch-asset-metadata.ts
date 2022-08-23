@@ -80,6 +80,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         let updateResponse = await digitalAssetController.updateDigitalAsset({
             assetId: nextAsset.data._id,
             modifyParams: {
+                 name: response.data.name,
                  metadataCached: stringifiedResponse ,
                  description: formatDescription(response.data.description)}  
         }) 
