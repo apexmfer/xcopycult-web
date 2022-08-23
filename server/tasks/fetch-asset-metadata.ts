@@ -106,10 +106,10 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
     }catch(e){
         
-        await digitalAssetController.updateDigitalAsset({
+      /*  await digitalAssetController.updateDigitalAsset({
             assetId: nextAsset.data._id,
             modifyParams: { metadataCached: JSON.stringify({error:"count not fetch metadata"}) }  
-        }) 
+        }) */
 
         console.error(e)
     }
