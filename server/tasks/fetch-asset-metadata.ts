@@ -22,7 +22,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
 
     try{
-    fs.mkdirSync('../../dist/imagestorage')
+        fs.mkdirSync('../../dist/imagestorage')
     }catch(e){}
 
      
@@ -74,14 +74,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         let stringifiedResponse = JSON.stringify(response) 
  
       
-        let updateResponse = await digitalAssetController.updateDigitalAsset({
-            assetId: nextAsset.data._id,
-            modifyParams: {
-                 metadataCached: stringifiedResponse ,
-                 description: formatDescription(response.data.description)}  
-        }) 
-
-        console.log({updateResponse})
+      
 
         let imageTitle = nextAsset.data.title 
 
@@ -94,8 +87,20 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, imageTitle, extension, mongoDB  )
         let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
 
-        console.log({newImageRecord})
-        console.log({attach})
+        if(attach.success){
+
+
+            let updateResponse = await digitalAssetController.updateDigitalAsset({
+                assetId: nextAsset.data._id,
+                modifyParams: {
+                     metadataCached: stringifiedResponse ,
+                     description: formatDescription(response.data.description)}  
+            }) 
+    
+            console.log({updateResponse})
+
+        }
+ 
         //link image to this asset 
 
 
