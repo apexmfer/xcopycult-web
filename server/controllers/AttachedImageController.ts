@@ -114,7 +114,7 @@ getImages: ControllerMethod = async (req:any ) => {
 
 
 
-static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
+static async uploadNewImageFromFile(fileData: any,  tagname:string, mongoDB: ExtensibleDB) : Promise<AssertionResponse>  {
 
   let fileName = fileData.name 
 
@@ -133,7 +133,7 @@ static async uploadNewImageFromFile(fileData: any,    mongoDB: ExtensibleDB) : P
 
 
 
-  return await AttachedImageController.uploadNewImage( fileDataBinary, title,extension, mongoDB  )
+  return await AttachedImageController.uploadNewImage( fileDataBinary, title,extension, tagname, mongoDB  )
 }
          
 
