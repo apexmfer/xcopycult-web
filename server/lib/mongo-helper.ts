@@ -33,7 +33,7 @@ export async function findRecords( query: any, definition: TableDefinition, mong
 
 
 
-    let items = await mongoDB.getModel(definition).find( query ).limit(limit)
+    let items = await mongoDB.getModel(definition).find( query ) 
     
     if(!items ){
         return {success:false, error:`Could not find records for ${definition.tableName}`}
