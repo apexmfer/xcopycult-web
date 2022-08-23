@@ -134,7 +134,18 @@ export default class DigitalAssetController extends APIController {
        
         if(!matchingResponse.success) return matchingResponse
 
-        let outputArray = await Promise.all(matchingResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
+        //let outputArray = await Promise.all(matchingResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
+
+        let outputArray = []
+
+        for(let data of matchingResponse.data){
+            try{
+            let renderData = await DigitalAssetController.getDigitalAssetRenderData( data , this.mongoDB)
+            outputArray.push(renderData)
+            }catch(e){
+                console.error(e)
+            }
+        }
 
         return {success:true, data: outputArray}
     }
