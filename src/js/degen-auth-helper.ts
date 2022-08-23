@@ -1,5 +1,5 @@
 /* eslint-disable */ 
-import { AssertionResponse } from "degen-route-loader";
+//import { AssertionResponse } from "degen-route-loader";
 import {resolveURIFromRouteName, resolveRestQueryAsserted} from '@/js/rest-api-helper'
 import { resolveRoutedApiQuery } from "./rest-api-helper";
 
@@ -8,7 +8,7 @@ const ethers = require('ethers')
 
 
 
-export async function fetchNewChallenge(publicAddress:string): Promise<AssertionResponse> {
+export async function fetchNewChallenge(publicAddress:string): Promise<any> {
 
 let generateChallengeResponse = await resolveRoutedApiQuery( 
     'generateChallenge' ,
@@ -21,7 +21,7 @@ return {success:true, data: generateChallengeResponse.data}
 
 }
 
-export async function generateNewUserSession(publicAddress:string, challenge:string, signature: string): Promise<AssertionResponse> {
+export async function generateNewUserSession(publicAddress:string, challenge:string, signature: string): Promise<any> {
 
   
 let generateSessionResponse = await resolveRoutedApiQuery( 
@@ -41,7 +41,7 @@ return {success:true, data: generateSessionResponse.data}
 
 
 
-export async function fetchAuthToken(store:any): Promise<AssertionResponse> {
+export async function fetchAuthToken(store:any): Promise<any> {
 
     let authToken = store.state.degenAuthStorage.authToken
 
