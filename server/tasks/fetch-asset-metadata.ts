@@ -93,7 +93,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         
         let downloadedImageDataBuffer:Buffer = await FileHelper.downloadImageToBinary(  imageURL )
         
-        let resizedImageBuffer = await new Promise( (resolve,reject) => {
+        let resizedImageBuffer:Buffer = await new Promise( (resolve,reject) => {
 
              gifResize(
                 {  width: 260 }
