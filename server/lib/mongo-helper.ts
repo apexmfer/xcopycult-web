@@ -73,6 +73,20 @@ export async function modifyRecord( id: string, update: any , definition: TableD
 }
 
 
+export async function modifyRecords( query:any, update: any , definition: TableDefinition, mongoDB: ExtensibleDB ) : Promise<AssertionResponse>{
+ 
+    let options = { }
+
+    let updatedRecords = await mongoDB.getModel(definition).updateMany(query, update, options )
+
+    if(!updatedRecords){
+        return {success:false, error:`Could not modify ${definition.tableName}`}
+    }
+
+    return {success:true, data: updatedRecords}
+}
+
+
 
 
 export async function deleteRecord( id: string,  definition: TableDefinition, mongoDB: ExtensibleDB ) : Promise<AssertionResponse>{
