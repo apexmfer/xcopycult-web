@@ -136,7 +136,7 @@ export default class DigitalAssetController extends APIController {
 
         //let outputArray = await Promise.all(matchingResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
 
-        let outputArray = []
+        let outputArray:any[] = []
 
         for(let data of matchingResponse.data){
             try{
