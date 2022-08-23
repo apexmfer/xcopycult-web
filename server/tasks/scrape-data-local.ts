@@ -58,6 +58,10 @@ export async function scrapeDataLocal(args:string[], mongoDB:ExtensibleMongoDB){
 
                 })
 
+                if(!newAssetResponse.success){
+                    continue
+                }
+
                 let newAsset = newAssetResponse.data 
 
                 console.log({newAsset})
