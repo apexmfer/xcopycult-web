@@ -65,6 +65,8 @@ export default class WebServer  {
 
         this.apiPort = this.serverConfig.port? this.serverConfig.port : 3000
 
+
+
         //var server = http.createServer(app);
 
         let envmode = process.env.NODE_ENV
@@ -121,7 +123,7 @@ export default class WebServer  {
   
  
       //host static files from dist for webpage 
-      const staticFileMiddleware = express.static('dist');
+      const staticFileMiddleware = express.static(this.serverConfig.staticFolderPath);
       this.app.use(staticFileMiddleware);
       this.app.use(history({
         disableDotRule: true,

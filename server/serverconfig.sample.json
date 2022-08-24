@@ -3,6 +3,7 @@
         "useHTTPS":false,
         "requireAuthentication":false,
         "chainId":4,
+        "staticFolderPath":"dist",
         "web3provider":"https://eth-rinkeby.alchemyapi.io/v2/" 
     },
     "test":{
@@ -10,18 +11,21 @@
         "requireAuthentication":false,
         "chainId":1,
         "port":6000,
+        "staticFolderPath":"dist",
         "web3provider":"https://eth-mainnet.alchemyapi.io/v2/" 
     },
     "staging":{
         "useHTTPS":true,
         "requireAuthentication":false,
         "chainId":1,
+        "staticFolderPath":"dist",
         "web3provider":"https://eth-mainnet.alchemyapi.io/v2/" 
     },
     "production":{
         "useHTTPS":true,
         "requireAuthentication":true,
         "chainId":1,
+        "staticFolderPath":"dist",
         "web3provider":"https://eth-mainnet.alchemyapi.io/v2/"
     }
     

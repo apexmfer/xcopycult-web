@@ -1,10 +1,17 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
-      new NodePolyfillPlugin()
+      new NodePolyfillPlugin(),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'imagestorage', to: 'imagestorage' }
+      ]}
+      )
     ],
   }
 })

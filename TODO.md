@@ -9,6 +9,11 @@
 -build basic frontend 
 
 
+
+-webpack should be copying  imagestore 
+
+
+
 #### Tasks 
 
 - design frontend 

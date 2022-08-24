@@ -167,7 +167,7 @@ static async uploadNewImageFromFile(fileData: any,  tagname:string, mongoDB: Ext
 
     let fileName = hash.concat(extension)
 
-    let imageStorageFolder:string = "/dist/imagestorage/"
+    let imageStorageFolder:string = "/imagestorage/"
 
     let fullFilePath = await FileHelper.writeBufferToFile( 
       fileDataBuffer, imageStorageFolder.concat(fileName))
