@@ -4,22 +4,35 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const { defineConfig } = require('@vue/cli-service')
+
+
+let copyWebpackPlugin =  new CopyWebpackPlugin({
+  patterns: [
+    
+    {
+    from: path.join(__dirname, '/imagestorage'),
+    to: path.join(__dirname, '/dist/imagestorage')
+    }
+
+
+]}
+)
+
+
+require('dotenv').config()
+
+//do not copy files on vercel because it may break build process
+if(process.env.VERCEL_HOSTED){
+  copyWebpackPlugin = new CopyWebpackPlugin()
+}
+
+
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
       new NodePolyfillPlugin(),
-      new CopyWebpackPlugin({
-        patterns: [
-          
-          {
-          from: path.join(__dirname, '/imagestorage'),
-          to: path.join(__dirname, '/dist/imagestorage')
-          }
-
-
-      ]}
-      )
+      copyWebpackPlugin
     ],
   }
 })
