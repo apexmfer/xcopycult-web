@@ -69,8 +69,10 @@ export default {
 
   async created() {
 
-    this.currentPage = (this.$route.params.page && !isNaN(this.$route.params.page)) ? parseInt(this.$route.params.page) : 0
 
+
+    let page  = (this.$route.params.page && !isNaN(this.$route.params.page)) ? parseInt(this.$route.params.page) : 0
+    this.currentPage= Math.max(1, parseInt(page) )
 
     await this.loadDigitalAssets()
      
