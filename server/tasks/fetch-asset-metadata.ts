@@ -155,7 +155,7 @@ function formatURI( input: any ){
 
         let ipfsHash = input.substring( input.lastIndexOf('/'))
 
-        return `https://${ipfsHash}`
+        return `https://ipfs.io/ipfs/${ipfsHash}`
     }
 
     return input 
