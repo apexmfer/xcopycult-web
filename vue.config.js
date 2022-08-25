@@ -1,3 +1,5 @@
+
+const path = require('path')
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -9,7 +11,13 @@ module.exports = defineConfig({
       new NodePolyfillPlugin(),
       new CopyWebpackPlugin({
         patterns: [
-          { from: './imagestorage', to: 'imagestorage' }
+          //{ from: './imagestorage', to: 'imagestorage' }
+          {
+          from: path.join(__dirname, 'imagestorage'),
+          to: path.join(__dirname, 'dist/')
+          }
+
+
       ]}
       )
     ],
