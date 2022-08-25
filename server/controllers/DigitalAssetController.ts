@@ -130,7 +130,7 @@ export default class DigitalAssetController extends APIController {
             limit = 50
         }
 
-        let matchingResponse = await findRecordsWithOptions( { status }, {limit}, DigitalAssetDefinition, this.mongoDB )
+        let matchingResponse = await findRecordsWithOptions( { status }, {limit, offset}, DigitalAssetDefinition, this.mongoDB )
        
         if(!matchingResponse.success) return matchingResponse
 

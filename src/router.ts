@@ -35,7 +35,7 @@ export default new Router({
     
    
     {
-      path: '/gallery',
+      path: '/gallery/:page?',
       name: 'gallery',
       component: Gallery
     },

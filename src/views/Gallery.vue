@@ -6,17 +6,14 @@
 
    
 
-      <div class=" py-24 ">
-      
-        <GalleryImageTile
-          v-for="assetData of digitalAssetsArray"
-          :key="assetData.digitalAssetId"
-          :title="assetData.title"
-          :hyperlink="{name:'digitalassetshow', params:{id: assetData.digitalAssetId}}"
-          :imageURL="getImageStoragePath(assetData.imageData.filename)"
-         />
+    <TiledGalleryBrowser 
+    :digitalAssetsArray="digitalAssetsArray"
+    :currentPage="currentPage"
+    :setCurrentPageCallback="setCurrentPage"
+    
+    />
 
-      </div>
+
 
       <div class="flex flex-row  py-12 w-full ">
         <div class="flex-grow"></div>
@@ -46,38 +43,50 @@
  
 
 import AppHelper, {routeTo,redirectTo} from '@/js/app-helper'
-import {getImageStoragePath,getRouteTo} from '@/js/frontend-helper'
+import {getRouteTo} from '@/js/frontend-helper'
  
  import {resolveRoutedApiQuery} from '@/js/rest-api-helper'
 import PrimaryLayout from './PrimaryLayout.vue';
  
+import TiledGalleryBrowser from '@/views/components/gallery/TiledGalleryBrowser.vue'
 import ButtonDefault from '@/views/elements/button_default.vue'
-import GalleryImageTile from '@/views/elements/gallery/GalleryImageTile.vue'
 export default {
   name: "Home",
   props: [],
-  components: { PrimaryLayout, ButtonDefault, GalleryImageTile},
+  components: {
+     PrimaryLayout,
+      ButtonDefault,  
+      TiledGalleryBrowser
+      },
   data() {
     return {
-        digitalAssetsArray: [] 
+        digitalAssetsArray: undefined ,
+        currentPage: 0
     };
   },
 
   async created() {
+
+    this.currentPage = (this.$route.params.page && !isNaN(this.$route.params.page)) ? parseInt(this.$route.params.page) : 0
+
+
     await this.loadDigitalAssets()
      
   },
 
   methods: {
     routeTo,
-    getImageStoragePath,
+    
     getRouteTo,
 
     async loadDigitalAssets(){
 
-      let offset = "0"
+      
+      let offset = 50 * parseInt(this.currentPage)
 
-      let assetsResponse = await resolveRoutedApiQuery('getDigitalAssets',{offset})
+      let limit =  50
+
+      let assetsResponse = await resolveRoutedApiQuery('getDigitalAssets',{offset,limit})
 
       console.log({assetsResponse})
 
@@ -99,6 +108,15 @@ export default {
 
 
       }
+    },
+
+
+    setCurrentPage(page){      
+      this.currentPage = page 
+
+      this.loadDigitalAssets()
+
+      this.$router.push({name:"gallery", params: {page}})
     }
  
     

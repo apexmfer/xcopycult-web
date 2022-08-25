@@ -52,7 +52,12 @@ export async function findRecordsWithOptions( query: any, options:any, definitio
         limit = options.limit;
     }
 
-    let items = await mongoDB.getModel(definition).find( query ).limit(limit)
+    let offset = 0
+    if(options.offset && !isNaN(options.offset)){
+        offset = options.offset;
+    }
+
+    let items = await mongoDB.getModel(definition).find(query).skip(offset).limit(limit)
     
     if(!items ){
         return {success:false, error:`Could not find records for ${definition.tableName}`}
