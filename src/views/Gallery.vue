@@ -62,7 +62,7 @@ export default {
   data() {
     return {
         digitalAssetsArray: undefined ,
-        currentPage: 0,
+        currentPage: 1,
         totalDigitalAssetsCount: 0
     };
   },
@@ -83,8 +83,9 @@ export default {
 
     async loadDigitalAssets(){
 
+      let page = Math.max(1, parseInt(this.currentPage) )
       
-      let offset = 50 * parseInt(this.currentPage)
+      let offset = 50 * (page-1)
 
       let limit =  50
 
