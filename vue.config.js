@@ -11,10 +11,10 @@ module.exports = defineConfig({
       new NodePolyfillPlugin(),
       new CopyWebpackPlugin({
         patterns: [
-          //{ from: './imagestorage', to: 'imagestorage' }
+          
           {
-          from: path.join(__dirname, 'imagestorage'),
-          to: path.join(__dirname, 'dist/imagestorage')
+          from: path.join(__dirname, '/imagestorage'),
+          to: path.join(__dirname, '/dist/imagestorage')
           }
 
 
