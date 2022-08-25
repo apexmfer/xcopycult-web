@@ -8,6 +8,7 @@
 
     <TiledGalleryBrowser 
     :digitalAssetsArray="digitalAssetsArray"
+    :totalDigitalAssetsCount="totalDigitalAssetsCount"
     :currentPage="currentPage"
     :setCurrentPageCallback="setCurrentPage"
     
@@ -61,7 +62,8 @@ export default {
   data() {
     return {
         digitalAssetsArray: undefined ,
-        currentPage: 0
+        currentPage: 0,
+        totalDigitalAssetsCount: 0
     };
   },
 
@@ -97,7 +99,7 @@ export default {
 
       this.digitalAssetsArray=[]
 
-      for(let asset of assetsResponse.data){
+      for(let asset of assetsResponse.data.digitalAssets){
 
         let assetData = Object.assign({},asset)
 
@@ -108,6 +110,9 @@ export default {
 
 
       }
+
+
+      this.totalDigitalAssetsCount = assetsResponse.data.count
     },
 
 

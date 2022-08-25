@@ -6,9 +6,9 @@
 
        <div v-if="!digitalAssetsArray">
            
-                <LoadingSpinner
-                  
-                 />
+        <LoadingSpinner
+            
+            />
 
       </div>
 
@@ -30,6 +30,7 @@
 
 
          <PaginationBar 
+            v-if="maxPages > 1"
               :currentPage="currentPage"
               :maxPages="maxPages"
               :setCurrentPageCallback="setCurrentPageCallback"
@@ -55,15 +56,23 @@ import PaginationBar from '@/views/components/nav/PaginationBar.vue'
  
 export default {
   name: 'TiledGalleryBrowser',
-  props: [ 'digitalAssetsArray' ,'currentPage', 'setCurrentPageCallback'],
+  props: [ 'digitalAssetsArray' ,'currentPage', 'totalDigitalAssetsCount','setCurrentPageCallback'],
   components:{LoadingSpinner,GalleryImageTile,PaginationBar },
   data() {
     return {
-        maxPages:5 //for now 
-
+         
        
     }
   }, 
+
+  computed: {
+
+      maxPages(){
+
+          let count = this.totalDigitalAssetsCount? this.totalDigitalAssetsCount : 0
+          return Math.floor(count / 50) + 1
+      }
+  },
     
   created(){
      
