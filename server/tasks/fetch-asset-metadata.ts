@@ -69,7 +69,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             continue 
         }
         
-        let remoteImageTitle:string = response.data.image ? response.data.image : response.data.imageURL
+        let remoteImageTitle:string = response.data.image ? response.data.image : response.data.imageUrl
         let extension:string = remoteImageTitle ? remoteImageTitle.substring(remoteImageTitle.lastIndexOf('.')) : '.gif'
 
         console.log({extension})
@@ -92,7 +92,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         
 
 
-        let imageURL = response.data.image ? formatURI(response.data.image ) :  formatURI(response.data.imageURL )
+        let imageURL = response.data.image ? formatURI(response.data.image ) :  formatURI(response.data.imageUrl )
         
         let downloadedImageDataBuffer:Buffer = await FileHelper.downloadImageToBinary(  imageURL )
         
