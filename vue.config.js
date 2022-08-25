@@ -23,7 +23,7 @@ require('dotenv').config()
 
 //do not copy files on vercel because it may break build process
 if(process.env.VERCEL_HOSTED){
-  copyWebpackPlugin = new CopyWebpackPlugin()
+  copyWebpackPlugin =undefined
 }
 
 
