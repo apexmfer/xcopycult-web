@@ -118,7 +118,9 @@ export default {
 
 
     setCurrentPage(page){      
-      this.currentPage = page 
+ 
+
+      this.currentPage = Math.max(1, parseInt( page ) ) 
 
       this.loadDigitalAssets()
 
