@@ -23,7 +23,9 @@ if(!process.env.VERCEL_HOSTED){
       }
   
   
-  ]}
+  ],
+  options:{concurrency:5}
+  }
   ))
 }
 
