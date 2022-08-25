@@ -120,10 +120,11 @@ export default class WebServer  {
 
     
       this.degenRouteLoader.loadRoutes( this.app, activeRoutes)
-  
+      
+      let staticFolderPath = this.serverConfig.staticFolderPath ? this.serverConfig.staticFolderPath : 'dist'
  
       //host static files from dist for webpage 
-      const staticFileMiddleware = express.static(this.serverConfig.staticFolderPath);
+      const staticFileMiddleware = express.static(staticFolderPath);
       this.app.use(staticFileMiddleware);
       this.app.use(history({
         disableDotRule: true,
