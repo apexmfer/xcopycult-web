@@ -19,9 +19,13 @@ export async function scrapeDataLocal(args:string[], mongoDB:ExtensibleMongoDB){
  
    
     
-    let inputjson = fs.readFileSync('server/tasks/data/inputassets.json','utf8')
+    let inputjson_superrare = fs.readFileSync('server/tasks/data/inputassets_superrare.json','utf8')
+    let inputjson_knownorigin = fs.readFileSync('server/tasks/data/inputassets_knownorigin.json','utf8')
 
-    let inputdata = JSON.parse(inputjson)
+    let inputdata_superrare = JSON.parse(inputjson_superrare)
+    let inputdata_knownorigin = JSON.parse(inputjson_knownorigin)
+
+    let inputdata = inputdata_superrare.concat(inputdata_knownorigin)
 
     //@ts-ignore
     let digitalAssetController = new DigitalAssetController(mongoDB, {})
