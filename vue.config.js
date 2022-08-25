@@ -8,17 +8,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
-      new NodePolyfillPlugin(),
-      new CopyWebpackPlugin({
-        patterns: [
-          
-          {
-          from: path.join(__dirname, '/imagestorage'),
-          to: path.join(__dirname, '/dist/imagestorage')
-          }
-
-
-      ]}
+      new NodePolyfillPlugin()
       )
     ],
   }
