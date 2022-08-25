@@ -69,8 +69,8 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             continue 
         }
         
-        let remoteImageTitle:string = response.data.image 
-        let extension:string = remoteImageTitle.substring(remoteImageTitle.lastIndexOf('.'))
+        let remoteImageTitle:string = response.data.image ? response.data.image : response.data.imageURL
+        let extension:string = remoteImageTitle ? remoteImageTitle.substring(remoteImageTitle.lastIndexOf('.')) : '.gif'
 
         console.log({extension})
 
