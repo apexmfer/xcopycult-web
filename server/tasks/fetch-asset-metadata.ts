@@ -74,7 +74,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
         console.log({extension})
 
-        let stringifiedResponse = JSON.stringify(response) 
+        let stringifiedResponse = JSON.stringify(response.data) 
  
       
         let updateResponse = await digitalAssetController.updateDigitalAsset({
@@ -89,8 +89,10 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
         let imageTitle = nextAsset.data.title 
 
+        
 
-        let imageURL = formatURI(response.data.image )
+
+        let imageURL = response.data.image ? formatURI(response.data.image ) :  formatURI(response.data.imageURL )
         
         let downloadedImageDataBuffer:Buffer = await FileHelper.downloadImageToBinary(  imageURL )
         
@@ -151,7 +153,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
 function formatURI( input: any ){
 
-    if(input.startsWith('ipfs://')) {
+    if(input && input.startsWith('ipfs://')) {
 
         let ipfsHash = input.substring( input.lastIndexOf('/'))
 
