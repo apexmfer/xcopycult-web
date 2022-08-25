@@ -65,11 +65,14 @@ export async function scrapeDataOpensea(args:string[], mongoDB:ExtensibleMongoDB
 
                 })
 
-                let newAsset = newAssetResponse.data 
+                let newAsset = newAssetResponse.data
+                
+                if(newAssetResponse.success){
 
-                await digitalAssetController.updateDigitalAsset(
-                    {assetId: newAsset._id,modifyParams:{status:'active'}} 
-                )
+                    await digitalAssetController.updateDigitalAsset(
+                        {assetId: newAsset._id,modifyParams:{status:'active'}} 
+                    )   
+                }
 
 
             }catch(e){
