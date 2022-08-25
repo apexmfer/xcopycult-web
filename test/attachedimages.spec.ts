@@ -103,7 +103,12 @@ describe('Attached Images Controller',    () => {
             let metadata:ImageMetadata = await AttachedImageController.getImageMetadata(fileData,title,Buffer.from(binary))
   
  
-            let insert = await AttachedImageController.insertNewUploadedImageRecord( 'testFile', metadata , publicAddress,  mongoDB )
+            let insert = await AttachedImageController.insertNewUploadedImageRecord( 
+                'testFile',
+                 metadata ,
+                  publicAddress,
+                  'primary',
+                    mongoDB )
 
              
             expect(insert.success).to.eql(true)
@@ -113,7 +118,8 @@ describe('Attached Images Controller',    () => {
 
         it('should insert image record', async () => { 
  
-            let insert = await AttachedImageController.insertNewUploadedImageRecord( 'getlost_0xa10d540bf6c208d4b22496819130a42d.jpg',  
+            let insert = await AttachedImageController.insertNewUploadedImageRecord( 
+                'getlost_0xa10d540bf6c208d4b22496819130a42d.jpg',  
                 {name: 'getlost.jpg',
                 title:'getlost',
                 sizeBytes: 3094285,
@@ -122,6 +128,7 @@ describe('Attached Images Controller',    () => {
                 heightPixels: 5600
                  }  ,
              '0x310Ff0A1b626F74699707d1B4003b1d455657911', 
+             'primary',
               mongoDB )
 
              

@@ -10,7 +10,7 @@ import AttachedImageController, { FileValidation } from "./AttachedImageControll
  
 import ExtensibleDB from 'extensible-mongoose'
   
-import { createRecord, deleteRecord, findRecord, findRecordById, findRecords, findRecordsWithOptions, modifyRecord } from "../lib/mongo-helper";
+import { createRecord, deleteRecord, findRecord, findRecordById, findRecords, findRecordsWithOptions, getRecordCount, modifyRecord } from "../lib/mongo-helper";
 import APIController, { InternalMethod, MongoRecord } from "./APIController"; 
   
 import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
@@ -131,9 +131,13 @@ export default class DigitalAssetController extends APIController {
         }
 
         let matchingResponse = await findRecordsWithOptions( { status }, {limit, offset}, DigitalAssetDefinition, this.mongoDB )
-       
+        
         if(!matchingResponse.success) return matchingResponse
 
+        let matchingCountResponse = await getRecordCount({ status },DigitalAssetDefinition,this.mongoDB)
+        if(!matchingCountResponse.success) return matchingCountResponse
+
+        let matchingCount = matchingCountResponse.data
         //let outputArray = await Promise.all(matchingResponse.data.map( x => DigitalAssetController.getDigitalAssetRenderData( x , this.mongoDB)))
 
         let outputArray:any[] = []
@@ -147,7 +151,7 @@ export default class DigitalAssetController extends APIController {
             }
         }
 
-        return {success:true, data: outputArray}
+        return {success:true, data: {digitalAssets:outputArray,count:matchingCount}}
     }
 
 

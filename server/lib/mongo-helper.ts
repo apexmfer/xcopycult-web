@@ -69,6 +69,15 @@ export async function findRecordsWithOptions( query: any, options:any, definitio
 }
 
 
+export async function getRecordCount( query: any, definition: TableDefinition, mongoDB: ExtensibleDB ) : Promise<AssertionResponse>{
+    
+    let count = await mongoDB.getModel(definition).count(query)
+    
+
+    return {success:true, data: count}
+}
+
+
 export async function createRecord( input: any, definition: TableDefinition, mongoDB: ExtensibleDB  ){
 
     let result = await mongoDB.getModel(definition).create(input)
