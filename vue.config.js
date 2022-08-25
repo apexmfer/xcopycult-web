@@ -9,7 +9,7 @@ module.exports = defineConfig({
       new NodePolyfillPlugin(),
       new CopyWebpackPlugin({
         patterns: [
-          { from: 'imagestorage', to: 'imagestorage' }
+          { from: './imagestorage', to: 'imagestorage' }
       ]}
       )
     ],
