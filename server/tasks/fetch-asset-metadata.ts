@@ -157,9 +157,11 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         }
 
         for(let attachable of attachableImages){
-            let newImageRecord = await AttachedImageController.uploadNewImage( attachable.imageBuffer, imageTitle, extension, attachable.attachableType, mongoDB  )
-            
+           
             try{
+                let newImageRecord = await AttachedImageController.uploadNewImage( attachable.imageBuffer, imageTitle, extension, attachable.attachableType, mongoDB  )
+            
+                
                 let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
                 console.log({attach})
             }catch(e){
