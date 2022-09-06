@@ -163,6 +163,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             }  )
 
         }
+        await deleteRecords({status:'detached'},AttachedImageDefinition,mongoDB)
 
         await deleteRecords({parentId:nextAsset.data._id},AttachedImageDefinition,mongoDB)
 
