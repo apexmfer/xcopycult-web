@@ -58,6 +58,10 @@ export async function scrapeDataLocal(args:string[], mongoDB:ExtensibleMongoDB){
                     title: nameSimple,
                     contractAddress: row.contractAddress ,
                     primaryTokenId: row.tokenId,
+
+                    mediaAttribute: row.mediaAttribute ? row.mediaAttribute : 'image',
+                    mediaType: row.mediaType ? row.mediaType : 'gif',
+                    localMedia: row.localMedia,
                     metadataURI
 
                 })

@@ -4,12 +4,15 @@ import { mongo } from "mongoose";
 import AttachedImageController from "../controllers/AttachedImageController";
 import DigitalAssetController from "../controllers/DigitalAssetController";
 import UserSessionController from "../controllers/UserSessionController";
-import { DigitalAssetDefinition } from "../dbextensions/DigitalAssetDBExtension";
+import { DigitalAsset, DigitalAssetDefinition } from "../dbextensions/DigitalAssetDBExtension";
 import FileHelper from "../lib/file-helper";
 import { findRecord, modifyRecord, modifyRecords } from "../lib/mongo-helper";
 import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
  
 import fs from 'fs'
+import path from 'path'
+
+import sharp from 'sharp'
 
 const gifResize = require('@gumlet/gif-resize'); 
 
@@ -52,8 +55,9 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
         console.log('next asset', nextAsset.data )
 
+        let assetData:DigitalAsset = nextAsset.data 
 
-        let uri = formatURI(nextAsset.data.metadataURI )
+        let uri = formatURI(assetData.metadataURI )
 
         //@ts-ignore
         let digitalAssetController = new DigitalAssetController(mongoDB, {}) 
@@ -69,8 +73,11 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             continue 
         }
         
-        let remoteImageTitle:string = response.data.image ? response.data.image : response.data.imageUrl
-        let extension:string = remoteImageTitle ? remoteImageTitle.substring(remoteImageTitle.lastIndexOf('.')) : '.gif'
+        //let remoteImageTitle:string = response.data.image ? response.data.image : response.data.imageUrl
+
+        let mediaType = assetData.mediaType ? assetData.mediaType : 'gif'
+
+        let extension:string = '.'.concat(mediaType)
 
         console.log({extension})
 
@@ -90,38 +97,73 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         let imageTitle = nextAsset.data.title 
 
         
+        let downloadedImageDataBuffer:Buffer
 
+        if(assetData.localMedia){
 
-        let imageURL = response.data.image ? formatURI(response.data.image ) :  formatURI(response.data.imageUrl )
+            let localFile = await FileHelper.readLocalFile( path.resolve('server/tasks/assets/',assetData.localMedia )  ,'binary')
+            downloadedImageDataBuffer = Buffer.from(localFile,'binary')
+
+        }else{
+            let imageURL = response.data.image ? formatURI(response.data.image ) :  formatURI(response.data.imageUrl )
         
-        let downloadedImageDataBuffer:Buffer = await FileHelper.downloadImageToBinary(  imageURL )
-        
-        let resizedImageBuffer:Buffer = await new Promise( (resolve,reject) => {
+            downloadedImageDataBuffer = await FileHelper.downloadImageToBinary(  imageURL )
+            
+        }
 
-             gifResize(
-                {  width: 260 }
-                )(downloadedImageDataBuffer).then(data => {
-                    resolve(data)
-                }  )
+       
 
 
-        })
+
+        let attachableImages:{attachableType:string,imageBuffer:Buffer}[] = [] 
+
+        if(mediaType == 'gif'){
+
+            attachableImages.push( {
+
+                attachableType: 'primary',
+                imageBuffer: downloadedImageDataBuffer
+            }  )
+
+            let resizedImageBuffer:Buffer = await resizeGif(downloadedImageDataBuffer)
          
 
-        let newImageRecord = await AttachedImageController.uploadNewImage( downloadedImageDataBuffer, imageTitle, extension, 'primary', mongoDB  )
-        let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
-        
+            attachableImages.push( {
 
-        console.log({newImageRecord})
-        console.log({attach})
+                attachableType: 'thumbnail',
+                imageBuffer: resizedImageBuffer
+            }  )
 
-        let newThumbnailImageRecord = await AttachedImageController.uploadNewImage( resizedImageBuffer, imageTitle, extension, 'thumbnail', mongoDB  )
-        let attachThumbnail = await AttachedImageController.attachImage(newThumbnailImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)
+        }
 
+       
 
-        console.log({newThumbnailImageRecord})
-        console.log({attachThumbnail})
-        //link image to this asset 
+        if(mediaType == 'jpg'){
+
+            attachableImages.push( {
+
+                attachableType: 'primary',
+                imageBuffer: downloadedImageDataBuffer
+            }  )
+
+            console.log('resize jpg 1 ')
+            let resizedImageBuffer:Buffer = await resizeJpg(downloadedImageDataBuffer)
+            console.log('resize jpg 2 ')
+
+            attachableImages.push( {
+
+                attachableType: 'thumbnail',
+                imageBuffer: resizedImageBuffer
+            }  )
+
+        }
+
+        for(let attachable of attachableImages){
+            let newImageRecord = await AttachedImageController.uploadNewImage( attachable.imageBuffer, imageTitle, extension, attachable.attachableType, mongoDB  )
+            let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
+        }
+
+      
 
 
     }catch(e){
@@ -151,7 +193,35 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
 }
 
+async function resizeJpg(imgBuffer:Buffer) : Promise<Buffer> {
+
+   return await sharp()
+    .composite([{
+        input: imgBuffer,
+        blend: 'dest-in'
+      }]) 
+    .resize(260)
+    .jpeg({ mozjpeg: true })
+    .toBuffer()
+    
+}
+
+async function resizeGif( imgBuffer:Buffer ) : Promise<Buffer> {
+    return new Promise( (resolve,reject) => {
+
+        gifResize(
+           {  width: 260 }
+           )(imgBuffer).then(data => {
+               resolve(data)
+           }  )
+
+
+   })   
+}
+
 function formatURI( input: any ){
+
+    input = input.replace('https://ipfs.infura.io/ipfs/','https://infura-ipfs.io/ipfs/')
 
     if(input && input.startsWith('ipfs://')) {
 

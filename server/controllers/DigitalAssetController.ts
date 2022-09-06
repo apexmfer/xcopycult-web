@@ -158,8 +158,8 @@ export default class DigitalAssetController extends APIController {
 
 
     insertNewDigitalAsset:InternalMethod = async ( 
-        {parentUserId,title,contractAddress,primaryTokenId,metadataURI}:
-        {parentUserId:string,title:string,contractAddress:string,primaryTokenId:string, metadataURI: string } ) => {
+        {parentUserId,title,contractAddress,primaryTokenId,metadataURI,localMedia,mediaAttribute,mediaType}:
+        {parentUserId:string,title:string,contractAddress:string,primaryTokenId:string, metadataURI: string, localMedia:string, mediaAttribute:string, mediaType:string } ) => {
     
         const currentTime = Date.now().toString()
 
@@ -172,6 +172,10 @@ export default class DigitalAssetController extends APIController {
             contractAddress,
             primaryTokenId,
             metadataURI,
+
+            mediaAttribute,
+            mediaType,
+            localMedia,
             
 
             createdAt: currentTime,

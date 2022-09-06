@@ -22,6 +22,10 @@ export interface DigitalAsset {
     metadataCached?:string,
     description?:string, 
 
+    mediaAttribute?:string,
+    mediaType?:string,
+    localMedia?:string,
+
 
     thumbnailImageId?: string, 
     primaryImageId?: string,
@@ -55,6 +59,10 @@ export interface DigitalToken {
     description: {type: String},
     thumbnailImageId: {type: String},
     primaryImageId: {type: String},
+
+    mediaAttribute: {type: String},
+    mediaType: {type: String},
+    localMedia: {type: String},
 
     status: {type: String},
     createdAt: {type: String},

@@ -2,7 +2,7 @@
 {"title":"rip","tokenId":"226055192786530751889226314318558936073","contractAddress":"0x4764bc088a27f490353e8cf1558ba02fdc418c65"},
 
 
-{"title":"smile","tokenId":"53779","contractAddress":"0x2a46f2ffd99e19a89476e2f62270e0a35bbf0756"},
+{"title":"smile","tokenId":"53779","contractAddress":"0x2a46f2ffd99e19a89476e2f62270e0a35bbf0756","localMedia":"smile.gif"},
 
 {"title":"yuramiron","tokenId":"323763","contractAddress":"0xFBeef911Dc5821886e1dda71586d90eD28174B7d"},
 {"title":"doomed","tokenId":"22011","contractAddress":"0xFBeef911Dc5821886e1dda71586d90eD28174B7d"},
@@ -24,7 +24,7 @@
 {"title":"resist","tokenId":"109254","contractAddress":"0xFBeef911Dc5821886e1dda71586d90eD28174B7d"},
 {"title":"blood bubble","tokenId":"115026","contractAddress":"0xFBeef911Dc5821886e1dda71586d90eD28174B7d"},
 {"title":"no future","tokenId":"266106","contractAddress":"0xFBeef911Dc5821886e1dda71586d90eD28174B7d"},
-
+{"title":"resist","tokenId":"109254","contractAddress":"0xFBeef911Dc5821886e1dda71586d90eD28174B7d"},
 
 {"title":"bangers","tokenId":"3636020","contractAddress":"0xabb3738f04dc2ec20f4ae4462c3d069d02ae045b"}
 
