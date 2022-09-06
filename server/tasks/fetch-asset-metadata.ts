@@ -94,7 +94,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
         console.log({updateResponse})
 
-        let imageTitle = nextAsset.data.title 
+        let imageTitle = assetData.title 
 
         
         let downloadedImageDataBuffer:Buffer
@@ -161,7 +161,9 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             
             try{
                 let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
-            }catch(e){}
+            }catch(e){
+                console.error(e)
+            }
          }
 
       
