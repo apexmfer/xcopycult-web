@@ -27,8 +27,8 @@
     <div  
     class="select-none bg-gray-300 hover:bg-blue-400 cursor-pointer p-4 mx-2 my-4 border-black border-2 rounded-lg inline " 
      
-     @click="setCurrentPageCallback(maxPages-1)" >
-        {{ maxPages-1  }}
+     @click="setCurrentPageCallback(maxPages)" >
+        {{ maxPages  }}
     </div>
 
 
@@ -65,13 +65,21 @@ export default {
   },
   methods: {
     updateTabLabels(){
+
+
+      console.log('currentPage ', this.currentPage)
+      console.log('maxPages ', this.maxPages)
+
       this.tabLabels = []
+
       for(let i=0;i<4;i++){
-        if( this.currentPage+i < this.maxPages-1  ){
+        if( this.currentPage+i < this.maxPages  ){
           this.tabLabels.push(this.currentPage+i)
         }
         
       }
+
+      console.log(this.tabLabels)
     }  
    
          

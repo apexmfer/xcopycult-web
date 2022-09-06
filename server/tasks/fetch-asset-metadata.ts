@@ -110,9 +110,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             downloadedImageDataBuffer = await FileHelper.downloadImageToBinary(  imageURL )
             
         }
-
-       
-
+ 
 
 
         let attachableImages:{attachableType:string,imageBuffer:Buffer}[] = [] 
@@ -160,8 +158,11 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
         for(let attachable of attachableImages){
             let newImageRecord = await AttachedImageController.uploadNewImage( attachable.imageBuffer, imageTitle, extension, attachable.attachableType, mongoDB  )
-            let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
-        }
+            
+            try{
+                let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
+            }catch(e){}
+         }
 
       
 
