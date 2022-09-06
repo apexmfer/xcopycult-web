@@ -26,7 +26,7 @@
              
         </div>
 
-        <div class="md:w-1/2 p-4 flex flex-col ">
+        <div class="md:w-1/2 p-4 flex flex-col " v-if="assetData.imageData">
            <img :src="getImageStoragePath(assetData.imageData.filename)" />
           <div class="text-center"> 
               <a :href="getImageStoragePath(assetData.imageData.filename)" target="_blank" class="text-sm text-gray-500 my-2 no-underline hover:underline" > View Fullsize </a>
