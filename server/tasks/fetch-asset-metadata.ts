@@ -209,7 +209,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 }
 
 async function resizeJpg(imgBuffer:Buffer) : Promise<Buffer> {
-imgBuffer
+ 
    return await sharp(imgBuffer) 
     .resize(260)
     .jpeg({ mozjpeg: true })
