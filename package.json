@@ -13,7 +13,8 @@
     "server": "npx ts-node server/server.ts",
     "task": "npx ts-node server/tasks/taskrunner.ts",
     "test": "NODE_ENV=test ts-mocha  'test/**/*.spec.ts' --timeout 10000",
-    "vibegraph": "npx ts-node vibegraph/server.ts"
+    "vibegraph": "npx ts-node vibegraph/server.ts",
+    "copyImages": "cp -r imagestorage dist"
   },
   "dependencies": {
     "@chakra-ui/vue": "^0.12.0",
