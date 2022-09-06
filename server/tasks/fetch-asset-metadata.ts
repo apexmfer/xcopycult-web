@@ -6,13 +6,14 @@ import DigitalAssetController from "../controllers/DigitalAssetController";
 import UserSessionController from "../controllers/UserSessionController";
 import { DigitalAsset, DigitalAssetDefinition } from "../dbextensions/DigitalAssetDBExtension";
 import FileHelper from "../lib/file-helper";
-import { findRecord, modifyRecord, modifyRecords } from "../lib/mongo-helper";
+import { deleteRecord, deleteRecords, findRecord, modifyRecord, modifyRecords } from "../lib/mongo-helper";
 import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
  
 import fs from 'fs'
 import path from 'path'
 
 import sharp from 'sharp'
+import { AttachedImageDefinition } from "../dbextensions/ImageDBExtension";
 
 const gifResize = require('@gumlet/gif-resize'); 
 
@@ -110,8 +111,9 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             downloadedImageDataBuffer = await FileHelper.downloadImageToBinary(  imageURL )
             
         }
- 
+        
 
+      
 
         let attachableImages:{attachableType:string,imageBuffer:Buffer}[] = [] 
 
@@ -124,7 +126,10 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             }  )
 
             let resizedImageBuffer:Buffer = await resizeGif(downloadedImageDataBuffer)
-         
+            
+            if(downloadedImageDataBuffer.compare(resizedImageBuffer) == 0){
+                throw new Error('WARNING: resized image is the same')
+            }
 
             attachableImages.push( {
 
@@ -146,7 +151,10 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
              
             let resizedImageBuffer:Buffer = await resizeJpg(downloadedImageDataBuffer)
-             
+
+            if(downloadedImageDataBuffer.compare(resizedImageBuffer) == 0){
+                throw new Error('WARNING: resized image is the same')
+            }
 
             attachableImages.push( {
 
@@ -156,12 +164,14 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
 
         }
 
+        await deleteRecords({parentId:nextAsset.data._id},AttachedImageDefinition,mongoDB)
+
+
         for(let attachable of attachableImages){
            
             try{
                 let newImageRecord = await AttachedImageController.uploadNewImage( attachable.imageBuffer, imageTitle, extension, attachable.attachableType, mongoDB  )
             
-                
                 let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
                 console.log({attach})
             }catch(e){

@@ -135,5 +135,18 @@ export async function deleteRecord( id: string,  definition: TableDefinition, mo
   
       return {success:true, data: updatedRecord}
   }
+
+
+export async function deleteRecords( query:any,  definition: TableDefinition, mongoDB: ExtensibleDB ) : Promise<AssertionResponse>{
+ 
+  
+    let updatedRecord = await mongoDB.getModel(definition).deleteMany( query )
+
+    if(!updatedRecord){
+        return {success:false, error:`Could not modify ${definition.tableName}`}
+    }
+
+    return {success:true, data: updatedRecord}
+}
   
   
