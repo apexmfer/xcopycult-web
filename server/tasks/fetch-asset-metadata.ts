@@ -144,9 +144,9 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
                 imageBuffer: downloadedImageDataBuffer
             }  )
 
-            console.log('resize jpg 1 ')
+             
             let resizedImageBuffer:Buffer = await resizeJpg(downloadedImageDataBuffer)
-            console.log('resize jpg 2 ')
+             
 
             attachableImages.push( {
 
@@ -161,9 +161,12 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             
             try{
                 let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
+                console.log({attach})
             }catch(e){
                 console.error(e)
             }
+
+
          }
 
       
@@ -228,9 +231,9 @@ function formatURI( input: any ){
 
     if(input && input.startsWith('ipfs://')) {
 
-        let ipfsHash = input.substring( input.lastIndexOf('/'))
+        //let ipfsHash = input.substring( input.lastIndexOf('/'))
 
-        return `https://ipfs.io/ipfs/${ipfsHash}`
+        return input.replace('ipfs://','https://ipfs.io/ipfs/')   
     }
 
     return input 
