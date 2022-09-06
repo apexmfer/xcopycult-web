@@ -1,8 +1,8 @@
 {
     
     "digitalasset":[
-        {"name":"minWidth", "value": "100"},
-        {"name":"minHeight", "value": "100"}
+        {"name":"minWidth", "value": "10"},
+        {"name":"minHeight", "value": "10"}
     ]
 
  
