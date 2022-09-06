@@ -149,6 +149,8 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
                 imageBuffer: downloadedImageDataBuffer
             }  )
 
+            console.log({downloadedImageDataBuffer})
+
              
             let resizedImageBuffer:Buffer = await resizeJpg(downloadedImageDataBuffer)
 
