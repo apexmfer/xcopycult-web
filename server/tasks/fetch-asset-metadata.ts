@@ -229,6 +229,13 @@ function formatURI( input: any ){
 
     input = input.replace('https://ipfs.infura.io/ipfs/','https://infura-ipfs.io/ipfs/')
 
+    if(input && input.startsWith('ipfs://ipfs/')) {
+
+        //let ipfsHash = input.substring( input.lastIndexOf('/'))
+
+        return input.replace('ipfs://ipfs/','https://ipfs.io/ipfs/')   
+    }
+
     if(input && input.startsWith('ipfs://')) {
 
         //let ipfsHash = input.substring( input.lastIndexOf('/'))
