@@ -4,7 +4,7 @@
  
     <div class="section w-container flex flex-col my-16 "> 
 
-'     
+    
 
        <div v-if="assetData" class="flex flex-col">
 
