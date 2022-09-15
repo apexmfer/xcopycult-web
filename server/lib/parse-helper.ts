@@ -60,7 +60,7 @@ const {ObjectId} = require('mongodb');
 
 export function formatName(input:string) {
 
-  input = input.split('-')[0]
+  //input = input.split('-')[0]
   input = input.split('#')[0]
   input = input.replace('by XCOPY', '')
 
