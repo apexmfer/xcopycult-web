@@ -13,7 +13,7 @@ import ExtensibleDB from 'extensible-mongoose'
 import { createRecord, deleteRecord, findRecord, findRecordById, findRecords, findRecordsWithOptions, getRecordCount, modifyRecord } from "../lib/mongo-helper";
 import APIController, { InternalMethod, MongoRecord } from "./APIController"; 
   
-import { escapeString, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
+import { escapeString, formatURI, mongoIdToString, stringToMongoId, unescapeString } from "../lib/parse-helper";
  
 
 import { DigitalAsset, DigitalAssetDefinition } from "../dbextensions/DigitalAssetDBExtension";
@@ -225,7 +225,7 @@ export default class DigitalAssetController extends APIController {
             title: unescapeString(digitalAsset.title),
             description: unescapeString(digitalAsset.description),
             imageData,
-            metadataURI: digitalAsset.metadataURI,
+            metadataURI: formatURI(digitalAsset.metadataURI),
             contractAddress: digitalAsset.contractAddress,
             status: digitalAsset.status
 

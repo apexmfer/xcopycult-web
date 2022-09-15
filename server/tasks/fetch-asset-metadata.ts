@@ -13,6 +13,7 @@ import fs from 'fs'
 import path from 'path'
 
 import sharp from 'sharp'
+import { formatDescription, formatURI } from "../lib/parse-helper";
 
 const gifResize = require('@gumlet/gif-resize'); 
 
@@ -220,39 +221,7 @@ async function resizeGif( imgBuffer:Buffer ) : Promise<Buffer> {
    })   
 }
 
-function formatURI( input: any ){
 
-    input = input.replace('https://ipfs.infura.io/ipfs/','https://infura-ipfs.io/ipfs/')
-
-    if(input && input.startsWith('ipfs://')) {
-
-        let ipfsHash = input.substring( input.lastIndexOf('/'))
-
-        return `https://ipfs.io/ipfs/${ipfsHash}`
-    }
-
-    return input 
-}
-
-
-function formatDescription(input:any){
-
-    if(input && Array.isArray(input)){
-
-        let output = ''
-
-        for(let row of input){
-            output = output.concat(row)
-        }
-
-        //output = output.replace('\n','')
-
-
-        return output 
-    }
-  
-    return input 
-}
 
 
 function sleep(ms) {

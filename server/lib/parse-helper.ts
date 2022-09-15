@@ -44,6 +44,40 @@ const {ObjectId} = require('mongodb');
 
 
 
+  export function formatURI( input: any ){
+
+    input = input.replace('https://ipfs.infura.io/ipfs/','https://infura-ipfs.io/ipfs/')
+
+    if(input && input.startsWith('ipfs://')) {
+
+        let ipfsHash = input.substring( input.lastIndexOf('/'))
+
+        return `https://ipfs.io/ipfs/${ipfsHash}`
+    }
+
+    return input 
+}
+
+
+export function formatDescription(input:any){
+
+    if(input && Array.isArray(input)){
+
+        let output = ''
+
+        for(let row of input){
+            output = output.concat(row)
+        }
+
+        //output = output.replace('\n','')
+
+
+        return output 
+    }
+  
+    return input 
+}
+
 
 export function priceToCents(price:string){
 
