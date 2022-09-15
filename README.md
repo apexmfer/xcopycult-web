@@ -6,8 +6,12 @@ Requires ffmpeg and graphicsmagick
 
 ### Tasks 
 
-yarn task scrapeDataLocal
-yarn task scrapeDataOpensea
+npm run task scrapeDataLocal
+npm run task scrapeDataOpensea xcopy
 
-yarn task fetchAssetMetadata 
+npm run task fetchAssetMetadata 
 
+
+
+npm run server 
+npm run dev

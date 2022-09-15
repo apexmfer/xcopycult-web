@@ -58,6 +58,15 @@ const {ObjectId} = require('mongodb');
     return input 
 }
 
+export function formatName(input:string) {
+
+
+  return input.split('-')[0].split('#')[0].split(' by XCOPY')[0].trim()
+}
+
+
+
+
 
 export function formatDescription(input:any){
 

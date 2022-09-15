@@ -15,6 +15,7 @@ import { fetchAssetMetadata } from './fetch-asset-metadata'
 import { parseSuperrareInput } from './parse-sr-input'
 import { scrapeDataLocal } from './scrape-data-local'
 import { scrapeDataOpensea } from './scrape-data-opensea'
+import {resetAssetMetadata} from './reset-asset-metadata'
 
 let envmode = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
 
@@ -25,6 +26,7 @@ const taskMap: any = {
   fetchAssetMetadata,
   scrapeDataOpensea,
   scrapeDataLocal,
+  resetAssetMetadata,
   parseSuperrareInput
 }
 

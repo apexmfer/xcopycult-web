@@ -13,7 +13,7 @@ import fs from 'fs'
 import path from 'path'
 
 import sharp from 'sharp'
-import { formatDescription, formatURI } from "../lib/parse-helper";
+import { formatDescription, formatName, formatURI } from "../lib/parse-helper";
 import { AttachedImageDefinition } from "../dbextensions/ImageDBExtension";
 
 const gifResize = require('@gumlet/gif-resize'); 
@@ -84,19 +84,24 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
         console.log({extension})
 
         let stringifiedResponse = JSON.stringify(response.data) 
- 
+        
+        let imageTitle = assetData.title 
+
+
+        console.log('new title',formatName(response.data.name))
       
         let updateResponse = await digitalAssetController.updateDigitalAsset({
             assetId: nextAsset.data._id,
             modifyParams: {
-                 name: response.data.name,
+               //  name: response.data.name,
+                 title: response.data.name? formatName(response.data.name):formatName(response.data.title)  ,
                  metadataCached: stringifiedResponse ,
                  description: formatDescription(response.data.description)}  
         }) 
 
         console.log({updateResponse})
 
-        let imageTitle = assetData.title 
+      
 
         
         let downloadedImageDataBuffer:Buffer
@@ -178,6 +183,7 @@ export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMong
             
                 let attach = await AttachedImageController.attachImage(newImageRecord.data._id, "digitalasset", nextAsset.data._id , mongoDB)    
                 console.log({attach})
+                
            
          }
 
