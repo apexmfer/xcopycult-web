@@ -124,15 +124,16 @@ export default class WebServer  {
       let staticFolderPath = this.serverConfig.staticFolderPath ? this.serverConfig.staticFolderPath : 'dist'
  
       //host static files from dist for webpage 
-      const staticFileMiddleware = express.static(staticFolderPath);
-      this.app.use(staticFileMiddleware);
+      this.app.use(express.static('dist'));
+      this.app.use("/imagestorage", express.static(  "imagestorage"));
       this.app.use(history({
         disableDotRule: true,
         verbose: true
       }));
-      this.app.use(staticFileMiddleware);
+      this.app.use(express.static('dist'));
+      this.app.use("/imagestorage", express.static(  "imagestorage"));
 
-      
+       
 
 
       this.appListener = this.app.listen(this.apiPort, () => {

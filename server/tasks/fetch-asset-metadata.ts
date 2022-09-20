@@ -12,10 +12,10 @@ import { resolveGetQueryAsserted } from "./lib/rest-api-helper";
 import fs from 'fs'
 import path from 'path'
 
-import sharp from 'sharp'
 import { formatDescription, formatName, formatURI } from "../lib/parse-helper";
 import { AttachedImageDefinition } from "../dbextensions/ImageDBExtension";
 
+import sharp from 'sharp'
 const gifResize = require('@gumlet/gif-resize'); 
 
 export async function fetchAssetMetadata( args: string[], mongoDB:ExtensibleMongoDB){
